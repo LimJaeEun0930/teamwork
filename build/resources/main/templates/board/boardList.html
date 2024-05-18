@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>board_list</title>
+</head>
+<body>
+    <table>
+<tr>
+    <th>id</th>
+    <th>title</th>
+    <th>writer</th>
+    <th>date</th>
+    <th>hits</th>
+</tr>
+<tr th:each="board: ${boardList}">
+    <td th:text="${board.getBoardId()}"></td>
+    <td><a th:href="@{|/board/${board.getBoardId()}|}" th:text="${board.getBoardTitle()}"></a></td>
+    <td th:text="${board.getBoardWriter()}"></td>
+    <td th:text="*{#temporals.format(board.getCreatedTime(),'yyyy-MM-dd HH:mm:ss')}"></td>
+    <td th:text="${board.getBoardHits()}"></td>
+</tr>
+    </table>
+<button th:onclick="|location.href='@{/}'|" type="button">home</button>
+<button th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
+<form action="/logout" method="post">
+    <button type="submit">로그아웃</button>
+</form>
+
+</body>
+</html>

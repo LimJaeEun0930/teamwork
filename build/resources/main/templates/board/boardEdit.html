@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+</head>
+
+<body>
+
+
+<form th:action="@{/board/edit/{boardId}(boardId=${board_id},page=${page})}" method="post" th:object="${boardUpdate}">
+  <input type="hidden" name="id" th:field="*{boardId}">
+  writer: <input type="text" name="boardWriter" th:field="*{boardWriter}" readonly> <br>
+  title: <input type="text" name="boardTitle" th:field="*{boardTitle}"> <br>
+  contents: <textarea name="boardContents" cols="30" rows="10" th:field="*{boardContents}" ></textarea> <br>
+  <input type="hidden" name="boardHits" th:field="*{boardHits}">
+  <button type="submit">수정</button>
+</form>
+
+</body>

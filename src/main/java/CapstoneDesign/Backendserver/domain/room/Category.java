@@ -1,0 +1,6 @@
+package CapstoneDesign.Backendserver.domain.room;
+
+public enum Category {
+    OUTDORE,SPORTS,BOOK,CARREAR,LANGUAGE,FESTIVAL,MUSIC,
+    MAKING,DANCE,VOLUNTEER,VEHICLE,PHOTO,GAME,COOK,PET,SELF_DEVELOP
+}

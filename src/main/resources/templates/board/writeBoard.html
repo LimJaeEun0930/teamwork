@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성</title>
+</head>
+<body>
+<div>
+    <h2><span th:text="${user.getId()}"></span></h2>
+</div>
+
+<form action="/board/write" th:object="${board}" method="post">
+    <label>
+        <input type="text" name="boardTitle" th:field="*{boardTitle}" placeholder="제목">
+    </label>
+    <br>
+    <label>
+        <textarea name="boardContents" cols="30" rows="10"
+                  th:field="*{boardContents}"placeholder="내용"></textarea>
+    </label>
+    <button type="submit">게시글 저장</button>
+</form>
+
+</body>
+</html>

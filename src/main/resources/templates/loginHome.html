@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+
+<h1>This is home_page</h1>
+
+
+<button th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
+<button th:onclick="|location.href='@{/board/paging}'|">게시판목록</button>
+
+<form action="/logout" method="post">
+    <button type="submit">로그아웃</button>
+</form>
+
+</body>
+</html>
