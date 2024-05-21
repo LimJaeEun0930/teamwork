@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <div>
+        <button onclick="goHome()">Home</button>
+        <button onclick="goToBoard()">Board</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <button onclick="createRoom()">Create Room</button>
+        <div id="room-list">
+            <!-- 채팅방 목록이 여기에 추가됩니다. -->
+        </div>
+    </div>
+    <div class="chat-container">
+        <div id="chat-window" class="chat-window"></div>
+        <div class="message-input">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let socket;
+    let currentRoom = null;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        connectToServer();
+        loadRooms();
+    });
+
+    function connectToServer() {
+        socket = new WebSocket('ws://localhost:8080/ws');
+        socket.onopen = function() {
+            console.log('Connected to server');
+        };
+        socket.onmessage = function(event) {
+            displayMessage(event.data);
+        };
+        socket.onclose = function() {
+            console.log('Disconnected from server');
+        };
+    }
+
+    function connectToRoom(room) {
+        if (currentRoom) {
+            socket.send(JSON.stringify({type: 'leave', room: currentRoom}));
+        }
+        currentRoom = room;
+        socket.send(JSON.stringify({type: 'join', room: room}));
+        document.getElementById('chat-window').innerHTML = '';
+    }
+
+    function displayMessage(message) {
+        const chatWindow = document.getElementById('chat-window');
+        const messageElement = document.createElement('div');
+        const parsedMessage = JSON.parse(message);
+        messageElement.textContent = parsedMessage.sender + ": " + parsedMessage.message;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function createRoom() {
+        const roomName = prompt("Enter room name:");
+        if (roomName) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/chat/create", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    loadRooms();
+                }
+            };
+            xhr.send("roomName=" + roomName);
+        }
+    }
+
+    function loadRooms() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "/chat/rooms", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const rooms = JSON.parse(xhr.responseText);
+                const roomList = document.getElementById('room-list');
+                roomList.innerHTML = '';
+                rooms.forEach(room => {
+                    const roomButton = document.createElement('button');
+                    roomButton.textContent = room.name;
+                    roomButton.onclick = function() {
+                        connectToRoom(room.id);
+                    };
+                    roomList.appendChild(roomButton);
+                });
+            }
+        };
+        xhr.send();
+    }
+
+    document.getElementById('send-button').addEventListener('click', function() {
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value;
+        if (message && socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({type: 'message', room: currentRoom, sender: 'User', message: message}));
+            messageInput.value = '';
+        }
+    });
+
+    document.getElementById('message-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('send-button').click();
+        }
+    });
+
+    function goHome() {
+        window.location.href = '/home'; // 홈 페이지로 이동
+    }
+
+    function goToBoard() {
+        window.location.href = '/board'; // 게시판 페이지로 이동
+    }
+</script>
+
+</body>
+</html>
+
