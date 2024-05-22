@@ -1,7 +1,10 @@
 package CapstoneDesign.Backendserver.controller;
 
+import CapstoneDesign.Backendserver.domain.JobCategory;
 import CapstoneDesign.Backendserver.domain.dto.ChatRoom;
+import CapstoneDesign.Backendserver.domain.room.Room;
 import CapstoneDesign.Backendserver.repository.ChatRoomRepository;
+import CapstoneDesign.Backendserver.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,34 +21,44 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomRepository repository;
+    private final ChatService chatService;
+
+    @ModelAttribute("jobCategory")
+    public JobCategory[] JobCategories() {
+        return JobCategory.values();
+    }
 
     @GetMapping
     public String chatRoomList(Model model) {
-        model.addAttribute("list", repository.findAllRoom());
-        log.info("Show All ChatList : {}", repository.findAllRoom());
-        return "chat";
+        model.addAttribute("list", chatService.findAll());
+        log.info("Show All ChatList : {}", chatService.findAll());
+        return "chatting/chat";
     }
+    @GetMapping("/create")
+    public String createRoom_GET() {
 
+        return "chatting/createChatRoom";
+    }
     @PostMapping("/create")
-    public String createRoom(@RequestParam String roomName, RedirectAttributes rttr) {
-        ChatRoom chatRoom = repository.createChatRoom(roomName);
-        log.info("Create ChatRoom : {}", chatRoom);
-        rttr.addFlashAttribute("roomName", chatRoom);
+    public String createRoom(@RequestParam String roomName, @RequestParam JobCategory jobCategory, @RequestParam String description) {
+        Room new_room = new Room(roomName, jobCategory, description);
+        chatService.createRoom(new_room);
+
         return "redirect:/chat";
     }
 
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> getRooms() {
-        return repository.findAllRoom();
-    }
+//    @GetMapping("/rooms")
+//    @ResponseBody
+//    public List<ChatRoom> getRooms() {
+//        return repository.findAllRoom();
+//    }
 
-    @GetMapping("/joinroom")
-    public String joinRoom(@RequestParam String roomId, Model model) {
-        log.info("roomId : {}", roomId);
-        model.addAttribute("room", repository.findByRoomId(roomId));
-        return "chatroom";
-    }
+//    @GetMapping("/joinroom")
+//    public String joinRoom(@RequestParam String roomId, Model model) {
+//        log.info("roomId : {}", roomId);
+//        model.addAttribute("room", repository.findByRoomId(roomId));
+//        return "chatroom";
+//    }
 }
 //    private final ChatRoomRepository chatRoomRepository;
 //

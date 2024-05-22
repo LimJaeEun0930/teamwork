@@ -1,124 +1,199 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
 <head>
     <meta charset="UTF-8">
-    <title>registerPage</title>
+    <title>Register Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .field-error{
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container div {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            width: 100px;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .field-error {
             border-color: #dc3545;
             color: #dc3545;
+            margin-top: 5px;
+            font-size: 0.875em;
+        }
+
+        .btn-inline {
+            margin-left: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-inline:hover {
+            background-color: #0056b3;
+        }
+
+        .full-width {
+            display: block;
+            width: 100%;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <form action="/register" onsubmit="return valid()" th:action th:object="${user}" method="post">
+<div class="container">
+    <form action="/register" onsubmit="return valid()" th:action th:object="${user}" method="post">
+        <div>
+            <label for="id">회원ID</label>
+            <input type="text" id="id" th:field="*{id}">
+            <button type="button" class="btn-inline" onclick="sameCheck()">중복체크</button>
+        </div>
+        <div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" th:field="*{password}">
+            <div class="field-error" th:errors="*{password}">비밀번호를 입력해주세요</div>
+        </div>
+        <div>
+            <label for="email">이메일</label>
+            <input type="email" id="email" th:field="*{email}">
+            <button type="button" class="btn-inline" onclick="sendingAuthenticationMail()">인증</button>
+        </div>
+        <div id="verificationCodeContainer" style="display: none;">
+            <label for="verificationCode">인증번호</label>
+            <input type="text" id="verificationCode">
+            <button type="button" class="btn-inline" onclick="checkingAuthenticationMail()">확인</button>
+        </div>
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" th:field="*{name}">
+        </div>
+        <div>
+            <label for="birth">생년월일</label>
+            <input type="date" id="birth" th:field="*{birth}">
+        </div>
+        <div>
+            <label for="sex">성별</label>
+            <input type="text" id="sex" th:field="*{sex}">
+        </div>
+        <div>
+            <label for="mbti">MBTI</label>
+            <input type="text" id="mbti" th:field="*{mbti}">
+        </div>
+        <button type="submit" class="full-width">회원가입</button>
+    </form>
+</div>
 
-    <div>
-      <label for="id">회원ID</label>
-      <input type="text" id="id" th:field="*{id}">
-      <button type="button" onclick="sameCheck()">아이디 중복체크</button>
-    </div>
-      <div>
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" th:field="*{password}" >
-          <div class="field-error" th:errors="*{password}">비밀번호를 입력해주세요</div>
-<!--          공백일 수 없습니다 라고 뜬다.-->
-      </div>
-      <div>
-          <label for="email">이메일</label>
-          <input type="email" id="email" th:field="*{email}">
-          <button type="button" onclick="sendingAuthenticationMail()">이메일 인증번호 발송</button>
-      </div>
-
-      <div id="verificationCodeContainer" style="display: none;">
-        <label for="verificationCode">인증번호</label>
-        <input type="text" id="verificationCode">
-          <button type="button" onclick="checkingAuthenticationMail()">인증번호 확인</button>
-    </div>
-
-      <div>
-          <label for="name">이름</label>
-          <input type="text" id="name" th:field="*{name}">
-      </div>
-      <div>
-          <label for="birth">생년월일</label>
-          <input type="date" id="birth" th:field="*{birth}">
-      </div>
-      <div>
-          <label for="sex">성별</label>
-          <input type="text" id="sex" th:field="*{sex}">
-      </div>
-      <div>
-          <label for="mbti">MBTI</label>
-          <input type="text" id="mbti" th:field="*{mbti}">
-      </div>
-
-      <button type="submit">회원가입</button>
-  </form>
-</body>
 <script>
     let userIdCheck = false;
     let userMailCheck = false;
-
     let verificationNumber = 0;
+
     function valid() {
         if (userIdCheck && userMailCheck) {
             return true; //true일때 회원가입 버튼 동작
         } else {
+            alert("아이디와 이메일 인증을 완료해주세요.");
             return false;
         }
-
     }
+
     function sameCheck(){
         let userId = document.getElementById('id').value.trim(); // input에서 사용자가 입력한 ID가져오기
-        console.log("USERID: "+userId);
         if (!userId) {
-            return;//입력값이 공백인 경우 아무 작업도 수행하지 않음.
+            return; //입력값이 공백인 경우 아무 작업도 수행하지 않음.
         }
         $.ajax({
             type: "get",
             url: "/register/idDuplicateCheck?id=" + userId
         }).done((res) => {
             userIdCheck = true; //중복체크완료. 아이디가 중복되지 않음.
-
             alert("사용가능한 아이디입니다.");
         }).fail(()=>{
             alert("아이디 중복입니다.");
-             userIdCheck = false;
+            userIdCheck = false;
         });
     }
+
     function sendingAuthenticationMail() {
-    let email = document.getElementById('email').value;
-    $.ajax({
-        type: "get",
-        url: "/register/sendingAuthenticationMail?email=" + email
-    }).done((res)=>{
-        alert("이메일이 보내졌습니다. 확인해주세요");
-        verificationNumber = res;
-        document.getElementById('verificationCodeContainer').style.display = 'block'; // 'none' 대신 'block'으로 설정하여 보이게 함
-    }).fail();
-}
+        let email = document.getElementById('email').value;
+        $.ajax({
+            type: "get",
+            url: "/register/sendingAuthenticationMail?email=" + email
+        }).done((res)=>{
+            alert("이메일이 보내졌습니다. 확인해주세요");
+            verificationNumber = res;
+            document.getElementById('verificationCodeContainer').style.display = 'flex';
+        }).fail(()=>{
+            alert("이메일 전송에 실패했습니다.");
+        });
+    }
+
     function checkingAuthenticationMail(){
         let AuthenticationNumber = document.getElementById('verificationCode').value.trim();
-        if(AuthenticationNumber === verificationNumber){
+        if(AuthenticationNumber == verificationNumber){
             alert("인증되었습니다.");
             userMailCheck = true;
         }else{
             alert("인증번호를 다시 입력해주세요.");
         }
     }
-
-    //
-    // function emailAuthorization() {
-    //     let email = document.getElementById('email').value;
-    //     $.ajax({
-    //         type: "get",
-    //         url: "/register/emailAuthorization?email=" + email
-    //     }).done((res)=>{
-    //         alert("이메일이 보내졌습니다. 확인해주세요");
-    //     }).fail();
-    // }
 </script>
+</body>
 </html>

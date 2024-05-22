@@ -23,6 +23,7 @@ public class Board extends BoardTimeBaseEntity {
     private String boardTitle;
     @NotBlank
     private String boardContents;
+    @NotBlank JobCategory jobCategory;
 
     private int boardHits;
 

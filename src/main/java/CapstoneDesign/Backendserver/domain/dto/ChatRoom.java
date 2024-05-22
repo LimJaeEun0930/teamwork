@@ -27,12 +27,12 @@ public class ChatRoom {
         super();
     }
 
-    public static ChatRoom create(String name) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.name = name;
-        return chatRoom;
-    }
+//    //public static ChatRoom create(String name) {
+//        ChatRoom chatRoom = new ChatRoom();
+//        chatRoom.roomId = UUID.randomUUID().toString();
+//        chatRoom.name = name;
+//        return chatRoom;
+//    }
     /////
     private Set<WebSocketSession> sessions = new HashSet<>();
 

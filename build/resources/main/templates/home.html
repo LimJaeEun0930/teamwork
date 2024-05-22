@@ -2,14 +2,57 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>home</title>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
 <h1>This is home_page</h1>
 
-<button th:onclick="|location.href='@{/login}'|">로그인</button>
-<button th:onclick="|location.href='@{/register}'|">회원가입</button>
-<!--<button th:onclick="|location.href='@{/write}'|">글쓰기</button>-->
+<div class="button-container">
+    <button th:onclick="|location.href='@{/login}'|">로그인</button>
+    <button th:onclick="|location.href='@{/register}'|">회원가입</button>
+    <!--<button th:onclick="|location.href='@{/write}'|">글쓰기</button>-->
+</div>
+
 </body>
 </html>
