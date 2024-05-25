@@ -6,7 +6,7 @@ const eventDetails = document.getElementById("eventDetails");
 const eventStartInput = document.getElementById("eventStart");
 const eventEndInput = document.getElementById("eventEnd");
 const eventTextInput = document.getElementById("eventText");
-const eventInstitutionInput = document.getElementById("eventInstitution"); // 새로운 입력 필드
+const eventInstitutionInput = document.getElementById("eventInstitution");
 const eventColorInput = document.getElementById("eventColor");
 const saveEventButton = document.getElementById("saveEvent");
 const closeFormButton = document.getElementById("closeForm");
@@ -123,7 +123,13 @@ function saveEvent() {
       selectedEvent.institution = institution; // 기관 정보 업데이트
       selectedEvent.color = color;
     } else {
-      events.push({ start: startDate, end: endDate, text, institution, color });
+      events.push({
+        start: startDate,
+        end: endDate,
+        text,
+        institution,
+        color,
+      });
     }
     renderCalendar(currentMonth, currentYear);
     closeEventForm();
