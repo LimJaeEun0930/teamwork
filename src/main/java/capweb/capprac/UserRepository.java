@@ -3,9 +3,12 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public class UserRepository {
 
     @PersistenceContext

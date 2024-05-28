@@ -15,6 +15,20 @@ public class MessageService {
 
     // 만들기 - 새로운 Message 생성 및 저장
     public Message createMessage(String content, Date time, Mrp sender, MeetingRoom meetingRoom) {
+        // 필수값 체크
+        if (content == null || content.trim().isEmpty()) {
+            throw new IllegalArgumentException("Message content cannot be null or empty.");
+        }
+        if (time == null) {
+            throw new IllegalArgumentException("Message time cannot be null.");
+        }
+        if (sender == null) {
+            throw new IllegalArgumentException("Message sender cannot be null.");
+        }
+        if (meetingRoom == null) {
+            throw new IllegalArgumentException("Message meeting room cannot be null.");
+        }
+
         Message message = new Message();
         message.setMsgContent(content);
         message.setMsgTime(time);
@@ -23,6 +37,7 @@ public class MessageService {
         messageRepository.save(message);
         return message;
     }
+
 
     // 조회 - 모든 Message 찾기
     public List<Message> findAllMessages() {

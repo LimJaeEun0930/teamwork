@@ -24,11 +24,11 @@ public class Plan {
     private int planOpt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "planUsid", nullable = false)
+    @JoinColumn(name = "planUsid")
     private User planUsid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "planCpid", nullable = false)
+    @JoinColumn(name = "planCpid")
     private Company planCpid;
 
     // No need to define getter and setter methods separately due to the use of Lombok.

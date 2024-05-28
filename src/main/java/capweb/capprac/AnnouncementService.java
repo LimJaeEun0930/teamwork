@@ -13,7 +13,7 @@ public class AnnouncementService {
 
     // 만들기 - 새로운 Announcement 생성 및 저장
     public Announcement createAnnouncement(String anmName, Date anmStartDate, Date anmEndDate, String anmEmptype, int anmRecruitm, Company anmCpid) {
-        if (anmName == null || anmStartDate == null || anmEndDate == null || anmEmptype == null || anmCpid == null) {
+        if (anmName == null || anmName.trim().isEmpty() || anmStartDate == null || anmEndDate == null || anmEmptype == null || anmEmptype.trim().isEmpty() || anmRecruitm==0 || anmCpid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
         Announcement announcement = new Announcement();

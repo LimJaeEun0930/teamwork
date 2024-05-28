@@ -16,18 +16,44 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    // 회원가입
     public boolean registerCompany(String cpId, String cpPw, String cpName, String cpAddr,
                                    String cpCategory, String cpMtid, String cpMtname,
                                    Date cpJoindate, String cpJoinIP) {
-        // 중복 체크
+        // 필수값 체크
+        if (cpId == null || cpId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Company ID cannot be null or empty.");
+        }
+        if (cpPw == null || cpPw.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty.");
+        }
+        if (cpName == null || cpName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Company name cannot be null or empty.");
+        }
+        if (cpAddr == null || cpAddr.trim().isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty.");
+        }
+        if (cpCategory == null || cpCategory.trim().isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be null or empty.");
+        }
+        if (cpMtid == null || cpMtid.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mentor ID cannot be null or empty.");
+        }
+        if (cpMtname == null || cpMtname.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mentor name cannot be null or empty.");
+        }
+        if (cpJoindate == null) {
+            throw new IllegalArgumentException("Join date cannot be null.");
+        }
+        if (cpJoinIP == null || cpJoinIP.trim().isEmpty()) {
+            throw new IllegalArgumentException("Join IP cannot be null or empty.");
+        }
+    // 중복 체크
         if (companyRepository.findCompanyById(cpId) != null ||
                 companyRepository.findCompanyByName(cpName) != null ||
                 companyRepository.findCompanyByAddr(cpAddr) != null ||
                 companyRepository.findCompanyByMtid(cpMtid) != null) {
             return false; // 중복이 있으면 회원가입 실패
         }
-
         // Company 객체 생성
         Company company = new Company();
         company.setCpId(cpId);
@@ -88,28 +114,28 @@ public class CompanyService {
         existingCompany.setCpFixIP(updatedCompany.getCpFixIP());
         companyRepository.update(existingCompany);
         return true; // 수정 성공
-        }
-
-        // 주소에 특정 문자열을 포함하는 Company 찾기
-        public List<Company> findCompaniesByAddressContaining(String address){
-            return companyRepository.findCompaniesByAddressContaining(address);
-        }
-        // 카테고리로 Company 찾기
-        public List<Company> findCompaniesByCategory(String cpCategory) {
-            return companyRepository.findCompaniesByCategory(cpCategory);
-        }
-        // 모든 Company 찾기
-        public List<Company> findAllCompanies() {
-            return companyRepository.findAllCompanies();
-        }
-        // 회사들의 카테고리 리스트 반환
-        public List<String> findAllCompanyCategories() {
-            return companyRepository.findAllCompanies().stream()
-                    .map(Company::getCpCategory)
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
     }
 
-    // 추가적인 서비스 메소드들...
+    // 주소에 특정 문자열을 포함하는 Company 찾기
+    public List<Company> findCompaniesByAddressContaining(String address){
+        return companyRepository.findCompaniesByAddressContaining(address);
+    }
+    // 카테고리로 Company 찾기
+    public List<Company> findCompaniesByCategory(String cpCategory) {
+        return companyRepository.findCompaniesByCategory(cpCategory);
+    }
+    // 모든 Company 찾기
+    public List<Company> findAllCompanies() {
+        return companyRepository.findAllCompanies();
+    }
+    // 회사들의 카테고리 리스트 반환
+    public List<String> findAllCompanyCategories() {
+        return companyRepository.findAllCompanies().stream()
+                .map(Company::getCpCategory)
+                .distinct()
+                .collect(Collectors.toList());
+    }
 }
+
+
+

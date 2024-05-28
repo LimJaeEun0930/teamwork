@@ -14,12 +14,25 @@ public class MeetingRoomService {
         this.meetingRoomRepository = meetingRoomRepository;
     }
 
-    // 만들기 - 새로운 MeetingRoom 생성 및 저장
     public MeetingRoom createMeetingRoom(String mrMrid, String mrName, String mrCategory) {
+        // 필수값 체크
+        if (mrMrid == null || mrMrid.trim().isEmpty()) {
+            throw new IllegalArgumentException("Meeting room ID cannot be null or empty.");
+        }
+        if (mrName == null || mrName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Meeting room name cannot be null or empty.");
+        }
+        if (mrCategory == null || mrCategory.trim().isEmpty()) {
+            throw new IllegalArgumentException("Meeting room category cannot be null or empty.");
+        }
+
+        // 중복 체크
         if (meetingRoomRepository.findMeetingRoomByMrid(mrMrid) != null ||
                 meetingRoomRepository.findMeetingRoomByName(mrName) != null) {
-            throw new IllegalStateException("이미 존재하는 회의실 ID 또는 이름입니다.");
+            throw new IllegalStateException("A meeting room with the same ID or name already exists.");
         }
+
+        // 새로운 MeetingRoom 객체 생성 및 저장
         MeetingRoom meetingRoom = new MeetingRoom();
         meetingRoom.setMrMrid(mrMrid);
         meetingRoom.setMrName(mrName);
@@ -27,6 +40,7 @@ public class MeetingRoomService {
         meetingRoomRepository.save(meetingRoom);
         return meetingRoom;
     }
+
 
     // 삭제 - mrIndex로 MeetingRoom 삭제
     public boolean deleteMeetingRoom(int mrIndex) {

@@ -13,7 +13,7 @@ public class TourService {
 
     // 만들기 - 새로운 Tour 생성 및 저장
     public Tour createTour(Date tourDay, String tourName, int tourRecruitm, Company tourCpid) {
-        if (tourDay == null || tourName == null || tourCpid == null) {
+        if (tourDay == null || tourName == null || tourName.trim().isEmpty() || tourRecruitm==0 || tourCpid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
         Tour tour = new Tour();

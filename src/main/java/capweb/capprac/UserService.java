@@ -23,10 +23,23 @@ public class UserService {
             return false; // 사용자가 존재하지 않음
         }
     }
-
-    // 회원가입 - Register a new user with duplicate check
+    //회원가입
     @Transactional
     public void registerUser(String usId, String usPw, String usName, String usJoinIP) {
+        // 필수값 체크
+        if (usId == null || usId.trim().isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty.");
+        }
+        if (usPw == null || usPw.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty.");
+        }
+        if (usName == null || usName.trim().isEmpty()) {
+            throw new IllegalArgumentException("User name cannot be null or empty.");
+        }
+        if (usJoinIP == null || usJoinIP.trim().isEmpty()) {
+            throw new IllegalArgumentException("Join IP cannot be null or empty.");
+        }
+
         if (!isUserExists(usId)) {
             User newUser = new User();
             newUser.setUsId(usId);
@@ -40,6 +53,7 @@ public class UserService {
             throw new IllegalStateException("이미 존재하는 사용자 ID입니다.");
         }
     }
+
 
     // 사용자 정보 업데이트 - Update user information (except usIndex, usId, usJoindate, usJoinIP)
     @Transactional

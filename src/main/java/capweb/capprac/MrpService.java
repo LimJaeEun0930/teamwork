@@ -2,6 +2,7 @@ package capweb.capprac;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public class MrpService {
@@ -15,12 +16,16 @@ public class MrpService {
     // 만들기 - 새로운 Mrp 생성 및 저장
     public Mrp createMrp(User user, MeetingRoom meetingRoom, Company mentor) {
         Mrp mrp = new Mrp();
-        mrp.setMrpUsid(user);
-        mrp.setMrpMrid(meetingRoom);
-        mrp.setMrpMtid(mentor);
+
+        // User와 Company가 null이 아닐 때만 설정
+        Optional.ofNullable(user).ifPresent(mrp::setMrpUsid);
+        Optional.ofNullable(meetingRoom).ifPresent(mrp::setMrpMrid);
+        Optional.ofNullable(mentor).ifPresent(mrp::setMrpMtid);
+
         mrpRepository.save(mrp);
         return mrp;
     }
+
 
     // 삭제 - mrpIndex로 Mrp 삭제
     public boolean deleteMrp(int mrpIndex) {

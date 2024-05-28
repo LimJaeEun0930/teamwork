@@ -13,7 +13,7 @@ public class LogService {
 
     // 만들기 - 새로운 Log 생성 및 저장
     public Log createLog(Date logEnterdate, String logEnterIP, User logUsid, Company logCpid) {
-        if (logEnterdate == null || logEnterIP == null) {
+        if (logEnterdate == null || logEnterIP == null || logEnterIP.trim().isEmpty()) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
         Log log = new Log();
