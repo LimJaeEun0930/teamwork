@@ -1,19 +1,21 @@
 package capweb.capprac;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
+@Service
 public class MeetingRoomService {
 
-    private final MeetingRoomRepository meetingRoomRepository;
+   @Autowired
+   private MeetingRoomRepository meetingRoomRepository;
 
-    public MeetingRoomService(MeetingRoomRepository meetingRoomRepository) {
-        this.meetingRoomRepository = meetingRoomRepository;
-    }
-
+   @Transactional
     public MeetingRoom createMeetingRoom(String mrMrid, String mrName, String mrCategory) {
         // 필수값 체크
         if (mrMrid == null || mrMrid.trim().isEmpty()) {
@@ -27,8 +29,8 @@ public class MeetingRoomService {
         }
 
         // 중복 체크
-        if (meetingRoomRepository.findMeetingRoomByMrid(mrMrid) != null ||
-                meetingRoomRepository.findMeetingRoomByName(mrName) != null) {
+        if (!meetingRoomRepository.findMeetingRoomByMrid(mrMrid).isEmpty() ||
+                !meetingRoomRepository.findMeetingRoomByName(mrName).isEmpty()) {
             throw new IllegalStateException("A meeting room with the same ID or name already exists.");
         }
 
@@ -43,6 +45,7 @@ public class MeetingRoomService {
 
 
     // 삭제 - mrIndex로 MeetingRoom 삭제
+    @Transactional
     public boolean deleteMeetingRoom(int mrIndex) {
         MeetingRoom meetingRoom = meetingRoomRepository.findMeetingRoomByIndex(mrIndex);
         if (meetingRoom != null) {
@@ -53,14 +56,18 @@ public class MeetingRoomService {
     }
 
     // 수정 - mrName과 mrCategory만 수정 가능
+    @Transactional
     public boolean updateMeetingRoom(int mrIndex, String newMrName, String newMrCategory) {
+        if(mrIndex <= 0 || newMrName == null || newMrName.trim().isEmpty() || newMrCategory == null || newMrCategory.trim().isEmpty()) {
+            return false;
+        }
         MeetingRoom meetingRoom = meetingRoomRepository.findMeetingRoomByIndex(mrIndex);
         if (meetingRoom == null) {
             return false; // 회의실이 없으면 수정 실패
         }
         // 이름 중복 체크
-        MeetingRoom existingMeetingRoomWithName = meetingRoomRepository.findMeetingRoomByName(newMrName);
-        if (existingMeetingRoomWithName != null && existingMeetingRoomWithName.getMrIndex() != mrIndex) {
+        List<MeetingRoom> existingMeetingRoomWithName = meetingRoomRepository.findMeetingRoomByName(newMrName);
+        if (!existingMeetingRoomWithName.isEmpty() && existingMeetingRoomWithName.get(0).getMrIndex() != mrIndex) {
             return false; // 다른 회의실에서 이미 사용 중인 이름이면 수정 실패
         }
         // 수정 가능한 필드 업데이트

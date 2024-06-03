@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class UserRepository {
     private EntityManager entityManager;
 
     // Create - 새로운 User 저장
+    @Transactional
     public void save(User user) {
         entityManager.persist(user);
     }
@@ -31,11 +33,13 @@ public class UserRepository {
     }
 
     // Update - User 업데이트
+    @Transactional
     public void update(User user) {
         entityManager.merge(user);
     }
 
     // Delete - usIndex로 User 삭제
+    @Transactional
     public void deleteByIndex(int usIndex) {
         User user = findUserByIndex(usIndex);
         if (user != null) {
@@ -44,12 +48,14 @@ public class UserRepository {
     }
 
     // Read - usId로 User 찾기
-    public User findUserById(String usId) {
+    public List<User> findUserById(String usId) {
         TypedQuery<User> query = entityManager.createQuery(
                 "SELECT u FROM User u WHERE u.usId = :usId", User.class);
         query.setParameter("usId", usId);
-        return query.getSingleResult();
+        return query.getResultList(); // 결과 리스트 반환
     }
+
+
 
     // Read - usName으로 User 찾기
     public List<User> findUsersByName(String usName) {

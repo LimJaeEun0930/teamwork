@@ -1,30 +1,48 @@
 package capweb.capprac;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+@Service
 public class TourpService {
 
-    private final TourpRepository tourpRepository;
+   @Autowired
+   private UserRepository userRepository;
+   @Autowired
+   private  TourRepository tourRepository;
+    @Autowired
+    private TourpRepository tourpRepository;
 
-    public TourpService(TourpRepository tourpRepository) {
-        this.tourpRepository = tourpRepository;
-    }
 
     // 만들기 - 새로운 Tourp 생성 및 저장
+    @Transactional
     public Tourp createTourp(User tourpUsid, Tour tourpTourid) {
         if (tourpUsid == null || tourpTourid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
-        Tourp tourp = new Tourp();
-        tourp.setTourpUsid(tourpUsid);
-        tourp.setTourpTourid(tourpTourid);
-        tourpRepository.save(tourp);
-        return tourp;
+        List<Tourp>existtourps = tourpRepository.findTourpsByUserAndTour(tourpUsid,tourpTourid);
+        if(existtourps.isEmpty()) {
+            Tourp tourp = new Tourp();
+            tourp.setTourpUsid(tourpUsid);
+            tourp.setTourpTourid(tourpTourid);
+            tourpRepository.save(tourp);
+            return tourp;
+        }
+        else{
+            throw new IllegalStateException("사용자는 이미 해당 견학을 담았습니다.");
+        }
     }
-
     // 삭제 - tourpIndex로 Tourp 삭제
-    public void deleteTourp(int tourpIndex) {
-        tourpRepository.deleteByIndex(tourpIndex);
+    @Transactional
+    public boolean deleteTourp(int tourpIndex) {
+       Tourp deltourps = tourpRepository.findTourpByIndex(tourpIndex);
+       if(deltourps!=null) {
+           tourpRepository.deleteByIndex(tourpIndex);
+           return true;
+       }
+       return false;
     }
 
     // 조회 - 모든 Tourp 찾기

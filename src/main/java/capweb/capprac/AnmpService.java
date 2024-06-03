@@ -1,17 +1,24 @@
 package capweb.capprac;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
+@Service
 public class AnmpService {
 
-    private final AnmpRepository anmpRepository;
-
-    public AnmpService(AnmpRepository anmpRepository) {
-        this.anmpRepository = anmpRepository;
-    }
+    @Autowired
+    private AnmpRepository anmpRepository;
 
     // 만들기 - 새로운 Anmp 생성 및 저장
+    @Transactional
     public Anmp createAnmp(User anmpUsid, Announcement anmpAnmid) {
+        List<Anmp>existanmps = anmpRepository.findAnmpsByUserAndAnnouncement(anmpUsid,anmpAnmid);
+        if(!existanmps.isEmpty()){
+            throw new IllegalStateException("사용자는 이미 이 공지에 참여하고 있습니다.");
+        }
         if (anmpUsid == null || anmpAnmid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
@@ -48,8 +55,14 @@ public class AnmpService {
     }
 
     // 삭제 - anmpIndex로 Anmp 삭제
-    public void deleteAnmp(int anmpIndex) {
-        anmpRepository.deleteByIndex(anmpIndex);
+    @Transactional
+    public boolean deleteAnmp(int anmpIndex) {
+        Anmp danmp = anmpRepository.findAnmpByIndex(anmpIndex);
+        if(danmp!=null) {
+            anmpRepository.deleteByIndex(anmpIndex);
+            return true;
+        }
+        return false;
     }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.

@@ -3,15 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class PlanRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Plan 저장
+    @Transactional
     public void save(Plan plan) {
         entityManager.persist(plan);
     }
@@ -28,11 +32,13 @@ public class PlanRepository {
     }
 
     // Update - Plan 업데이트
+    @Transactional
     public void update(Plan plan) {
         entityManager.merge(plan);
     }
 
     // Delete - planIndex로 Plan 삭제
+    @Transactional
     public void deleteByIndex(int planIndex) {
         Plan plan = findPlanByIndex(planIndex);
         if (plan != null) {
@@ -77,6 +83,24 @@ public class PlanRepository {
         TypedQuery<Plan> query = entityManager.createQuery(
                 "SELECT p FROM Plan p WHERE p.planOpt = :planOpt", Plan.class);
         query.setParameter("planOpt", planOpt);
+        return query.getResultList();
+    }
+
+    // planId와 유저아이디로 Plan 찾기
+    public List<Plan> findPlansByDateAndUser(Date planId, User planUsid) {
+        TypedQuery<Plan> query = entityManager.createQuery(
+                "SELECT p FROM Plan p WHERE p.planId = :planId AND p.planUsid = :planUsid", Plan.class);
+        query.setParameter("planId", planId);
+        query.setParameter("planUsid", planUsid);
+        return query.getResultList();
+    }
+
+    // planId와 산업체아이디로 Plan 찾기
+    public List<Plan> findPlansByDateAndCompany(Date planId, Company planCpid) {
+        TypedQuery<Plan> query = entityManager.createQuery(
+                "SELECT p FROM Plan p WHERE p.planId = :planId AND p.planCpid = :planCpid", Plan.class);
+        query.setParameter("planId", planId);
+        query.setParameter("planCpid", planCpid);
         return query.getResultList();
     }
 

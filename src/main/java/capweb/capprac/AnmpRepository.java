@@ -3,14 +3,18 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+@Repository
 public class AnmpRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Anmp 저장
+    @Transactional
     public void save(Anmp anmp) {
         entityManager.persist(anmp);
     }
@@ -27,11 +31,13 @@ public class AnmpRepository {
     }
 
     // Update - Anmp 업데이트
+    @Transactional
     public void update(Anmp anmp) {
         entityManager.merge(anmp);
     }
 
     // Delete - anmpIndex로 Anmp 삭제
+    @Transactional
     public void deleteByIndex(int anmpIndex) {
         Anmp anmp = findAnmpByIndex(anmpIndex);
         if (anmp != null) {

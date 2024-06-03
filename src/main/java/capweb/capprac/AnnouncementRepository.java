@@ -3,16 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class AnnouncementRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Announcement 저장
+    @Transactional
     public void save(Announcement announcement) {
         entityManager.persist(announcement);
     }
@@ -29,11 +32,13 @@ public class AnnouncementRepository {
     }
 
     // Update - Announcement 업데이트
+    @Transactional
     public void update(Announcement announcement) {
         entityManager.merge(announcement);
     }
 
     // Delete - anmIndex로 Announcement 삭제
+    @Transactional
     public void deleteByIndex(int anmIndex) {
         Announcement announcement = findAnnouncementByIndex(anmIndex);
         if (announcement != null) {
@@ -78,6 +83,16 @@ public class AnnouncementRepository {
     public List<Announcement> findAnnouncementsByCompany(Company anmCpid) {
         TypedQuery<Announcement> query = entityManager.createQuery(
                 "SELECT a FROM Announcement a WHERE a.anmCpid = :anmCpid", Announcement.class);
+        query.setParameter("anmCpid", anmCpid);
+        return query.getResultList();
+    }
+
+    public List<Announcement> findAnnouncementsByDateRangeAndCompany(Date startDate, Date endDate,Company anmCpid) {
+        TypedQuery<Announcement> query = entityManager.createQuery(
+                "SELECT a FROM Announcement a WHERE a.anmStartDate >= :startDate AND a.anmEndDate <= :endDate AND a.anmCpid = :anmCpid",
+                Announcement.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         query.setParameter("anmCpid", anmCpid);
         return query.getResultList();
     }

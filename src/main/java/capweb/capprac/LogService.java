@@ -1,20 +1,25 @@
 package capweb.capprac;
 
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class LogService {
 
-    private final LogRepository logRepository;
-
-    public LogService(LogRepository logRepository) {
-        this.logRepository = logRepository;
-    }
+    @Autowired
+    private LogRepository logRepository;
 
     // 만들기 - 새로운 Log 생성 및 저장
+    @Transactional
     public Log createLog(Date logEnterdate, String logEnterIP, User logUsid, Company logCpid) {
         if (logEnterdate == null || logEnterIP == null || logEnterIP.trim().isEmpty()) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
+        }
+        if(logCpid == null&&logUsid == null) {
+            throw new IllegalArgumentException("사용자이거나 회사 중 선택");
         }
         Log log = new Log();
         log.setLogEnterdate(logEnterdate);

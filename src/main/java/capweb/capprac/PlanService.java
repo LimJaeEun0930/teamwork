@@ -1,17 +1,19 @@
 package capweb.capprac;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 
-@Transactional
+@Service
 public class PlanService {
 
-    private final PlanRepository planRepository;
+    @Autowired
+    private PlanRepository planRepository;
 
-    public PlanService(PlanRepository planRepository) {
-        this.planRepository = planRepository;
-    }
+    @Transactional
     public Plan createPlan(Date planId, String planName, User user, Company company) {
         // 필수값 체크
         if (planId == null) {
@@ -43,7 +45,7 @@ public class PlanService {
     // 수정 - Plan의 planId와 planName 수정
     public boolean updatePlan(int planIndex, Date newPlanId, String newPlanName) {
         Plan plan = planRepository.findPlanByIndex(planIndex);
-        if (plan != null) {
+        if (plan != null && newPlanId != null && (newPlanName != null&&!newPlanName.trim().isEmpty())) {
             plan.setPlanId(newPlanId);
             plan.setPlanName(newPlanName);
             planRepository.update(plan);
@@ -94,6 +96,16 @@ public class PlanService {
     // 조회 - planOpt로 Plan 찾기
     public List<Plan> getPlansByOption(int planOpt) {
         return planRepository.findPlansByOption(planOpt);
+    }
+
+    // planId와 유저아이디로 Plan 찾기
+    public List<Plan> getPlansByDateAndUser(Date planId, User planUsid) {
+        return planRepository.findPlansByDateAndUser(planId, planUsid);
+    }
+
+    // planId와 산업체아이디로 Plan 찾기
+    public List<Plan> getPlansByDateAndCompany(Date planId, Company planCpid) {
+        return planRepository.findPlansByDateAndCompany(planId, planCpid);
     }
 
     // 추가적인 서비스 메소드들...

@@ -3,16 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class CompanyRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Company 저장
+    @Transactional
     public void save(Company company) {
         entityManager.persist(company);
     }
@@ -29,11 +32,13 @@ public class CompanyRepository {
     }
 
     // Update - Company 업데이트
+    @Transactional
     public void update(Company company) {
         entityManager.merge(company);
     }
 
     // Delete - cpIndex로 Company 삭제
+    @Transactional
     public void deleteByIndex(int cpIndex) {
         Company company = findCompanyByIndex(cpIndex);
         if (company != null) {
@@ -42,27 +47,27 @@ public class CompanyRepository {
     }
 
     // Read - cpId로 단일 Company 찾기
-    public Company findCompanyById(String cpId) {
+    public List<Company> findCompanyById(String cpId) {
         TypedQuery<Company> query = entityManager.createQuery(
                 "SELECT c FROM Company c WHERE c.cpId = :cpId", Company.class);
         query.setParameter("cpId", cpId);
-        return query.getSingleResult();
+        return query.getResultList();
     }
 
     // Read - cpName으로 단일 Company 찾기
-    public Company findCompanyByName(String cpName) {
+    public List<Company> findCompanyByName(String cpName) {
         TypedQuery<Company> query = entityManager.createQuery(
                 "SELECT c FROM Company c WHERE c.cpName = :cpName", Company.class);
         query.setParameter("cpName", cpName);
-        return query.getSingleResult();
+        return query. getResultList();
     }
 
     // Read - cpAddr로 단일 Company 찾기
-    public Company findCompanyByAddr(String cpAddr) {
+    public List<Company> findCompanyByAddr(String cpAddr) {
         TypedQuery<Company> query = entityManager.createQuery(
                 "SELECT c FROM Company c WHERE c.cpAddr = :cpAddr", Company.class);
         query.setParameter("cpAddr", cpAddr);
-        return query.getSingleResult();
+        return query. getResultList();
     }
 
     // Read - cpCategory로 Company 찾기
@@ -74,11 +79,11 @@ public class CompanyRepository {
     }
 
     // Read - cpMtid로 단일 Company 찾기
-    public Company findCompanyByMtid(String cpMtid) {
+    public List<Company> findCompanyByMtid(String cpMtid) {
         TypedQuery<Company> query = entityManager.createQuery(
                 "SELECT c FROM Company c WHERE c.cpMtid = :cpMtid", Company.class);
         query.setParameter("cpMtid", cpMtid);
-        return query.getSingleResult();
+        return query. getResultList();
     }
 
     // Read - cpMtname으로 Company 찾기

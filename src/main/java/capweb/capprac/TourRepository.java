@@ -3,15 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class TourRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Tour 저장
+    @Transactional
     public void save(Tour tour) {
         entityManager.persist(tour);
     }
@@ -28,11 +32,13 @@ public class TourRepository {
     }
 
     // Update - Tour 업데이트
+    @Transactional
     public void update(Tour tour) {
         entityManager.merge(tour);
     }
 
     // Delete - tourIndex로 Tour 삭제
+    @Transactional
     public void deleteByIndex(int tourIndex) {
         Tour tour = findTourByIndex(tourIndex);
         if (tour != null) {

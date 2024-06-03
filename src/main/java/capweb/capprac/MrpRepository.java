@@ -3,14 +3,18 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+@Repository
 public class MrpRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Mrp 저장
+    @Transactional
     public void save(Mrp mrp) {
         entityManager.persist(mrp);
     }
@@ -21,11 +25,13 @@ public class MrpRepository {
     }
 
     // Update - Mrp 업데이트
+    @Transactional
     public void update(Mrp mrp) {
         entityManager.merge(mrp);
     }
 
     // Delete - mrpIndex로 Mrp 삭제
+    @Transactional
     public void deleteByIndex(int mrpIndex) {
         Mrp mrp = findByIndex(mrpIndex);
         if (mrp != null) {

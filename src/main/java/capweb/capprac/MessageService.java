@@ -1,19 +1,20 @@
 package capweb.capprac;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 
-@Transactional
+@Service
 public class MessageService {
 
-    private final MessageRepository messageRepository;
-
-    public MessageService(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
+    @Autowired
+    private MessageRepository messageRepository;
 
     // 만들기 - 새로운 Message 생성 및 저장
+    @Transactional
     public Message createMessage(String content, Date time, Mrp sender, MeetingRoom meetingRoom) {
         // 필수값 체크
         if (content == null || content.trim().isEmpty()) {
@@ -38,7 +39,9 @@ public class MessageService {
         return message;
     }
 
-
+    public Message findMessageByIndex(int msgIndex) {
+        return messageRepository.findMessageByIndex(msgIndex);
+    }
     // 조회 - 모든 Message 찾기
     public List<Message> findAllMessages() {
         return messageRepository.findAllMessages();
@@ -78,6 +81,10 @@ public class MessageService {
         return messageRepository.findMessagesByMeetingRoomAndDateRange(meetingRoom, startDate, endDate);
     }
 
+    // 조회 - 특정 모임방과 내용으로 Message 찾기
+    public List<Message> findMessagesByMeetingRoomAndContent(MeetingRoom meetingRoom, String content) {
+        return messageRepository.findMessagesByMeetingRoomAndContent(meetingRoom, content);
+    }
 
     // 추가적인 서비스 메소드들...
 }

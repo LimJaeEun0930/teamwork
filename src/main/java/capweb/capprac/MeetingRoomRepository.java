@@ -3,14 +3,18 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+@Repository
 public class MeetingRoomRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 MeetingRoom 저장
+    @Transactional
     public void save(MeetingRoom meetingRoom) {
         entityManager.persist(meetingRoom);
     }
@@ -27,11 +31,13 @@ public class MeetingRoomRepository {
     }
 
     // Update - MeetingRoom 업데이트
+    @Transactional
     public void update(MeetingRoom meetingRoom) {
         entityManager.merge(meetingRoom);
     }
 
     // Delete - mrIndex로 MeetingRoom 삭제
+    @Transactional
     public void deleteByIndex(int mrIndex) {
         MeetingRoom meetingRoom = findMeetingRoomByIndex(mrIndex);
         if (meetingRoom != null) {
@@ -40,19 +46,19 @@ public class MeetingRoomRepository {
     }
 
     // Read - mrMrid로 MeetingRoom 찾기
-    public MeetingRoom findMeetingRoomByMrid(String mrMrid) {
+    public List<MeetingRoom> findMeetingRoomByMrid(String mrMrid) {
         TypedQuery<MeetingRoom> query = entityManager.createQuery(
                 "SELECT m FROM MeetingRoom m WHERE m.mrMrid = :mrMrid", MeetingRoom.class);
         query.setParameter("mrMrid", mrMrid);
-        return query.getSingleResult();
+        return query.getResultList();
     }
 
     // Read - mrName으로 MeetingRoom 찾기
-    public MeetingRoom findMeetingRoomByName(String mrName) {
+    public List<MeetingRoom> findMeetingRoomByName(String mrName) {
         TypedQuery<MeetingRoom> query = entityManager.createQuery(
                 "SELECT m FROM MeetingRoom m WHERE m.mrName = :mrName", MeetingRoom.class);
         query.setParameter("mrName", mrName);
-        return query.getSingleResult(); // 단일 객체 반환
+        return query.getResultList(); // 단일 객체 반환
     }
 
     // Read - mrCategory로 MeetingRoom 찾기

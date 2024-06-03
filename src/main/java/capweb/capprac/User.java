@@ -34,5 +34,8 @@ public class User {
     @Column(nullable = false, length = 60)
     private String usJoinIP;
 
+    public void printfield(){
+        System.out.println(this.usId+this.usPw+this.usName+this.usJoindate+this.usJoinIP);
+    }
     // Lombok will generate the getters and setters
 }

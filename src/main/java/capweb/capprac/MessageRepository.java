@@ -3,15 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class MessageRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Message 저장
+    @Transactional
     public void save(Message message) {
         entityManager.persist(message);
     }
@@ -28,11 +32,13 @@ public class MessageRepository {
     }
 
     // Update - Message 업데이트
+    @Transactional
     public void update(Message message) {
         entityManager.merge(message);
     }
 
     // Delete - msgIndex로 Message 삭제
+    @Transactional
     public void deleteByIndex(int msgIndex) {
         Message message = findMessageByIndex(msgIndex);
         if (message != null) {
@@ -98,6 +104,15 @@ public class MessageRepository {
         return query.getResultList();
     }
 
+
+    // Read - msgMrid와 msgContent로 Message 찾기
+    public List<Message> findMessagesByMeetingRoomAndContent(MeetingRoom msgMrid, String msgContent) {
+        TypedQuery<Message> query = entityManager.createQuery(
+                "SELECT m FROM Message m WHERE m.msgMrid = :msgMrid AND m.msgContent LIKE :msgContent", Message.class);
+        query.setParameter("msgMrid", msgMrid);
+        query.setParameter("msgContent", "%" + msgContent + "%");
+        return query.getResultList();
+    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

@@ -3,15 +3,19 @@ package capweb.capprac;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class LogRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     // Create - 새로운 Log 저장
+    @Transactional
     public void save(Log log) {
         entityManager.persist(log);
     }
@@ -28,11 +32,13 @@ public class LogRepository {
     }
 
     // Update - Log 업데이트
+    @Transactional
     public void update(Log log) {
         entityManager.merge(log);
     }
 
     // Delete - logIndex로 Log 삭제
+    @Transactional
     public void deleteByIndex(int logIndex) {
         Log log = findLogByIndex(logIndex);
         if (log != null) {

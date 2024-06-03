@@ -1,51 +1,75 @@
 package capweb.capprac;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class AnnouncementService {
 
-    private final AnnouncementRepository announcementRepository;
-
-    public AnnouncementService(AnnouncementRepository announcementRepository) {
-        this.announcementRepository = announcementRepository;
-    }
+    @Autowired
+    private AnnouncementRepository announcementRepository;
 
     // 만들기 - 새로운 Announcement 생성 및 저장
+    @Transactional
     public Announcement createAnnouncement(String anmName, Date anmStartDate, Date anmEndDate, String anmEmptype, int anmRecruitm, Company anmCpid) {
-        if (anmName == null || anmName.trim().isEmpty() || anmStartDate == null || anmEndDate == null || anmEmptype == null || anmEmptype.trim().isEmpty() || anmRecruitm==0 || anmCpid == null) {
+        if (anmName == null || anmName.trim().isEmpty() || anmStartDate == null || anmEndDate == null || anmEmptype == null || anmEmptype.trim().isEmpty() || anmRecruitm == 0 || anmCpid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
-        Announcement announcement = new Announcement();
-        announcement.setAnmName(anmName);
-        announcement.setAnmStartDate(anmStartDate);
-        announcement.setAnmEndDate(anmEndDate);
-        announcement.setAnmEmptype(anmEmptype);
-        announcement.setAnmRecruitm(anmRecruitm);
-        announcement.setAnmCpid(anmCpid);
-        announcementRepository.save(announcement);
-        return announcement;
-    }
-
-    // 삭제 - anmIndex로 Announcement 삭제
-    public void deleteAnnouncement(int anmIndex) {
-        announcementRepository.deleteByIndex(anmIndex);
-    }
-
-    // 수정 - Announcement 업데이트 (anmIndex와 anmCpid는 수정 불가)
-    public void updateAnnouncement(int anmIndex, String anmName, Date anmStartDate, Date anmEndDate, String anmEmptype, int anmRecruitm) {
-        Announcement announcement = announcementRepository.findAnnouncementByIndex(anmIndex);
-        if (announcement != null) {
+        List<Announcement> existanms = announcementRepository.findAnnouncementsByDateRangeAndCompany(anmStartDate, anmEndDate, anmCpid);
+        if (existanms.isEmpty()) {
+            Announcement announcement = new Announcement();
             announcement.setAnmName(anmName);
             announcement.setAnmStartDate(anmStartDate);
             announcement.setAnmEndDate(anmEndDate);
             announcement.setAnmEmptype(anmEmptype);
             announcement.setAnmRecruitm(anmRecruitm);
-            // anmCpid는 수정하지 않음
-            announcementRepository.update(announcement);
+            announcement.setAnmCpid(anmCpid);
+            announcementRepository.save(announcement);
+            return announcement;
+        }
+        else {
+            // 이미 존재하는 공고가 있을 경우 처리 로직을 여기에 추가하세요.
+            // 예를 들어, 사용자에게 알림을 보내거나, 다른 행동을 취할 수 있습니다.
+            throw new IllegalStateException("해당 기간에 이미 공고가 존재합니다.");
         }
     }
-
+    // 삭제 - anmIndex로 Announcement 삭제
+    @Transactional
+    public boolean deleteAnnouncement(int anmIndex) {
+        Announcement delanms = announcementRepository.findAnnouncementByIndex(anmIndex);
+        if(delanms!=null) {
+            announcementRepository.deleteByIndex(anmIndex);
+            return true;
+        }
+        return false;
+    }
+    // 수정 - Announcement 업데이트 (anmIndex와 anmCpid는 수정 불가)
+    @Transactional
+    public boolean updateAnnouncement(int anmIndex, String anmName, Date anmStartDate, Date anmEndDate, String anmEmptype, int anmRecruitm,Company anmCpid) {
+        if (anmName == null || anmName.trim().isEmpty() || anmStartDate == null || anmEndDate == null || anmEmptype == null || anmRecruitm == 0 || anmCpid == null) {
+            return false;
+            //throw new IllegalArgumentException("필수 필드가 비어있습니다.");
+        }
+        List<Announcement> existanms = announcementRepository.findAnnouncementsByDateRangeAndCompany(anmStartDate, anmEndDate, anmCpid);
+        if (existanms.isEmpty()) {
+            Announcement announcement = announcementRepository.findAnnouncementByIndex(anmIndex);
+            if (announcement != null) {
+                announcement.setAnmName(anmName);
+                announcement.setAnmStartDate(anmStartDate);
+                announcement.setAnmEndDate(anmEndDate);
+                announcement.setAnmEmptype(anmEmptype);
+                announcement.setAnmRecruitm(anmRecruitm);
+                // anmCpid는 수정하지 않음
+                announcementRepository.update(announcement);
+                return true;
+            }
+            return false;
+        }
+        return  false;
+    }
     // 조회 - 모든 Announcement 찾기
     public List<Announcement> getAllAnnouncements() {
         return announcementRepository.findAllAnnouncements();
