@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 캘린더</title>
+    <link rel="stylesheet" href="my_calendar.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">내 캘린더</div>
+      <nav>
+        <ul>
+          <li><a href="#home">홈</a></li>
+          <li><a href="#calendar">캘린더</a></li>
+          <li><a href="#event-management">이벤트 관리</a></li>
+          <li><a href="#settings">설정</a></li>
+          <li><a href="#help">도움말</a></li>
+          <li><a href="#my-account">내 정보</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="calendar-selection">
+        <h2>캘린더 선택</h2>
+        <label for="calendar1">캘린더:</label>
+        <select id="calendar1">
+          <option value="myCalendar">내 캘린더</option>
+          <option value="interestCalendar">관심 캘린더</option>
+        </select>
+        <button id="viewCalendars">보기</button>
+      </section>
+
+      <section id="calendar-view">
+        <div class="calendar">
+          <div class="header">
+            <button id="prev">&lt;</button>
+            <h2 id="monthYear">2024.05</h2>
+            <button id="next">&gt;</button>
+          </div>
+          <div class="weekdays">
+            <div>일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div>토</div>
+          </div>
+          <div class="days" id="days">
+            <!-- JavaScript에 의해 날짜가 생성될 예정 -->
+          </div>
+        </div>
+      </section>
+
+      <section class="event-form" id="eventForm">
+        <h3>일정 추가</h3>
+        <label for="eventStart">시작 날짜: </label>
+        <input type="date" id="eventStart" />
+        <label for="eventEnd">종료 날짜: </label>
+        <input type="date" id="eventEnd" />
+        <label for="eventText">일정:</label>
+        <input type="text" id="eventText" />
+        <label for="eventColor">색상:</label>
+        <input type="color" id="eventColor" value="#ff0000" />
+        <button id="saveEvent">저장</button>
+        <button id="closeForm">닫기</button>
+      </section>
+
+      <section class="event-details" id="eventDetails">
+        <h3>일정 세부사항</h3>
+        <p id="eventInfo"></p>
+        <button id="editEvent">수정</button>
+        <button id="deleteEvent">삭제</button>
+        <button id="closeDetails">닫기</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2024 내 캘린더. 모든 권리 보유.</p>
+      <p>연락처: info@mycalendar.com</p>
+    </footer>
+
+    <script src="my_calendar.js"></script>
+  </body>
+</html>
