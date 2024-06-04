@@ -1,0 +1,273 @@
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "APP_USER")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int usIndex;
+
+    @Column(nullable = false, unique = true, length = 20)
+    private String usId;
+
+    @Column(nullable = false, length = 20)
+    private String usPw;
+
+    @Column(nullable = false, length = 20)
+    private String usName;
+
+    private Date usFixdate;
+
+    @Column(length = 60)
+    private String usFixIP;
+
+    @Column(nullable = false)
+    private Date usJoindate;
+
+    @Column(nullable = false, length = 60)
+    private String usJoinIP;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "MEETINGROOM")
+public class MeetingRoom {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int mrIndex;
+
+    @Column(nullable = false, unique = true, length = 20)
+    private String mrMrid;
+
+    @Column(nullable = false, length = 60)
+    private String mrName;
+
+    @Column(nullable = false, length = 60)
+    private String mrCategory;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "COMPANY")
+public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cpIndex;
+
+    @Column(nullable = false, unique = true, length = 20)
+    private String cpId;
+
+    @Column(nullable = false, length = 20)
+    private String cpPw;
+
+    @Column(nullable = false, unique = true, length = 60)
+    private String cpName;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String cpAddr;
+
+    @Column(nullable = false, length = 60)
+    private String cpCategory;
+
+    @Column(nullable = false, unique = true, length = 20)
+    private String cpMtid;
+
+    @Column(nullable = false, length = 20)
+    private String cpMtname;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "LOG")
+public class Log {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int logIndex;
+
+    @Column(nullable = false)
+    private Date logEnterdate;
+
+    @Column(nullable = false, length = 60)
+    private String logEnterIP;
+
+    @ManyToOne
+    @JoinColumn(name = "logUsid")
+    private User logUsid;
+
+    @ManyToOne
+    @JoinColumn(name = "logCpid")
+    private Company logCpid;
+
+    @Column(nullable = false)
+    private int logOpt;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "MRP")
+public class Mrp {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int mrpIndex;
+
+    @ManyToOne
+    @JoinColumn(name = "mrpUsid", nullable = false)
+    private User mrpUsid;
+
+    @ManyToOne
+    @JoinColumn(name = "mrpMrid", nullable = false)
+    private MeetingRoom mrpMrid;
+
+    @ManyToOne
+    @JoinColumn(name = "mrpMtid")
+    private Company mrpMtid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "MESSAGE")
+public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int msgIndex;
+
+    @Column(nullable = false)
+    private String msgContent;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date msgTime;
+
+    @ManyToOne
+    @JoinColumn(name = "msgSenderusid", nullable = false)
+    private Mrp msgSenderusid;
+
+    @ManyToOne
+    @JoinColumn(name = "msgMrid", nullable = false)
+    private MeetingRoom msgMrid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "ANNOUNCEMENT")
+public class Announcement {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int anmIndex;
+
+    @Column(nullable = false, length = 60)
+    private String anmName;
+
+    @Column(nullable = false, length = 100)
+    private String anmPeriod;
+
+    @Column(nullable = false, length = 60)
+    private String anmEmptype;
+
+    @Column(nullable = false)
+    private int anmRecruitm;
+
+    @ManyToOne
+    @JoinColumn(name = "anmCpid", nullable = false)
+    private Company anmCpid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "ANMP")
+public class Anmp {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int anmpIndex;
+
+    @ManyToOne
+    @JoinColumn(name = "anmpUsid", nullable = false)
+    private User anmpUsid;
+
+    @ManyToOne
+    @JoinColumn(name = "anmpAnmid", nullable = false)
+    private Announcement anmpAnmid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "PLAN")
+public class Plan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int planIndex;
+
+    @Column(nullable = false)
+    private Date planId;
+
+    @Column(nullable = false, length = 60)
+    private String planName;
+
+    @Column(nullable = false)
+    private int planOpt;
+
+    @ManyToOne
+    @JoinColumn(name = "planUsid")
+    private User planUsid;
+
+    @ManyToOne
+    @JoinColumn(name = "planCpid")
+    private Company planCpid;
+
+    @ManyToOne
+    @JoinColumn(name = "planAnmid")
+    private Announcement planAnmid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "TOUR")
+public class Tour {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int tourIndex;
+
+    @Column(nullable = false)
+    private Date tourDay;
+
+    @Column(nullable = false, length = 60)
+    private String tourName;
+
+    @Column(nullable = false)
+    private int tourRecruitm;
+
+    @ManyToOne
+    @JoinColumn(name = "tourCpid", nullable = false)
+    private Company tourCpid;
+
+    // getters and setters
+}
+
+@Entity
+@Table(name = "TOURP")
+public class Tourp {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int tourpIndex;
+
+    @ManyToOne
+ @JoinColumn(name = "tourp_usid", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "tourp_tourid", nullable = false)
+    private Tour tour;
+
+    // Getter and Setter methods
+}

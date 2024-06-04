@@ -1,0 +1,106 @@
+CREATE TABLE USER (
+  us_index INT NOT NULL AUTO_INCREMENT,
+  us_id VARCHAR(20) NOT NULL UNIQUE,
+  us_pw VARCHAR(20) NOT NULL,
+  us_name VARCHAR(20) NOT NULL,
+  us_fixdate DATETIME,
+  us_fixIP VARCHAR(60),
+  us_joindate DATETIME NOT NULL,
+  us_joinIP VARCHAR(60) NOT NULL,
+  PRIMARY KEY (us_index)
+);
+CREATE TABLE MEETINGROOM (
+  mr_index INT NOT NULL AUTO_INCREMENT,
+  mr_mrid VARCHAR(20) NOT NULL UNIQUE,
+  mr_name VARCHAR(60) NOT NULL,
+  mr_category VARCHAR(60) NOT NULL,
+  PRIMARY KEY (mr_index)
+);
+CREATE TABLE COMPANY (
+  cp_index INT NOT NULL AUTO_INCREMENT,
+  cp_id VARCHAR(20) NOT NULL UNIQUE,
+  cp_pw VARCHAR(20) NOT NULL,
+  cp_name VARCHAR(60) NOT NULL UNIQUE,
+  cp_addr VARCHAR(100) NOT NULL UNIQUE,
+  cp_category VARCHAR(60) NOT NULL,
+  cp_mtid VARCHAR(20) NOT NULL UNIQUE,
+  cp_mtname VARCHAR(20) NOT NULL,
+  PRIMARY KEY (cp_index)
+);
+CREATE TABLE LOG (
+  log_index INT NOT NULL AUTO_INCREMENT,
+  log_enterdate DATETIME NOT NULL,
+  log_enterIP VARCHAR(60) NOT NULL,
+  log_usid VARCHAR(20),
+  log_cpid VARCHAR(20),
+  log_opt INT NOT NULL,
+  PRIMARY KEY (log_index),
+  FOREIGN KEY (log_usid) REFERENCES USER(us_id),
+  FOREIGN KEY (log_cpid) REFERENCES COMPANY(cp_id)
+);
+CREATE TABLE MRP (
+  mrp_index INT NOT NULL AUTO_INCREMENT,
+  mrp_usid VARCHAR(20) NOT NULL,
+  mrp_mrid VARCHAR(20) NOT NULL,
+  mrp_mtid VARCHAR(20),
+  PRIMARY KEY (mrp_index),
+  FOREIGN KEY (mrp_usid) REFERENCES USER(us_id),
+  FOREIGN KEY (mrp_mrid) REFERENCES MEETINGROOM(mr_mrid),
+  FOREIGN KEY (mrp_mtid) REFERENCES COMPANY(cp_mtid)
+);
+CREATE TABLE MESSAGE (
+  msg_index INT NOT NULL AUTO_INCREMENT,
+  msg_content TEXT NOT NULL,
+  msg_time DATETIME NOT NULL DEFAULT NOW(),
+  msg_senderusid VARCHAR(20) NOT NULL,
+  msg_mrid VARCHAR(20) NOT NULL,
+  PRIMARY KEY (msg_index),
+  FOREIGN KEY (msg_senderusid) REFERENCES MRP(mrp_usid),
+  FOREIGN KEY (msg_mrid) REFERENCES MEETINGROOM(mr_mrid)
+);
+CREATE TABLE ANNOUNCEMENT (
+  anm_index INT NOT NULL AUTO_INCREMENT,
+  anm_name VARCHAR(60) NOT NULL,
+  anm_period VARCHAR(100) NOT NULL,
+  anm_emptype VARCHAR(60) NOT NULL,
+  anm_recruitm INT NOT NULL,
+  anm_cpid VARCHAR(20) NOT NULL,
+  PRIMARY KEY (anm_index),
+  FOREIGN KEY (anm_cpid) REFERENCES COMPANY(cp_id)
+);
+CREATE TABLE ANMP (
+  anmp_index INT NOT NULL AUTO_INCREMENT,
+  anmp_usid VARCHAR(20) NOT NULL,
+  anmp_anmid INT NOT NULL,
+  PRIMARY KEY (anmp_index),
+  FOREIGN KEY (anmp_usid) REFERENCES USER(us_id),
+  FOREIGN KEY (anmp_anmid) REFERENCES ANNOUNCEMENT(anm_index)
+);
+CREATE TABLE PLAN (
+  plan_index INT NOT NULL AUTO_INCREMENT,
+  plan_id DATETIME NOT NULL,
+  plan_name VARCHAR(60) NOT NULL,
+  plan_opt INT NOT NULL,
+  plan_usid VARCHAR(20),
+  plan_cpid VARCHAR(20),
+  PRIMARY KEY (plan_index),
+  FOREIGN KEY (plan_usid) REFERENCES USER(us_id),
+  FOREIGN KEY (plan_cpid) REFERENCES COMPANY(cp_id)
+);
+CREATE TABLE TOUR (
+  tour_index INT NOT NULL AUTO_INCREMENT,
+  tour_day DATE NOT NULL,
+  tour_name VARCHAR(60) NOT NULL,
+  tour_recruitm INT NOT NULL,
+  tour_cpid VARCHAR(20) NOT NULL,
+  PRIMARY KEY (tour_index),
+  FOREIGN KEY (tour_cpid) REFERENCES COMPANY(cp_id)
+);
+CREATE TABLE TOURP (
+  tourp_index INT NOT NULL AUTO_INCREMENT,
+  tourp_usid VARCHAR(20) NOT NULL,
+  tourp_tourid INT NOT NULL,
+  PRIMARY KEY (tourp_index),
+  FOREIGN KEY (tourp_usid) REFERENCES USER(us_id),
+  FOREIGN KEY (tourp_tourid) REFERENCES TOUR(tour_index)
+);
