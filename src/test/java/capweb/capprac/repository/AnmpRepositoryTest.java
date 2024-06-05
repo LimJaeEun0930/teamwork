@@ -139,5 +139,17 @@ public class AnmpRepositoryTest {
         //assertTrue(found.stream().allMatch(a -> a.getAnmpUsid().equals(user) && a.getAnmpAnmid().equals(announcement)));
     }
 
+    @Test
+    public void testFindAnmpsByUserAndDateRange() {
+        // 테스트 실행
+        Date startDate = date; // 적절한 날짜 설정
+        Date endDate = date; // 적절한 날짜 설정
+        List<Anmp> results = anmpRepository.findAnmpsByUserAndDateRange("usid", startDate, endDate);
+
+        // 검증
+        assertFalse(results.isEmpty());
+        //assert(results.contains(anmp)); // 결과가 anmp 객체를 포함하는지 확인
+    }
+
     // 여기에 추가적인 메소드들에 대한 테스트를 구현할 수 있습니다.
 }

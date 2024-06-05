@@ -148,5 +148,29 @@ public class AnmpServiceTest {
         assertNull(delanmp);
     }
 
+    @Test
+    public void testGetUserAnnouncements_ValidUser() {
+        // 테스트 실행
+        Date startDate = date; // 적절한 날짜 설정
+        Date endDate = date; // 적절한 날짜 설정
+        List<Anmp> results = anmpService.getUserAnnouncements("usid", startDate, endDate);
+
+        // 검증
+        assertFalse(results.isEmpty());
+        //assert(results.contains(anmp)); // 결과가 anmp 객체를 포함하는지 확인
+    }
+    @Test
+    public void testGetUserAnnouncements_InValidUser() {
+        // 테스트 실행
+        Date startDate = date; // 적절한 날짜 설정
+        Date endDate = date; // 적절한 날짜 설정
+        List<Anmp> results = anmpService.getUserAnnouncements("nonuserid", startDate, endDate);
+
+        // 검증
+        assertTrue(results.isEmpty());
+        //assert(results.contains(anmp)); // 결과가 anmp 객체를 포함하는지 확인
+    }
+
+
     // 여기에 추가적인 서비스 메소드들에 대한 테스트를 구현할 수 있습니다.
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public class AnmpRepository {
@@ -51,7 +52,6 @@ public class AnmpRepository {
             entityManager.remove(anmp);
         }
     }
-
     // Read - anmpUsid로 Anmp 찾기
     public List<Anmp> findAnmpsByUser(User anmpUsid) {
         TypedQuery<Anmp> query = entityManager.createQuery(
@@ -74,6 +74,15 @@ public class AnmpRepository {
                 "SELECT a FROM Anmp a WHERE a.anmpUsid = :anmpUsid AND a.anmpAnmid = :anmpAnmid", Anmp.class);
         query.setParameter("anmpUsid", anmpUsid);
         query.setParameter("anmpAnmid", anmpAnmid);
+        return query.getResultList();
+    }
+    //Read - 사용자아이디와 시작날짜와 종료날짜를 입력받아 참여한 공지 보기
+    public List<Anmp> findAnmpsByUserAndDateRange(String userId, Date startDate, Date endDate) {
+        String jpql = "SELECT a FROM Anmp a WHERE a.anmpUsid.usId = :userId AND a.anmpAnmid.anmStartDate >= :startDate AND a.anmpAnmid.anmEndDate <= :endDate";
+        TypedQuery<Anmp> query = entityManager.createQuery(jpql, Anmp.class);
+        query.setParameter("userId", userId);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         return query.getResultList();
     }
 

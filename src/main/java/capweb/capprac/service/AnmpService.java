@@ -4,15 +4,19 @@ import capweb.capprac.entity.Anmp;
 import capweb.capprac.entity.Announcement;
 import capweb.capprac.entity.User;
 import capweb.capprac.repository.AnmpRepository;
+import capweb.capprac.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class AnmpService {
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private AnmpRepository anmpRepository;
 
@@ -33,6 +37,7 @@ public class AnmpService {
         anmpRepository.save(anmp);
         return anmp;
     }
+
 
     // 조회 - 모든 Anmp 찾기
     public List<Anmp> getAllAnmps() {
@@ -68,6 +73,18 @@ public class AnmpService {
             return true;
         }
         return false;
+    }
+
+    //조회- 유저아이디와 기간을 입력받아 참여한 공지 찾기(널이거나 아이디가 없을때 예외처리)
+    public List<Anmp> getUserAnnouncements(String userId, Date startDate, Date endDate) {
+        if (userId == null || userId.trim().isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
+         List<User>existuser =  userRepository.findUserById(userId);
+        if(existuser.isEmpty()){
+            throw new IllegalArgumentException("User ID not found");
+        }
+        return anmpRepository.findAnmpsByUserAndDateRange(userId, startDate, endDate);
     }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.
