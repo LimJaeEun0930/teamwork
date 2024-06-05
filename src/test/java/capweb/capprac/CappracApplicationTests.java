@@ -1,5 +1,8 @@
 package capweb.capprac;
 
+import capweb.capprac.entity.*;
+import capweb.capprac.repository.*;
+import capweb.capprac.service.*;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +23,32 @@ import static org.junit.jupiter.api.Assertions.*;
 //ID로 인덱스번호 찾을떄: findById("ID").getindex();
 
 //부테이블에서 외래키는 객체로 들어가기 때문에 거기서 특정 필드가 필요할땐 get함수로 접근
+
 @SpringBootTest
 class CappracApplicationTests {
 	@Autowired
 	private EntityManager entityManager;
 
 	@Autowired UserRepository userRepository;
-	@Autowired MeetingRoomRepository meetingRoomRepository;
-	@Autowired CompanyRepository companyRepository;
+	@Autowired
+	MeetingRoomRepository meetingRoomRepository;
+	@Autowired
+	CompanyRepository companyRepository;
 	@Autowired MrpRepository mrpRepository;
 	@Autowired MessageRepository messageRepository;
 	@Autowired PlanRepository planRepository;
-	@Autowired AnnouncementRepository announcementRepository;
-	@Autowired AnmpRepository anmpRepository;
+	@Autowired
+	AnnouncementRepository announcementRepository;
+	@Autowired
+	AnmpRepository anmpRepository;
 	@Autowired TourRepository tourRepository;
 	@Autowired TourpRepository tourpRepository;
-	@Autowired LogRepository logRepository;
+	@Autowired
+	LogRepository logRepository;
 	@Test
 	@Transactional
 	@Rollback(false)
+		//모든 테이블 값 하나씩 넣어주기
 	void contextLoads() {
 		System.out.println("test init");
 		/*유저*/
@@ -238,7 +248,7 @@ class CappracApplicationTests {
 //		announcement.setAnmCpid(company);
 //		announcementRepository.save(announcement);
 //
-		Anmp  anmp = new Anmp();
+		Anmp anmp = new Anmp();
 		anmp.setAnmpUsid(user);
 		anmp.setAnmpAnmid(announcement);
 		anmpRepository.save(anmp);
