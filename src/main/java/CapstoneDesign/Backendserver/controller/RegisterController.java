@@ -24,6 +24,15 @@ public class RegisterController {
 
 
 
+    @GetMapping("entrance/normal")
+    public String register_normal_user_entrance(@ModelAttribute("user") User user, Model model){
+        return "register";
+    }
+
+    @GetMapping("entrance/mentor")
+    public String register_mentor_user_entrance(@ModelAttribute("user") User user, Model model) {
+        return "register_mentor";
+    }
     @PostMapping
     public String register_post(@Validated @ModelAttribute User user, BindingResult bindingResult)
     {

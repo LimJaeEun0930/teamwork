@@ -114,9 +114,8 @@ public class HomeController {
     @GetMapping("register")
     public String register_get(@ModelAttribute("user") User user, Model model)
     {
-
         log.info("회원가입창 입장");
-        return "register";
+        return "register_entrance";
     }
 
 //    @GetMapping("chat")

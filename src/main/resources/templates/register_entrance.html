@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 선택</title>
+</head>
+<body>
+    <h1>회원가입 선택</h1>
+    <button th:onclick="|location.href='@{register/entrance/normal}'|">일반유저 회원가입</button>
+    <button th:onclick="|location.href='@{register/entrance/mentor}'|">멘토 회원가입</button>
+<!--    <button th:onclick="|location.href='@{/register}'|">회원가입</button>-->
+</body>
+</html>
