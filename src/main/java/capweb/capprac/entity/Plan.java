@@ -25,7 +25,7 @@ public class Plan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planUsid")
-    private User planUsid;//일정사용자아이디
+    private USer planUsid;//일정사용자아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planCpid")

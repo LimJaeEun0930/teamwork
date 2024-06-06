@@ -2,10 +2,10 @@ package capweb.capprac.service;
 
 import capweb.capprac.entity.Tour;
 import capweb.capprac.entity.Tourp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.TourRepository;
 import capweb.capprac.repository.TourpRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
 public class TourpService {
 
    @Autowired
-   private UserRepository userRepository;
+   private USerRepository userRepository;
    @Autowired
    private TourRepository tourRepository;
     @Autowired
@@ -26,7 +26,7 @@ public class TourpService {
     //유저와 견학을 필수로 입력받게 하고 검색해서 없을때만 견학참여자를 만들어주기
     //현재인원에따라 참가하게 하기   테스트필요
     @Transactional
-    public Tourp createTourp(User tourpUsid, Tour tourpTourid) {
+    public Tourp createTourp(USer tourpUsid, Tour tourpTourid) {
         if (tourpUsid == null || tourpTourid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
@@ -75,7 +75,7 @@ public class TourpService {
     }
 
     // 조회 - tourpUsid로 Tourp 찾기
-    public List<Tourp> getTourpsByUser(User tourpUsid) {
+    public List<Tourp> getTourpsByUser(USer tourpUsid) {
         return tourpRepository.findTourpsByUser(tourpUsid);
     }
 
@@ -85,12 +85,12 @@ public class TourpService {
     }
 
     // 조회 - tourpUsid와 tourpTourid 조합으로 Tourp 찾기
-    public List<Tourp> getTourpsByUserAndTour(User tourpUsid, Tour tourpTourid) {
+    public List<Tourp> getTourpsByUserAndTour(USer tourpUsid, Tour tourpTourid) {
         return tourpRepository.findTourpsByUserAndTour(tourpUsid, tourpTourid);
     }
     //아이디와 월을 입력받아 아이디를 체크하고 해당하는 견학 찾기
     public List<Tourp> getTourpsByUserIdAndMonth(String userId, int month) {
-        List<User>existusers=userRepository.findUserById(userId);
+        List<USer>existusers=userRepository.findUserById(userId);
         if(existusers.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }

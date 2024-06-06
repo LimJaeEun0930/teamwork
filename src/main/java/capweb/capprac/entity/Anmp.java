@@ -17,7 +17,7 @@ public class Anmp {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anmpUsid", nullable = false)
-    private User anmpUsid;//공지참여자아이디
+    private USer anmpUsid;//공지참여자아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anmpAnmid", nullable = false)

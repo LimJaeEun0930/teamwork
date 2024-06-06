@@ -3,11 +3,11 @@ package capweb.capprac.service;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Tour;
 import capweb.capprac.entity.Tourp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.TourRepository;
 import capweb.capprac.repository.TourpRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,11 @@ public class TourpServiceTest {
     @Autowired
     private TourpRepository tourpRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private CompanyRepository companyRepository;
 
-    private User user;
+    private USer user;
     private Company company;
     private Tour tour;
     private Tourp tourp;
@@ -47,7 +47,7 @@ public class TourpServiceTest {
     void setUp() {
         // 초기화 코드가 필요하다면 여기에 작성합니다.
         date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
@@ -76,8 +76,8 @@ public class TourpServiceTest {
     // Test for createTourp method
     @Test
     public void testCreateTourp() {
-        User uuser;
-        uuser = new User();
+        USer uuser;
+        uuser = new USer();
         uuser.setUsId("uusid");
         uuser.setUsPw("uspw");
         uuser.setUsName("uusname");

@@ -16,7 +16,7 @@ public class Mrp {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mrpUsid")
-    private User mrpUsid;//모임방참여자아이디
+    private USer mrpUsid;//모임방참여자아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mrpMrid", nullable = false)

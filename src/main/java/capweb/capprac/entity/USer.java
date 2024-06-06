@@ -3,13 +3,12 @@ package capweb.capprac.entity;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "APP_USER")
-public class User {
+public class USer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int usIndex;//인덱스

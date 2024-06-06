@@ -3,10 +3,10 @@ package capweb.capprac.service;
 //import CapstoneDesign.Backendserver.repository.UserRepository;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Plan;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.PlanRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ public class PlanService {
     @Autowired
     private PlanRepository planRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private CompanyRepository companyRepository;
 
     //일정아이디,일정명을 필수 유저와 회사를 선택받아 입력받게 하고 옵션값을 넣고 일정을 만들기-----!!!!!구현필요!!!!!
     @Transactional
-    public Plan createPlan(Date planId, String planName, User user, Company company) {
+    public Plan createPlan(Date planId, String planName, USer user, Company company) {
         // 필수값 체크
         if (planId == null) {
             throw new IllegalArgumentException("Plan date cannot be null.");
@@ -91,7 +91,7 @@ public class PlanService {
     }
 
     // 조회 - planUsid로 Plan 찾기-----!!!조회에 필요!!!!
-    public List<Plan> getPlansByUser(User planUsid) {
+    public List<Plan> getPlansByUser(USer planUsid) {
         return planRepository.findPlansByUser(planUsid);
     }
 
@@ -111,7 +111,7 @@ public class PlanService {
     }
 
     // planId와 유저아이디로 Plan 찾기
-    public List<Plan> getPlansByDateAndUser(Date planId, User planUsid) {
+    public List<Plan> getPlansByDateAndUser(Date planId, USer planUsid) {
         return planRepository.findPlansByDateAndUser(planId, planUsid);
     }
 
@@ -121,7 +121,7 @@ public class PlanService {
     }
     //아이디와 월을 입력받아 아이디 체크하고  해당하는 일정 찾기----!!!조회할때 필요!!!
     public List<Plan> getPlansByUserIdAndMonth(String userId, int month) {
-        List<User>existusers=userRepository.findUserById(userId);
+        List<USer>existusers=userRepository.findUserById(userId);
         List<Company>existcompanies=companyRepository.findCompanyById(userId);
         if(existusers.isEmpty()&&existcompanies.isEmpty()){
             throw new IllegalArgumentException("User not found");

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MessageRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private MeetingRoomRepository meetingRoomRepository;
     @Autowired
@@ -27,7 +27,7 @@ public class MessageRepositoryTest {
     private MessageRepository messageRepository;
 
     private Mrp mrp;
-    private User user;
+    private USer user;
     private MeetingRoom meetingRoom;
     private Company company;
     private Message message;
@@ -36,7 +36,7 @@ public class MessageRepositoryTest {
     public void setUp() {
         // 가정: User, MeetingRoom, Company 객체가 생성되었다고 가정합니다.
         date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");

@@ -3,7 +3,7 @@ package capweb.capprac.repository;
 import capweb.capprac.entity.Anmp;
 import capweb.capprac.entity.Announcement;
 import capweb.capprac.entity.Company;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +31,11 @@ public class AnmpRepositoryTest {
     private CompanyRepository companyRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
 
     private Company company;
     private Announcement announcement;
-    private User user;
+    private USer user;
     private Anmp anmp;
     private Date date;
 
@@ -59,7 +59,7 @@ public class AnmpRepositoryTest {
         announcement.setAnmEmptype("anmemptype");
         announcement.setAnmRecruitm(1);
         announcementRepository.save(announcement);
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");

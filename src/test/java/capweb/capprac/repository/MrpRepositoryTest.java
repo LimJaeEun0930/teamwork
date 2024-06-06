@@ -3,7 +3,7 @@ package capweb.capprac.repository;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.MeetingRoom;
 import capweb.capprac.entity.Mrp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class MrpRepositoryTest {
     private MrpRepository mrpRepository;
 
     private Mrp mrp;
-    private User user;
+    private USer user;
     private MeetingRoom meetingRoom;
     private Company company;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private MeetingRoomRepository meetingRoomRepository;
     @Autowired
@@ -37,7 +37,7 @@ public class MrpRepositoryTest {
     void setUp() {
         // 가정: User, MeetingRoom, Company 객체가 생성되었다고 가정합니다.
         Date date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");

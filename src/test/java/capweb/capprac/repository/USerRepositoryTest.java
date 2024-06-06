@@ -1,52 +1,51 @@
 package capweb.capprac.repository;
 
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserRepositoryTest {
+public class USerRepositoryTest {
 
     @Autowired
     private EntityManager entityManager;
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
 
 
     @Test
     @Transactional
     void whenSaveUser_thenUserIsSaved() {
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testId");
         user.setUsPw("testPw");
         user.setUsName("testName");
 
         userRepository.save(user);
 
-        User foundUser = entityManager.find(User.class, user.getUsIndex());
+        USer foundUser = entityManager.find(USer.class, user.getUsIndex());
         assertNotNull(foundUser);
         assertEquals("testId", foundUser.getUsId());
     }
     @Test
     @Transactional
     void whenFindUserByIndex_thenCorrectUserIsReturned() {
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testId");
         user.setUsPw("testPw");
         user.setUsName("testName");
         entityManager.persist(user);
 
-        User foundUser = userRepository.findUserByIndex(user.getUsIndex());
+        USer foundUser = userRepository.findUserByIndex(user.getUsIndex());
         assertNotNull(foundUser);
         assertEquals("testId", foundUser.getUsId());
     }
@@ -54,26 +53,26 @@ public class UserRepositoryTest {
     @Test
     @Transactional
     void whenFindAllUsers_thenAllUsersAreReturned() {
-        User user1 = new User();
+        USer user1 = new USer();
         user1.setUsId("testId1");
         user1.setUsPw("testPw");
         user1.setUsName("testName");
         entityManager.persist(user1);
 
-        User user2 = new User();
+        USer user2 = new USer();
         user2.setUsId("testId2");
         user2.setUsPw("testPw");
         user2.setUsName("testName");
         entityManager.persist(user2);
 
-        List<User> users = userRepository.findAllUsers();
+        List<USer> users = userRepository.findAllUsers();
         assertNotNull(users);
         assertTrue(users.size() >= 2);
     }
     @Test
     @Transactional
     void whenUpdateUser_thenUserIsUpdated() {
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testId");
         user.setUsPw("testPw");
         user.setUsName("testName");
@@ -82,13 +81,13 @@ public class UserRepositoryTest {
         user.setUsPw("newPw");
         userRepository.update(user);
 
-        User updatedUser = entityManager.find(User.class, user.getUsIndex());
+        USer updatedUser = entityManager.find(USer.class, user.getUsIndex());
         assertEquals("newPw", updatedUser.getUsPw());
     }
     @Test
     @Transactional
     void whenDeleteUserByIndex_thenUserIsDeleted() {
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testId");
         user.setUsPw("testPw");
         user.setUsName("testName");
@@ -96,19 +95,19 @@ public class UserRepositoryTest {
 
         userRepository.deleteByIndex(user.getUsIndex());
 
-        User deletedUser = entityManager.find(User.class, user.getUsIndex());
+        USer deletedUser = entityManager.find(USer.class, user.getUsIndex());
         assertNull(deletedUser);
     }
     @Test
     @Transactional
     void whenFindUserByNonExistingId_thenExceptionIsThrown() {
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testId");
         user.setUsPw("testPw");
         user.setUsName("testName");
         entityManager.persist(user);
         // 존재하지 않는 ID로 사용자를 찾을 때 예외가 발생하는지 검증
-        List<User> results = userRepository.findUserById("nonExistingId");
+        List<USer> results = userRepository.findUserById("nonExistingId");
         assertTrue(results.isEmpty());
     }
 
@@ -132,19 +131,19 @@ public class UserRepositoryTest {
     @Test
     @Transactional
     void whenFindUsersByName_thenCorrectUsersAreReturned() {
-        User user1 = new User();
+        USer user1 = new USer();
         user1.setUsId("testId");
         user1.setUsPw("testPw");
         user1.setUsName("testName");
         entityManager.persist(user1);
 
-        User user2 = new User();
+        USer user2 = new USer();
         user2.setUsId("testId2");
         user2.setUsPw("testPw");
         user2.setUsName("testName");
         entityManager.persist(user2);
 
-        List<User> users = userRepository.findUsersByName("testName");
+        List<USer> users = userRepository.findUsersByName("testName");
         assertNotNull(users);
         assertTrue(users.size() >= 2);
     }

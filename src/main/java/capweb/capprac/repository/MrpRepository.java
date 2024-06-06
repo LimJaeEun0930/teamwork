@@ -7,7 +7,7 @@ package capweb.capprac.repository;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.MeetingRoom;
 import capweb.capprac.entity.Mrp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -52,7 +52,7 @@ public class MrpRepository {
     }
 
     // Read - 사용자입력받아 Mrp찾기
-    public List<Mrp> findByUser(User user) {
+    public List<Mrp> findByUser(USer user) {
         return entityManager.createQuery("SELECT m FROM Mrp m WHERE m.mrpUsid = :user", Mrp.class)
                 .setParameter("user", user)
                 .getResultList();
@@ -72,7 +72,7 @@ public class MrpRepository {
     }
 
     // Read - 사용자와 모임방 입력받아 해당 Mrp찾기 결과는 하나만
-    public List<Mrp> findByUserAndMeetingRoom(User user, MeetingRoom meetingRoom) {
+    public List<Mrp> findByUserAndMeetingRoom(USer user, MeetingRoom meetingRoom) {
         return entityManager.createQuery("SELECT m FROM Mrp m WHERE m.mrpUsid = :user AND m.mrpMrid = :meetingRoom", Mrp.class)
                 .setParameter("user", user)
                 .setParameter("meetingRoom", meetingRoom)

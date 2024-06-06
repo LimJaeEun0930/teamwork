@@ -3,7 +3,7 @@ package capweb.capprac.repository;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Tour;
 import capweb.capprac.entity.Tourp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class TourpRepositoryTest {
     @Autowired
     private TourpRepository tourpRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private CompanyRepository companyRepository;
 
-    private User user;
+    private USer user;
     private Company company;
     private Tour tour;
     private Tourp tourp;
@@ -37,7 +37,7 @@ public class TourpRepositoryTest {
     void setUp() {
         // 초기화 코드가 필요하다면 여기에 작성합니다.
         date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
@@ -92,8 +92,8 @@ public class TourpRepositoryTest {
     // Test for update method
     @Test
     public void testUpdate() {
-        User uuser;
-        uuser = new User();
+        USer uuser;
+        uuser = new USer();
         uuser.setUsId("uusid");
         uuser.setUsPw("uspw");
         uuser.setUsName("uusname");

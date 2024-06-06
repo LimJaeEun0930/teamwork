@@ -3,11 +3,11 @@ package capweb.capprac.service;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.MeetingRoom;
 import capweb.capprac.entity.Mrp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.MeetingRoomRepository;
 import capweb.capprac.repository.MrpRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class MrpServiceTest {
     private MrpRepository mrpRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -40,14 +40,14 @@ public class MrpServiceTest {
     private MrpService mrpService;
 
     private Mrp mrp;
-    private User user;
+    private USer user;
     private MeetingRoom meetingRoom;
     private Company company;
 
     @BeforeEach
     void setUp() {
         Date date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
@@ -78,8 +78,8 @@ public class MrpServiceTest {
     @Test
     void whenCreateMrp_thenMrpIsCreated() {
         Date update = new Date();
-        User upuser;
-        upuser = new User();
+        USer upuser;
+        upuser = new USer();
         upuser.setUsId("upusid");
         upuser.setUsPw("upuspw");
         upuser.setUsName("upusname");

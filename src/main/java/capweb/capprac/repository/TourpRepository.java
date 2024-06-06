@@ -6,7 +6,7 @@ package capweb.capprac.repository;
 //필드를 이용할때는 매개변수로 String타입임
 import capweb.capprac.entity.Tour;
 import capweb.capprac.entity.Tourp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -54,7 +54,7 @@ public class TourpRepository {
     }
 
     // Read - tourpUsid로 Tourp 찾기
-    public List<Tourp> findTourpsByUser(User tourpUsid) {
+    public List<Tourp> findTourpsByUser(USer tourpUsid) {
         TypedQuery<Tourp> query = entityManager.createQuery(
                 "SELECT t FROM Tourp t WHERE t.tourpUsid = :tourpUsid", Tourp.class);
         query.setParameter("tourpUsid", tourpUsid);
@@ -70,7 +70,7 @@ public class TourpRepository {
     }
 
     // Read - tourpUsid와 tourpTourid 조합으로 Tourp 찾기
-    public List<Tourp> findTourpsByUserAndTour(User tourpUsid, Tour tourpTourid) {
+    public List<Tourp> findTourpsByUserAndTour(USer tourpUsid, Tour tourpTourid) {
         TypedQuery<Tourp> query = entityManager.createQuery(
                 "SELECT t FROM Tourp t WHERE t.tourpUsid = :tourpUsid AND t.tourpTourid = :tourpTourid", Tourp.class);
         query.setParameter("tourpUsid", tourpUsid);

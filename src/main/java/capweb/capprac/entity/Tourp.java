@@ -17,7 +17,7 @@ public class Tourp {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tourpUsid", nullable = false)
-    private User tourpUsid;//견학참여자아이디
+    private USer tourpUsid;//견학참여자아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tourpTourid", nullable = false)

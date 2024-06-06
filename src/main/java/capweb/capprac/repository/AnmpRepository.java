@@ -6,7 +6,7 @@ package capweb.capprac.repository;
 //필드를 이용할때는 매개변수로 String타입임
 import capweb.capprac.entity.Anmp;
 import capweb.capprac.entity.Announcement;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -53,7 +53,7 @@ public class AnmpRepository {
         }
     }
     // Read - anmpUsid로 Anmp 찾기
-    public List<Anmp> findAnmpsByUser(User anmpUsid) {
+    public List<Anmp> findAnmpsByUser(USer anmpUsid) {
         TypedQuery<Anmp> query = entityManager.createQuery(
                 "SELECT a FROM Anmp a WHERE a.anmpUsid = :anmpUsid", Anmp.class);
         query.setParameter("anmpUsid", anmpUsid);
@@ -69,7 +69,7 @@ public class AnmpRepository {
     }
 
     // Read - anmpUsid와 anmpAnmid 조합으로 Anmp 찾기
-    public List<Anmp> findAnmpsByUserAndAnnouncement(User anmpUsid, Announcement anmpAnmid) {
+    public List<Anmp> findAnmpsByUserAndAnnouncement(USer anmpUsid, Announcement anmpAnmid) {
         TypedQuery<Anmp> query = entityManager.createQuery(
                 "SELECT a FROM Anmp a WHERE a.anmpUsid = :anmpUsid AND a.anmpAnmid = :anmpAnmid", Anmp.class);
         query.setParameter("anmpUsid", anmpUsid);

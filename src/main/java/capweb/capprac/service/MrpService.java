@@ -3,11 +3,11 @@ package capweb.capprac.service;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.MeetingRoom;
 import capweb.capprac.entity.Mrp;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.MeetingRoomRepository;
 import capweb.capprac.repository.MrpRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class MrpService {
     @Autowired
     private MrpRepository mrpRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private MeetingRoomRepository meetingRoomRepository;
     @Autowired
@@ -33,7 +33,7 @@ public class MrpService {
 
     //유저와 모임방, 멘토와 모임방을 필수로 입력받고 검색해봐서 있으면 참가 못하게하고 아니면 만들어주기
     @Transactional
-    public Mrp createMrp(User user, MeetingRoom meetingRoom, Company mentor) {
+    public Mrp createMrp(USer user, MeetingRoom meetingRoom, Company mentor) {
         if(meetingRoom==null||(user==null&&mentor==null)){
             throw new IllegalArgumentException("만들 정보 부족");
         }
@@ -75,7 +75,7 @@ public class MrpService {
     //유저아이디와 모임방아이디를 입력받아 검색해서 나온 인덱스를 통해 삭제하기(유저버전)
     @Transactional
     public boolean deleteMrpProcess(String usid, String mrid) {
-        List<User> users = userRepository.findUserById(usid);
+        List<USer> users = userRepository.findUserById(usid);
         List<MeetingRoom> meetingRooms = meetingRoomRepository.findMeetingRoomByMrid(mrid);
 
         // 사용자 또는 회의실이 없는 경우 처리
@@ -137,7 +137,7 @@ public class MrpService {
     }
 
     // 조회 - 특정 사용자가 속한 모든 Mrp 찾기
-    public List<Mrp> findMrpsByUser(User user) {
+    public List<Mrp> findMrpsByUser(USer user) {
         return mrpRepository.findByUser(user);
     }
 
@@ -152,7 +152,7 @@ public class MrpService {
     }
 
     // 조회 - 특정 사용자와 모임방에 동시에 속한 Mrp 찾기
-    public List<Mrp> findMrpsByUserAndMeetingRoom(User user, MeetingRoom meetingRoom) {
+    public List<Mrp> findMrpsByUserAndMeetingRoom(USer user, MeetingRoom meetingRoom) {
         return mrpRepository.findByUserAndMeetingRoom(user, meetingRoom);
     }
     // 조회 - 특정 멘토와 모임방에 동시에 속한 Mrp 찾기

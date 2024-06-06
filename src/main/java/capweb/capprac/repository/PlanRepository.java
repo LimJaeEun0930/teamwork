@@ -4,9 +4,10 @@ package capweb.capprac.repository;
 //User의 usid를 가져오려면 매개변수가 String usid가 되어야한다.
 //외래키를 이용하려면 필드가 아닌 객체를 이용해야함
 //필드를 이용할때는 매개변수로 String타입임
+import CapstoneDesign.Backendserver.domain.User;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Plan;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -62,7 +63,7 @@ public class PlanRepository {
     }
 
     // Read - planUsid로 Plan 찾기----!!!조회할때 필요!!!
-    public List<Plan> findPlansByUser(User planUsid) {
+    public List<Plan> findPlansByUser(USer planUsid) {
         TypedQuery<Plan> query = entityManager.createQuery(
                 "SELECT p FROM Plan p WHERE p.planUsid = :planUsid", Plan.class);
         query.setParameter("planUsid", planUsid);
@@ -94,7 +95,7 @@ public class PlanRepository {
     }
 
     // Read - planId와 유저아이디로 Plan 찾기
-    public List<Plan> findPlansByDateAndUser(Date planId, User planUsid) {
+    public List<Plan> findPlansByDateAndUser(Date planId, USer planUsid) {
         TypedQuery<Plan> query = entityManager.createQuery(
                 "SELECT p FROM Plan p WHERE p.planId = :planId AND p.planUsid = :planUsid", Plan.class);
         query.setParameter("planId", planId);

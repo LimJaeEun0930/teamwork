@@ -1,8 +1,8 @@
 package capweb.capprac.service;
 
 
-import capweb.capprac.entity.User;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.entity.USer;
+import capweb.capprac.repository.USerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +21,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
 
     @Autowired
-    private UserService userService;
+    private USerService userService;
 
     @BeforeEach
     public void setUp() {
         // 테스트 데이터 세팅
-        User user = new User();
+        USer user = new USer();
         user.setUsId("testUser");
         user.setUsPw("testPass");
         user.setUsName("testName");
@@ -61,7 +61,7 @@ public class UserServiceTest {
         userService.registerUser(usId, usPw, usName);
 
         // then
-        List<User> newUsers = userRepository.findUserById(usId);
+        List<USer> newUsers = userRepository.findUserById(usId);
         assertThat(newUsers.get(0)).isNotNull();
         assertThat(newUsers.get(0).getUsId()).isEqualTo(usId);
     }
@@ -78,7 +78,7 @@ public class UserServiceTest {
         userService.updateUser(usIndex, newPw, newName);
 
         // then
-        User updatedUser = userRepository.findUserByIndex(usIndex);
+        USer updatedUser = userRepository.findUserByIndex(usIndex);
         assertThat(updatedUser.getUsPw()).isEqualTo(newPw);
         assertThat(updatedUser.getUsName()).isEqualTo(newName);
     }
@@ -87,7 +87,7 @@ public class UserServiceTest {
     @Transactional
     public void testGetAllUsers() {
         // when
-        List<User> users = userService.getAllUsers();
+        List<USer> users = userService.getAllUsers();
 
         // then
         assertThat(users).isNotEmpty();
@@ -101,7 +101,7 @@ public class UserServiceTest {
         String usPw = "testPass";
 
         // when
-        User loggedInUser = userService.loginUser(usId, usPw);
+        USer loggedInUser = userService.loginUser(usId, usPw);
 
         // then
         assertNotNull(loggedInUser);
@@ -116,7 +116,7 @@ public class UserServiceTest {
         String wrongPw = "wrongPass";
 
         // when
-        User loggedInUser = userService.loginUser(usId, wrongPw);
+        USer loggedInUser = userService.loginUser(usId, wrongPw);
 
         // then
         assertNull(loggedInUser);
@@ -132,7 +132,7 @@ public class UserServiceTest {
         userService.deleteUserById(usId);
 
         // then
-        List<User> results = userRepository.findUserById(usId);
+        List<USer> results = userRepository.findUserById(usId);
         assertTrue(results.isEmpty());
     }
 

@@ -2,10 +2,10 @@ package capweb.capprac.service;
 
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Plan;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.PlanRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ public class PlanServiceTest {
     @Autowired
     private PlanRepository planRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private CompanyRepository companyRepository;
 
-    private User user;
+    private USer user;
     private Company company;
     private Plan plan;
     private Plan pplan;
@@ -40,7 +40,7 @@ public class PlanServiceTest {
     @BeforeEach
     void setUp(){
         date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
@@ -73,9 +73,9 @@ public class PlanServiceTest {
     public void testCreatePlan() {
         Date planId = new Date();
         String planName = "New Plan";
-        User uuser;
+        USer uuser;
         Company ccompany;
-        uuser = new User();
+        uuser = new USer();
         uuser.setUsId("uusid");
         uuser.setUsPw("uuspw");
         uuser.setUsName("uusname");
@@ -89,7 +89,7 @@ public class PlanServiceTest {
         ccompany.setCpMtid("ccpmtid");
         ccompany.setCpMtname("ccpmtname");
         companyRepository.save(ccompany);
-        User nonuser;
+        USer nonuser;
         Company noncompany;
 
         Plan plan = planService.createPlan(planId, planName, uuser, null);

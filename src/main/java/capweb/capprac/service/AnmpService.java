@@ -2,9 +2,9 @@ package capweb.capprac.service;
 
 import capweb.capprac.entity.Anmp;
 import capweb.capprac.entity.Announcement;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import capweb.capprac.repository.AnmpRepository;
-import capweb.capprac.repository.UserRepository;
+import capweb.capprac.repository.USerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +16,14 @@ import java.util.List;
 public class AnmpService {
 
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private AnmpRepository anmpRepository;
 
     // 만들기 - 새로운 Anmp 생성 및 저장
     //사용자가 동일 공지 참여 못하게 막고, 사용자아이디와 공지아이디를 반드시 입력
     @Transactional
-    public Anmp createAnmp(User anmpUsid, Announcement anmpAnmid) {
+    public Anmp createAnmp(USer anmpUsid, Announcement anmpAnmid) {
         List<Anmp>existanmps = anmpRepository.findAnmpsByUserAndAnnouncement(anmpUsid,anmpAnmid);
         if(!existanmps.isEmpty()){
             throw new IllegalStateException("사용자는 이미 이 공지에 참여하고 있습니다.");
@@ -50,7 +50,7 @@ public class AnmpService {
     }
 
     // 조회 - anmpUsid로 Anmp 찾기
-    public List<Anmp> getAnmpsByUser(User anmpUsid) {
+    public List<Anmp> getAnmpsByUser(USer anmpUsid) {
         return anmpRepository.findAnmpsByUser(anmpUsid);
     }
 
@@ -60,7 +60,7 @@ public class AnmpService {
     }
 
     // 조회 - anmpUsid와 anmpAnmid 조합으로 Anmp 찾기
-    public List<Anmp> getAnmpsByUserAndAnnouncement(User anmpUsid, Announcement anmpAnmid) {
+    public List<Anmp> getAnmpsByUserAndAnnouncement(USer anmpUsid, Announcement anmpAnmid) {
         return anmpRepository.findAnmpsByUserAndAnnouncement(anmpUsid, anmpAnmid);
     }
 
@@ -80,7 +80,7 @@ public class AnmpService {
         if (userId == null || userId.trim().isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
-         List<User>existuser =  userRepository.findUserById(userId);
+         List<USer>existuser =  userRepository.findUserById(userId);
         if(existuser.isEmpty()){
             throw new IllegalArgumentException("User ID not found");
         }
@@ -94,7 +94,7 @@ public class AnmpService {
     }
     //유저아이디와 월을 입력받아 해당하는 담은 공지 찾기
     public List<Anmp> getAnnouncementsByUserIdAndMonth(String userId, int month) {
-        List<User>findusers=userRepository.findUserById(userId);
+        List<USer>findusers=userRepository.findUserById(userId);
         if(findusers.isEmpty()){
             throw new IllegalArgumentException("users not found");
         }

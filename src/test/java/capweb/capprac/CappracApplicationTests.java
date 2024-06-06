@@ -29,7 +29,7 @@ class CappracApplicationTests {
 	@Autowired
 	private EntityManager entityManager;
 
-	@Autowired UserRepository userRepository;
+	@Autowired USerRepository userRepository;
 	@Autowired
 	MeetingRoomRepository meetingRoomRepository;
 	@Autowired
@@ -50,7 +50,7 @@ class CappracApplicationTests {
 	void contextLoads() {
 		System.out.println("test init");
 		/*유저*/
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("hsj1128");
 		user.setUsPw("1234");
 		user.setUsName("한승준");
@@ -331,26 +331,26 @@ class CappracApplicationTests {
 	@Test
 	@Transactional
 	void whenSaveUser_thenUserIsSaved() {
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
 		userRepository.save(user);
 
-		User foundUser = entityManager.find(User.class, user.getUsIndex());
+		USer foundUser = entityManager.find(USer.class, user.getUsIndex());
 		assertNotNull(foundUser);
 		assertEquals("testId", foundUser.getUsId());
 	}
 	@Test
 	@Transactional
 	void whenFindUserByIndex_thenCorrectUserIsReturned() {
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
 		entityManager.persist(user);
 
-		User foundUser = userRepository.findUserByIndex(user.getUsIndex());
+		USer foundUser = userRepository.findUserByIndex(user.getUsIndex());
 		assertNotNull(foundUser);
 		assertEquals("testId", foundUser.getUsId());
 	}
@@ -358,26 +358,26 @@ class CappracApplicationTests {
 	@Test
 	@Transactional
 	void whenFindAllUsers_thenAllUsersAreReturned() {
-		User user1 = new User();
+		USer user1 = new USer();
 		user1.setUsId("testId1");
 		user1.setUsPw("testPw");
 		user1.setUsName("testName");
 		entityManager.persist(user1);
 
-		User user2 = new User();
+		USer user2 = new USer();
 		user2.setUsId("testId2");
 		user2.setUsPw("testPw");
 		user2.setUsName("testName");
 		entityManager.persist(user2);
 
-		List<User> users = userRepository.findAllUsers();
+		List<USer> users = userRepository.findAllUsers();
 		assertNotNull(users);
 		assertTrue(users.size() >= 2);
 	}
 	@Test
 	@Transactional
 	void whenUpdateUser_thenUserIsUpdated() {
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
@@ -386,13 +386,13 @@ class CappracApplicationTests {
 		user.setUsPw("newPw");
 		userRepository.update(user);
 
-		User updatedUser = entityManager.find(User.class, user.getUsIndex());
+		USer updatedUser = entityManager.find(USer.class, user.getUsIndex());
 		assertEquals("newPw", updatedUser.getUsPw());
 	}
 	@Test
 	@Transactional
 	void whenDeleteUserByIndex_thenUserIsDeleted() {
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
@@ -400,13 +400,13 @@ class CappracApplicationTests {
 
 		userRepository.deleteByIndex(user.getUsIndex());
 
-		User deletedUser = entityManager.find(User.class, user.getUsIndex());
+		USer deletedUser = entityManager.find(USer.class, user.getUsIndex());
 		assertNull(deletedUser);
 	}
 	@Test
 	@Transactional
 	void whenFindUserByNonExistingId_thenExceptionIsThrown() {
-		User user = new User();
+		USer user = new USer();
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
@@ -437,19 +437,19 @@ class CappracApplicationTests {
 	@Test
 	@Transactional
 	void whenFindUsersByName_thenCorrectUsersAreReturned() {
-		User user1 = new User();
+		USer user1 = new USer();
 		user1.setUsId("testId");
 		user1.setUsPw("testPw");
 		user1.setUsName("testName");
 		entityManager.persist(user1);
 
-		User user2 = new User();
+		USer user2 = new USer();
 		user2.setUsId("testId2");
 		user2.setUsPw("testPw");
 		user2.setUsName("testName");
 		entityManager.persist(user2);
 
-		List<User> users = userRepository.findUsersByName("testName");
+		List<USer> users = userRepository.findUsersByName("testName");
 		assertNotNull(users);
 		assertTrue(users.size() >= 2);
 	}

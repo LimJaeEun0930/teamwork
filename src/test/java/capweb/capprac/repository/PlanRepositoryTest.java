@@ -2,7 +2,7 @@ package capweb.capprac.repository;
 
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Plan;
-import capweb.capprac.entity.User;
+import capweb.capprac.entity.USer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,11 @@ public class PlanRepositoryTest {
     @Autowired
     private PlanRepository planRepository;
     @Autowired
-    private UserRepository userRepository;
+    private USerRepository userRepository;
     @Autowired
     private CompanyRepository companyRepository;
 
-    private User user;
+    private USer user;
     private Company company;
     private Plan plan;
     private Plan pplan;
@@ -34,7 +34,7 @@ public class PlanRepositoryTest {
     @BeforeEach
     void setUp(){
         date = new Date();
-        user = new User();
+        user = new USer();
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
