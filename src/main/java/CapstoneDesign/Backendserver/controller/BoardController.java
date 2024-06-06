@@ -2,6 +2,7 @@ package CapstoneDesign.Backendserver.controller;
 
 import CapstoneDesign.Backendserver.SessionConst;
 import CapstoneDesign.Backendserver.domain.Board;
+import CapstoneDesign.Backendserver.domain.JobCategory;
 import CapstoneDesign.Backendserver.domain.User;
 import CapstoneDesign.Backendserver.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +27,12 @@ import java.util.Optional;
 public class BoardController {
 
     private final BoardService boardService;
+
+     @ModelAttribute("jobCategory")
+    public JobCategory[] JobCategories() {
+        return JobCategory.values();
+    }
+
 
     @GetMapping("/board/write")
     public String writeBoard_GET(@ModelAttribute("board") Board board, Model model, HttpServletRequest request)
@@ -43,8 +52,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/write") //board의 필드들이 들어오지 않는 문제 있었는데,Board에 setter설정해주니 됨
-    public String writeBoard_POST(@ModelAttribute Board board, HttpServletRequest request)
+    public String writeBoard_POST(@ModelAttribute Board board,  HttpServletRequest request)
     {
+
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         log.info("user 들어옴?{}", user.toString());
@@ -122,18 +132,32 @@ public class BoardController {
         return "redirect:/board/paging";
     }
 
-    @GetMapping("/board/paging")
-    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model)
-    {
-        pageable.getPageNumber();
+    @GetMapping("board/paging")
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
         Page<Board> boardList = boardService.paging(pageable);
         int blockLimit = 3;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("selectedCategory", null);
+
+        return "board/paging";
+    }
+
+    @GetMapping("board/category")
+    public String category(@RequestParam JobCategory category, @PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<Board> boardList = boardService.findByCategory(category, pageable);
+        int blockLimit = 3;
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("selectedCategory", category);
 
         return "board/paging";
     }

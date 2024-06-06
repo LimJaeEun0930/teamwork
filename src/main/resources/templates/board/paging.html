@@ -9,6 +9,32 @@
             background-color: #f4f4f9;
             margin: 0;
             padding: 20px;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            padding-right: 20px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            flex: 1;
         }
 
         h1 {
@@ -95,45 +121,53 @@
     </style>
 </head>
 <body>
-<h1>Board List</h1>
-<div class="button-container">
-    <button onclick="saveReq()">글작성</button>
-    <button th:onclick="|location.href='@{/}'|" type="button">Home</button>
+<div class="sidebar">
+    <h2>Job Categories</h2>
+    <div th:each="category : ${jobCategory}">
+        <button th:onclick="|location.href='@{/board/category(category=${category})}'|" th:text="${category}"></button>
+    </div>
 </div>
+<div class="content">
+    <h1 th:text="${selectedCategory != null} ? ${selectedCategory} : '전체 글 목록'"></h1>
+    <div class="button-container">
+        <button onclick="saveReq()">글작성</button>
+        <button th:onclick="|location.href='@{/}'|" type="button">Home</button>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>writer</th>
-            <th>date</th>
-            <th>hits</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="board: ${boardList}">
-            <td th:text="${board.boardId}"></td>
-            <td><a th:href="@{|/board/${board.getBoardId()}|(page=${boardList.number + 1})}" th:text="${board.getBoardTitle()}"></a></td>
-            <td th:text="${board.getBoardWriter()}"></td>
-            <td th:text="*{#temporals.format(board.getCreatedTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
-            <td th:text="${board.getBoardHits()}"></td>
-        </tr>
-    </tbody>
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>writer</th>
+                <th>date</th>
+                <th>hits</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board: ${boardList}">
+                <td th:text="${board.boardId}"></td>
+                <td><a th:href="@{|/board/${board.getBoardId()}|(page=${boardList.number + 1})}" th:text="${board.getBoardTitle()}"></a></td>
+                <td th:text="${board.boardWriter}"></td>
+                <td th:text="*{#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${board.boardHits}"></td>
+            </tr>
+        </tbody>
+    </table>
 
-<!--페이징 처리 시작-->
-<div class="pagination">
-    <a th:href="@{/board/paging(page=1)}">First</a>
-    <a th:href="@{/board/paging(page=${boardList.getNumber()})}" th:if="${boardList.hasPrevious()}">prev</a>
-    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
-        <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
-        <a th:href="@{/board/paging(page=${page})}" th:unless="${page == boardList.number + 1}" th:text="${page}"></a>
-    </span>
-    <a th:href="@{/board/paging(page=${boardList.getNumber() + 2})}" th:if="${boardList.isLast()}">next</a>
-    <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+    <!--페이징 처리 시작-->
+    <div class="pagination">
+        <a th:href="@{/board/paging(page=1, category=${selectedCategory})}">First</a>
+        <a th:href="@{/board/paging(page=${boardList.number}, category=${selectedCategory})}" th:if="${boardList.hasPrevious()}">prev</a>
+        <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+            <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+            <a th:href="@{/board/paging(page=${page}, category=${selectedCategory})}" th:unless="${page == boardList.number + 1}" th:text="${page}"></a>
+        </span>
+        <a th:href="@{/board/paging(page=${boardList.number + 2}, category=${selectedCategory})}" th:if="${boardList.hasNext()}">next</a>
+        <a th:href="@{/board/paging(page=${boardList.totalPages}, category=${selectedCategory})}">Last</a>
+    </div>
+    <!--페이징 처리 끝-->
 </div>
-<!--페이징 처리 끝-->
 
 <script>
     const saveReq = () => {

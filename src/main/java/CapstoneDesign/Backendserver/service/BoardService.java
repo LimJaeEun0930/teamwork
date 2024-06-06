@@ -1,6 +1,7 @@
 package CapstoneDesign.Backendserver.service;
 
 import CapstoneDesign.Backendserver.domain.Board;
+import CapstoneDesign.Backendserver.domain.JobCategory;
 import CapstoneDesign.Backendserver.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,13 @@ public class BoardService {
         // 목록: id, writer, title, hits, createdTime
         return boardEntities;
     }
+
+    public Page<Board> findByCategory(JobCategory category, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3;
+        return boardRepository.findByJobCategory(category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "boardId")));
+    }
+
 }
 //        System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
 //        System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
