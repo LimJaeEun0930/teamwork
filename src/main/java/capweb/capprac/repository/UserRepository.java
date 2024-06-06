@@ -4,6 +4,8 @@ package capweb.capprac.repository;
 //User의 usid를 가져오려면 매개변수가 String usid가 되어야한다.
 //외래키를 이용하려면 필드가 아닌 객체를 이용해야함
 //필드를 이용할때는 매개변수로 String타입임
+//중요!!
+//capweb.capprac의 User를 인식 못할때 파일의 invalidate cashes and restart하면 잘 된다.
 import capweb.capprac.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
