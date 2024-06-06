@@ -33,15 +33,13 @@ public class CompanyServiceTest {
         company.setCpCategory("IT");
         company.setCpMtid("MT001");
         company.setCpMtname("멘토1");
-        company.setCpJoindate(new Date());
-        company.setCpJoinIP(ip);
         companyRepository.save(company);
     }
 
     @Test
     public void testRegisterCompany() {
         Date cpJoindate = new Date();
-        Company ncompany = companyService.registerCompany("testCP001", "testpassword", "test회사1", "test서울시", "testIT", "testMT001", "test멘토1",cpJoindate,"127.001");
+        Company ncompany = companyService.registerCompany("testCP001", "testpassword", "test회사1", "test서울시", "testIT", "testMT001", "test멘토1");
 
         assertThat(ncompany).isNotNull();
     }
@@ -73,14 +71,13 @@ public class CompanyServiceTest {
         String ncategory = "testcate";
         String nmtname = "testcpmtname";
         String nfixIP = "127.01";
-        companyService.updateCompany(1,npw,nname,naddr,ncategory,nmtname,nfixIP);
+        companyService.updateCompany(1,npw,nname,naddr,ncategory,nmtname);
         Company company1 = companyRepository.findCompanyByIndex(1);
         assertThat(company1.getCpPw()).isEqualTo(npw);
         assertThat(company1.getCpName()).isEqualTo(nname);
         assertThat(company1.getCpAddr()).isEqualTo(naddr);
         assertThat(company1.getCpCategory()).isEqualTo(ncategory);
         assertThat(company1.getCpMtname()).isEqualTo(nmtname);
-        assertThat(company1.getCpFixIP()).isEqualTo(nfixIP);
     }
 
     @Test

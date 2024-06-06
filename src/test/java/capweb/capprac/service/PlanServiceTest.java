@@ -44,8 +44,6 @@ public class PlanServiceTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("123.00.1");
         userRepository.save(user);
         company = new Company();
         company.setCpId("cpid");
@@ -55,8 +53,6 @@ public class PlanServiceTest {
         company.setCpAddr("cpaddr");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.00.1");
         companyRepository.save(company);
         plan = new Plan();
         plan.setPlanId(date);
@@ -83,8 +79,6 @@ public class PlanServiceTest {
         uuser.setUsId("uusid");
         uuser.setUsPw("uuspw");
         uuser.setUsName("uusname");
-        uuser.setUsJoindate(date);
-        uuser.setUsJoinIP("123.02.1");
         userRepository.save(uuser);
         ccompany = new Company();
         ccompany.setCpId("ccpid");
@@ -94,8 +88,6 @@ public class PlanServiceTest {
         ccompany.setCpAddr("ccpaddr");
         ccompany.setCpMtid("ccpmtid");
         ccompany.setCpMtname("ccpmtname");
-        ccompany.setCpJoindate(date);
-        ccompany.setCpJoinIP("127.03.1");
         companyRepository.save(ccompany);
         User nonuser;
         Company noncompany;

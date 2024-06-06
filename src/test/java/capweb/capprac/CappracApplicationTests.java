@@ -43,8 +43,6 @@ class CappracApplicationTests {
 	AnmpRepository anmpRepository;
 	@Autowired TourRepository tourRepository;
 	@Autowired TourpRepository tourpRepository;
-	@Autowired
-	LogRepository logRepository;
 	@Test
 	@Transactional
 	@Rollback(false)
@@ -57,9 +55,6 @@ class CappracApplicationTests {
 		user.setUsPw("1234");
 		user.setUsName("한승준");
 		Date joindate =  new GregorianCalendar(2024, Calendar.JANUARY, 1).getTime();
-		user.setUsJoindate(joindate);
-		user.setUsJoinIP("127.0.0.1");
-		user.printfield();
 		userRepository.save(user);
 		/*미팅룸*/
 		MeetingRoom meetingRoom = new MeetingRoom();
@@ -77,8 +72,6 @@ class CappracApplicationTests {
 		company.setCpMtid("company1mento1");
 		company.setCpMtname("company1mento1이름");
 		joindate =  new GregorianCalendar(2024, Calendar.JANUARY, 1).getTime();
-		company.setCpJoindate(joindate);
-		company.setCpJoinIP("127.0.0.1");
 		companyRepository.save(company);
 		/*Mrp*/
 //		User user = new User();
@@ -334,17 +327,6 @@ class CappracApplicationTests {
 //		companyRepository.save(company);
 //
 		joindate =  new GregorianCalendar(2024, Calendar.JANUARY, 1).getTime();
-		Log log = new Log();
-		log.setLogEnterdate(joindate);
-		log.setLogEnterIP("127.0.0.1");
-//		log.setLogOpt(1);
-//		log.setLogUsid(user);
-		log.setLogOpt(2);
-		log.setLogCpid(company);
-		logRepository.save(log);
-
-
-
 	}
 	@Test
 	@Transactional
@@ -353,9 +335,6 @@ class CappracApplicationTests {
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
-		user.setUsJoindate(new Date());
-		user.setUsJoinIP("127.0.0.1");
-
 		userRepository.save(user);
 
 		User foundUser = entityManager.find(User.class, user.getUsIndex());
@@ -369,8 +348,6 @@ class CappracApplicationTests {
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
-		user.setUsJoindate(new Date());
-		user.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user);
 
 		User foundUser = userRepository.findUserByIndex(user.getUsIndex());
@@ -385,16 +362,12 @@ class CappracApplicationTests {
 		user1.setUsId("testId1");
 		user1.setUsPw("testPw");
 		user1.setUsName("testName");
-		user1.setUsJoindate(new Date());
-		user1.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user1);
 
 		User user2 = new User();
 		user2.setUsId("testId2");
 		user2.setUsPw("testPw");
 		user2.setUsName("testName");
-		user2.setUsJoindate(new Date());
-		user2.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user2);
 
 		List<User> users = userRepository.findAllUsers();
@@ -408,8 +381,6 @@ class CappracApplicationTests {
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
-		user.setUsJoindate(new Date());
-		user.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user);
 
 		user.setUsPw("newPw");
@@ -425,8 +396,6 @@ class CappracApplicationTests {
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
-		user.setUsJoindate(new Date());
-		user.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user);
 
 		userRepository.deleteByIndex(user.getUsIndex());
@@ -441,8 +410,6 @@ class CappracApplicationTests {
 		user.setUsId("testId");
 		user.setUsPw("testPw");
 		user.setUsName("testName");
-		user.setUsJoindate(new Date());
-		user.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user);
 		// 존재하지 않는 ID로 사용자를 찾을 때 예외가 발생하는지 검증
 		assertThrows(EmptyResultDataAccessException.class, () -> {
@@ -474,46 +441,18 @@ class CappracApplicationTests {
 		user1.setUsId("testId");
 		user1.setUsPw("testPw");
 		user1.setUsName("testName");
-		user1.setUsJoindate(new Date());
-		user1.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user1);
 
 		User user2 = new User();
 		user2.setUsId("testId2");
 		user2.setUsPw("testPw");
 		user2.setUsName("testName");
-		user2.setUsJoindate(new Date());
-		user2.setUsJoinIP("127.0.0.1");
 		entityManager.persist(user2);
 
 		List<User> users = userRepository.findUsersByName("testName");
 		assertNotNull(users);
 		assertTrue(users.size() >= 2);
 	}
-	@Test
-	@Transactional
-	void whenFindUsersByJoindate_thenCorrectUsersAreReturned() {
-		Date joinDate = new Date();
-		User user1 = new User();
-		user1.setUsId("testId");
-		user1.setUsPw("testPw");
-		user1.setUsName("testName");
-		user1.setUsJoindate(joinDate);
-		user1.setUsJoinIP("127.0.0.1");
-		entityManager.persist(user1);
 
-
-		User user2 = new User();
-		user2.setUsId("testId2");
-		user2.setUsPw("testPw");
-		user2.setUsName("testName");
-		user2.setUsJoindate(joinDate);
-		user2.setUsJoinIP("127.0.0.1");
-		entityManager.persist(user2);
-
-		List<User> users = userRepository.findUsersByJoindate(joinDate);
-		assertNotNull(users);
-		assertTrue(users.size() >= 2);
-	}
 	/*------------------------------유저레포지토리 끝-------------------*/
 }

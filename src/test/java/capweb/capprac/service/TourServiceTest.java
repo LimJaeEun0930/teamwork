@@ -43,8 +43,6 @@ public class TourServiceTest {
         company.setCpAddr("cpaddr");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.00.1");
         companyRepository.save(company);
         tour = new Tour();
         tour.setTourCpid(company);
@@ -70,8 +68,6 @@ public class TourServiceTest {
         ccompany.setCpAddr("ccpaddr");
         ccompany.setCpMtid("ccpmtid");
         ccompany.setCpMtname("ccpmtname");
-        ccompany.setCpJoindate(date);
-        ccompany.setCpJoinIP("117.00.1");
         companyRepository.save(ccompany);
         //Tour newTour = tourService.createTour(tourDay, tourName, tourRecruitm,company);
         Tour newTour = tourService.createTour(tourDay, tourName, tourRecruitm,ccompany);

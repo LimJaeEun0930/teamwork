@@ -33,8 +33,6 @@ public class UserServiceTest {
         user.setUsId("testUser");
         user.setUsPw("testPass");
         user.setUsName("testName");
-        user.setUsJoindate(new Date());
-        user.setUsJoinIP("127.0.0.1");
         userRepository.save(user);
     }
 
@@ -58,10 +56,9 @@ public class UserServiceTest {
         String usId = "newUser";
         String usPw = "password";
         String usName = "name";
-        String usJoinIP = "127.0.0.1";
 
         // when
-        userService.registerUser(usId, usPw, usName, usJoinIP);
+        userService.registerUser(usId, usPw, usName);
 
         // then
         List<User> newUsers = userRepository.findUserById(usId);
@@ -73,21 +70,17 @@ public class UserServiceTest {
     @Transactional
     public void testUpdateUser() {
         // given
-        userService.registerUser("usid","uspw","usname","usip");
+        userService.registerUser("usid","uspw","usname");
         int usIndex = 1; // 가정: 테스트 데이터의 인덱스
         String newPw = "newPassword";
         String newName = "newName";
-        String newFixIP = "127.0.0.2";
-
-
         // when
-        userService.updateUser(usIndex, newPw, newName, newFixIP);
+        userService.updateUser(usIndex, newPw, newName);
 
         // then
         User updatedUser = userRepository.findUserByIndex(usIndex);
         assertThat(updatedUser.getUsPw()).isEqualTo(newPw);
         assertThat(updatedUser.getUsName()).isEqualTo(newName);
-        assertThat(updatedUser.getUsFixIP()).isEqualTo(newFixIP);
     }
 
     @Test

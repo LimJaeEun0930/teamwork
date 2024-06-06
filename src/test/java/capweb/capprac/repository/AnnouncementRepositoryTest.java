@@ -40,8 +40,6 @@ public class AnnouncementRepositoryTest {
         company.setCpAddr("cpaddr");
         company.setCpName("cpname");
         company.setCpCategory("cpcategory");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.0.0.1");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
         companyRepository.save(company);

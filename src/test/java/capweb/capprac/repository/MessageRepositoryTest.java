@@ -40,8 +40,6 @@ public class MessageRepositoryTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("127.0.0.1");
         meetingRoom = new MeetingRoom();
         meetingRoom.setMrMrid("mrid");
         meetingRoom.setMrName("mrname");
@@ -54,8 +52,6 @@ public class MessageRepositoryTest {
         company.setCpCategory("cpcategory");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.0.0.1");
         userRepository.save(user);
         meetingRoomRepository.save(meetingRoom);
         companyRepository.save(company);

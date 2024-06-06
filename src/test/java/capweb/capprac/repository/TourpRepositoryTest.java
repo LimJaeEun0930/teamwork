@@ -41,8 +41,6 @@ public class TourpRepositoryTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("123.00.1");
         userRepository.save(user);
         company = new Company();
         company.setCpId("cpid");
@@ -52,8 +50,6 @@ public class TourpRepositoryTest {
         company.setCpAddr("cpaddr");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.00.1");
         companyRepository.save(company);
         tour = new Tour();
         tour.setTourCpid(company);
@@ -101,8 +97,6 @@ public class TourpRepositoryTest {
         uuser.setUsId("uusid");
         uuser.setUsPw("uspw");
         uuser.setUsName("uusname");
-        uuser.setUsJoindate(date);
-        uuser.setUsJoinIP("143.00.1");
         userRepository.save(uuser);
         tourp.setTourpUsid(uuser);
         tourpRepository.update(tourp);

@@ -38,16 +38,6 @@ public class Company {
     @Column(nullable = false, length = 20)
     private String cpMtname;//멘토이름
 
-    private Date cpFixdate;//수정일자
-
-    @Column(length = 60)
-    private String cpFixIP;//수정아이피
-
-    @Column(nullable = false)
-    private Date cpJoindate;//가입일자
-
-    @Column(nullable = false, length = 60)
-    private String cpJoinIP;//가입아이피
 }
 
 

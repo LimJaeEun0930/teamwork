@@ -51,7 +51,6 @@ public class UserRepository {
             entityManager.remove(user);
         }
     }
-
     // Read - usId로 User 찾기
     public List<User> findUserById(String usId) {
         TypedQuery<User> query = entityManager.createQuery(
@@ -59,9 +58,6 @@ public class UserRepository {
         query.setParameter("usId", usId);
         return query.getResultList(); // 결과 리스트 반환
     }
-
-
-
     // Read - usName으로 User 찾기
     public List<User> findUsersByName(String usName) {
         TypedQuery<User> query = entityManager.createQuery(
@@ -69,13 +65,7 @@ public class UserRepository {
         query.setParameter("usName", usName);
         return query.getResultList();
     }
-    // Read - usjoindate으로 User 찾기
-    public List<User> findUsersByJoindate(Date usJoindate) {
-        TypedQuery<User> query = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.usJoindate = :usJoindate", User.class);
-        query.setParameter("usJoindate", usJoindate);
-        return query.getResultList();
-    }
+
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

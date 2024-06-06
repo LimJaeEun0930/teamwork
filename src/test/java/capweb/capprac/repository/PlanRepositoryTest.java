@@ -38,8 +38,6 @@ public class PlanRepositoryTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("123.00.1");
         userRepository.save(user);
         company = new Company();
         company.setCpId("cpid");
@@ -49,8 +47,6 @@ public class PlanRepositoryTest {
         company.setCpAddr("cpaddr");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.00.1");
         companyRepository.save(company);
         plan = new Plan();
         plan.setPlanId(date);

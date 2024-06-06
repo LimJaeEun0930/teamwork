@@ -43,8 +43,6 @@ public class TourRepositoryTest {
         company.setCpAddr("cpaddr");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.00.1");
         companyRepository.save(company);
         tour = new Tour();
         tour.setTourCpid(company);

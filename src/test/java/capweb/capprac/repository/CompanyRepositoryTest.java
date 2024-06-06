@@ -27,8 +27,6 @@ public class CompanyRepositoryTest {
         company.setCpName("cpname1");
         company.setCpMtid("cpmtid1");
         company.setCpMtname("cpmtname1");
-        company.setCpJoindate(new Date());
-        company.setCpJoinIP("cpjoinip1");
         companyRepository.save(company);
     }
 
@@ -42,8 +40,6 @@ public class CompanyRepositoryTest {
         company1.setCpName("testcpname");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         // company 속성 설정
         companyRepository.save(company1);
         assertNotNull(company1); // getId()가 생성된 ID를 검색하는 방법이라고 가정
@@ -80,8 +76,6 @@ public class CompanyRepositoryTest {
         company1.setCpName("testcpname");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         int idx = company1.getCpIndex(); // ID 가져오기
         companyRepository.deleteByIndex(idx);
@@ -102,8 +96,6 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompanyById("CP001");
         assertNotNull(found);
@@ -120,8 +112,6 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompanyByName("testcpname");
         assertNotNull(found);
@@ -138,8 +128,6 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompanyByAddr("testcpaddr");
         assertNotNull(found);
@@ -156,8 +144,6 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompaniesByCategory("testcpcategory");
         assertFalse(found.isEmpty());
@@ -174,8 +160,6 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompanyByMtid("testcpmtid");
         assertNotNull(found);
@@ -192,108 +176,15 @@ public class CompanyRepositoryTest {
         company1.setCpId("CP001");
         company1.setCpMtid("testcpmtid");
         company1.setCpMtname("회의1");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
         companyRepository.save(company1);
         List<Company> found = companyRepository.findCompaniesByMtname("회의1");
         assertFalse(found.isEmpty());
         assertEquals("회의1", found.get(0).getCpMtname());
     }
 
-    @Test
-    public void testFindCompaniesByFixdate() {
-        Date fixDate = new Date();
-        Company company1 = new Company();
-        company1.setCpPw("testcppw");
-        company1.setCpAddr("testcpaddr");
-        company1.setCpCategory("testcpcate");
-        company1.setCpName("testcpname");
-        company1.setCpId("CP001");
-        company1.setCpMtid("testcpmtid");
-        company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
-        company1.setCpFixdate(fixDate);
-        companyRepository.save(company1);
-        List<Company> found = companyRepository.findCompaniesByFixdate(fixDate);
-        assertFalse(found.isEmpty());
-        assertEquals(fixDate, found.get(0).getCpFixdate());
-    }
 
-    @Test
-    public void testFindCompaniesByFixIP() {
-        Company company1 = new Company();
-        company1.setCpPw("testcppw");
-        company1.setCpAddr("testcpaddr");
-        company1.setCpCategory("testcpcate");
-        company1.setCpName("testcpname");
-        company1.setCpId("CP001");
-        company1.setCpMtid("testcpmtid");
-        company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
-        company1.setCpFixdate(new Date());
-        company1.setCpFixIP("192.168.0.1");
-        companyRepository.save(company1);
-        List<Company> found = companyRepository.findCompaniesByFixIP("192.168.0.1");
-        assertFalse(found.isEmpty());
-        assertEquals("192.168.0.1", found.get(0).getCpFixIP());
-    }
 
-    @Test
-    public void testFindCompaniesByJoindate() {
-        Date joinDate = new Date();
-        Company company1 = new Company();
-        company1.setCpPw("testcppw");
-        company1.setCpAddr("testcpaddr");
-        company1.setCpCategory("testcpcate");
-        company1.setCpName("testcpname");
-        company1.setCpId("CP001");
-        company1.setCpMtid("testcpmtid");
-        company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(joinDate);
-        company1.setCpJoinIP("testcpjoinip");
-        companyRepository.save(company1);
-        List<Company> found = companyRepository.findCompaniesByJoindate(joinDate);
-        assertFalse(found.isEmpty());
-        assertEquals(joinDate, found.get(0).getCpJoindate());
-    }
 
-    @Test
-    public void testFindCompaniesByJoinIP() {
-        Company company1 = new Company();
-        company1.setCpPw("testcppw");
-        company1.setCpAddr("testcpaddr");
-        company1.setCpCategory("testcpcate");
-        company1.setCpName("testcpname");
-        company1.setCpId("CP001");
-        company1.setCpMtid("testcpmtid");
-        company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("192.168.0.2");
-        companyRepository.save(company1);
-        List<Company> found = companyRepository.findCompaniesByJoinIP("192.168.0.2");
-        assertFalse(found.isEmpty());
-        assertEquals("192.168.0.2", found.get(0).getCpJoinIP());
-    }
-
-    @Test
-    public void testFindCompaniesByAddressContaining() {
-        Company company1 = new Company();
-        company1.setCpPw("testcppw");
-        company1.setCpName("testcpname");
-        company1.setCpId("CP001");
-        company1.setCpMtid("testcpmtid");
-        company1.setCpMtname("testcpmtname");
-        company1.setCpJoindate(new Date());
-        company1.setCpJoinIP("testcpjoinip");
-        company1.setCpAddr("서울시 강남구");
-        company1.setCpCategory("testcpcate");
-        companyRepository.save(company1);
-        List<Company> found = companyRepository.findCompaniesByAddressContaining("강남");
-        assertFalse(found.isEmpty());
-        assertTrue(found.get(0).getCpAddr().contains("강남"));
-    }
 
 // ... 추가적인 메소드들에 대한 테스트를 여기에 구현할 수 있습니다 ...
 

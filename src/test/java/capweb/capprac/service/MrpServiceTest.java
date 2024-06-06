@@ -51,8 +51,6 @@ public class MrpServiceTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("127.0.0.1");
         meetingRoom = new MeetingRoom();
         meetingRoom.setMrMrid("mrid");
         meetingRoom.setMrName("mrname");
@@ -65,8 +63,6 @@ public class MrpServiceTest {
         company.setCpCategory("cpcategory");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.0.0.1");
         userRepository.save(user);
         meetingRoomRepository.save(meetingRoom);
         companyRepository.save(company);
@@ -87,8 +83,6 @@ public class MrpServiceTest {
         upuser.setUsId("upusid");
         upuser.setUsPw("upuspw");
         upuser.setUsName("upusname");
-        upuser.setUsJoindate(update);
-        upuser.setUsJoinIP("123.0.0.1");
         userRepository.save(upuser);
         //Mrp createdMrp = mrpService.createMrp(user, meetingRoom, company);
 

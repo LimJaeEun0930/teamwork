@@ -21,8 +21,7 @@ public class CompanyService {
     //만들기 회사의 모든 사용자아이디,사용자비밀번호,이름,주소,카테고리,멘토아이디,멘토이름,가입날짜,가입아이피등을 필수 입력
     //중복체크해서 있으면 못 만들게 하기
     public Company registerCompany(String cpId, String cpPw, String cpName, String cpAddr,
-                                   String cpCategory, String cpMtid, String cpMtname,
-                                   Date cpJoindate, String cpJoinIP) {
+                                   String cpCategory, String cpMtid, String cpMtname) {
         // 필수값 체크
         if (cpId == null || cpId.trim().isEmpty()) {
             throw new IllegalArgumentException("Company ID cannot be null or empty.");
@@ -45,12 +44,6 @@ public class CompanyService {
         if (cpMtname == null || cpMtname.trim().isEmpty()) {
             throw new IllegalArgumentException("Mentor name cannot be null or empty.");
         }
-        if (cpJoindate == null) {
-            throw new IllegalArgumentException("Join date cannot be null.");
-        }
-        if (cpJoinIP == null || cpJoinIP.trim().isEmpty()) {
-            throw new IllegalArgumentException("Join IP cannot be null or empty.");
-        }
     // 중복 체크
         if (!companyRepository.findCompanyById(cpId).isEmpty() ||
                 !companyRepository.findCompanyByName(cpName).isEmpty()||
@@ -67,9 +60,6 @@ public class CompanyService {
         company.setCpCategory(cpCategory);
         company.setCpMtid(cpMtid);
         company.setCpMtname(cpMtname);
-        company.setCpJoindate(cpJoindate);
-        company.setCpJoinIP(cpJoinIP);
-
         // Company 저장
         companyRepository.save(company);
         return company; // 회원가입 성공
@@ -104,7 +94,7 @@ public class CompanyService {
     // 수정 - cpId, cpMtid, cpJoindate, cpJoinIP 빼고 수정 가능
     //인덱스번호,사용자비번,이름,주소,카테고리,멘토이름,수정일자등 인덱스번호를 통해 수정할수 있는것들을 입력받아서 유니크 필드는 중복검사를 하고 수정해주기
     @Transactional
-    public boolean updateCompany(int cpIndex, String cpPw, String cpName, String cpAddr, String cpCategory, String cpMtname, String cpFixIP) {
+    public boolean updateCompany(int cpIndex, String cpPw, String cpName, String cpAddr, String cpCategory, String cpMtname) {
         Company existingCompany = companyRepository.findCompanyByIndex(cpIndex);
         int chkmodify = 0;
         if (existingCompany != null) {
@@ -134,15 +124,13 @@ public class CompanyService {
                 existingCompany.setCpMtname(cpMtname);
                 chkmodify = 1;
             }
-            if (cpFixIP != null && !cpFixIP.trim().isEmpty()) existingCompany.setCpFixIP(cpFixIP);
             if (chkmodify == 1) {
-                existingCompany.setCpFixdate(new Date());
+                companyRepository.update(existingCompany);
+                return true;
             }
             else {
                 return false;
             }
-            companyRepository.update(existingCompany);
-            return true;
         }
         return false;
     }

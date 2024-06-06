@@ -39,8 +39,6 @@ public class AnnouncementServiceTest {
         company.setCpAddr("cpaddr");
         company.setCpName("cpname");
         company.setCpCategory("cpcategory");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.0.0.1");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
         companyRepository.save(company);
@@ -66,8 +64,6 @@ public class AnnouncementServiceTest {
         ucompany.setCpAddr("ucpaddr");
         ucompany.setCpName("ucpname");
         ucompany.setCpCategory("cpcategory");
-        ucompany.setCpJoindate(date);
-        ucompany.setCpJoinIP("147.0.0.1");
         ucompany.setCpMtid("ucpmtid");
         ucompany.setCpMtname("ucpmtname");
         companyRepository.save(ucompany);

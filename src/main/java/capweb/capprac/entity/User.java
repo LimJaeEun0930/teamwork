@@ -22,20 +22,4 @@ public class User {
 
     @Column(nullable = false, length = 20)
     private String usName;//사용자이름
-
-    private Date usFixdate;//수정일자
-
-    @Column(length = 60)
-    private String usFixIP;//수정아이피
-
-    @Column(nullable = false)
-    private Date usJoindate;//가입일자
-
-    @Column(nullable = false, length = 60)
-    private String usJoinIP;//가입아이피
-
-    public void printfield(){
-        System.out.println(this.usId+this.usPw+this.usName+this.usJoindate+this.usJoinIP);
-    }
-    // Lombok will generate the getters and setters
 }

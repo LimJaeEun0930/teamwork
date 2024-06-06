@@ -98,37 +98,6 @@ public class CompanyRepository {
         query.setParameter("cpMtname", cpMtname);
         return query.getResultList();
     }
-    // Read - cpFixdate로 Company 찾기
-    public List<Company> findCompaniesByFixdate(Date cpFixdate) {
-        TypedQuery<Company> query = entityManager.createQuery(
-                "SELECT c FROM Company c WHERE c.cpFixdate = :cpFixdate", Company.class);
-        query.setParameter("cpFixdate", cpFixdate);
-        return query.getResultList();
-    }
-
-    // Read - cpFixIP로 Company 찾기
-    public List<Company> findCompaniesByFixIP(String cpFixIP) {
-        TypedQuery<Company> query = entityManager.createQuery(
-                "SELECT c FROM Company c WHERE c.cpFixIP = :cpFixIP", Company.class);
-        query.setParameter("cpFixIP", cpFixIP);
-        return query.getResultList();
-    }
-
-    // Read - cpJoindate로 Company 찾기
-    public List<Company> findCompaniesByJoindate(Date cpJoindate) {
-        TypedQuery<Company> query = entityManager.createQuery(
-                "SELECT c FROM Company c WHERE c.cpJoindate = :cpJoindate", Company.class);
-        query.setParameter("cpJoindate", cpJoindate);
-        return query.getResultList();
-    }
-
-    // Read - cpJoinIP로 Company 찾기
-    public List<Company> findCompaniesByJoinIP(String cpJoinIP) {
-        TypedQuery<Company> query = entityManager.createQuery(
-                "SELECT c FROM Company c WHERE c.cpJoinIP = :cpJoinIP", Company.class);
-        query.setParameter("cpJoinIP", cpJoinIP);
-        return query.getResultList();
-    }
 
     // Read - 주소에 특정 문자열을 포함하는 Company 찾기
     public List<Company> findCompaniesByAddressContaining(String address) {

@@ -50,8 +50,6 @@ public class AnmpServiceTest {
         company.setCpAddr("cpaddr");
         company.setCpName("cpname");
         company.setCpCategory("cpcategory");
-        company.setCpJoindate(date);
-        company.setCpJoinIP("127.0.0.1");
         company.setCpMtid("cpmtid");
         company.setCpMtname("cpmtname");
         companyRepository.save(company);
@@ -67,8 +65,6 @@ public class AnmpServiceTest {
         user.setUsId("usid");
         user.setUsPw("uspw");
         user.setUsName("usname");
-        user.setUsJoindate(date);
-        user.setUsJoinIP("127.0.0.1");
         userRepository.save(user);
         anmp = new Anmp();
         anmp.setAnmpUsid(user);
@@ -84,8 +80,6 @@ public class AnmpServiceTest {
         upuser.setUsId("upusid");
         upuser.setUsPw("upuspw");
         upuser.setUsName("upusname");
-        upuser.setUsJoindate(update);
-        upuser.setUsJoinIP("123.0.0.1");
         userRepository.save(upuser);
 //        Anmp createdAnmp = anmpService.createAnmp(user, announcement);
 //

@@ -26,7 +26,7 @@ public class UserService {
     //회원가입
     //유저아이디,유저비밀번호,유저명,가입아이피를 필수로 입력받게하고 유니크필드인 아이디를 중복체크해서 만들어주기
     @Transactional
-    public User registerUser(String usId, String usPw, String usName, String usJoinIP) {
+    public User registerUser(String usId, String usPw, String usName) {
         // 필수값 체크
         if (usId == null || usId.trim().isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty.");
@@ -37,16 +37,11 @@ public class UserService {
         if (usName == null || usName.trim().isEmpty()) {
             throw new IllegalArgumentException("User name cannot be null or empty.");
         }
-        if (usJoinIP == null || usJoinIP.trim().isEmpty()) {
-            throw new IllegalArgumentException("Join IP cannot be null or empty.");
-        }
         if (!isUserExists(usId)) {
             User newUser = new User();
             newUser.setUsId(usId);
             newUser.setUsPw(usPw);
             newUser.setUsName(usName);
-            newUser.setUsJoindate(new Date());
-            newUser.setUsJoinIP(usJoinIP);
             userRepository.save(newUser);
             return newUser;
         } else {
@@ -59,8 +54,8 @@ public class UserService {
     // 사용자 정보 업데이트 - Update user information (except usIndex, usId, usJoindate, usJoinIP)
     //인덱스,비번,유저명,수정아이피를 필수로 입력받게하고 수정필드드만 수정
     @Transactional
-    public boolean updateUser(int usIndex, String usPw, String usName, String usFixIP) {
-        if(usIndex<=0||usPw==null||usPw.trim().isEmpty()||usName==null||usName.trim().isEmpty()||usFixIP==null||usFixIP.trim().isEmpty()){
+    public boolean updateUser(int usIndex, String usPw, String usName) {
+        if(usIndex<=0||usPw==null||usPw.trim().isEmpty()||usName==null||usName.trim().isEmpty()){
             return false;
         }
         User user = userRepository.findUserByIndex(usIndex);
@@ -68,8 +63,6 @@ public class UserService {
             // 인덱스, 아이디, 가입 날짜, 가입 IP는 수정하지 않습니다.
             user.setUsPw(usPw); // 비밀번호 업데이트
             user.setUsName(usName); // 이름 업데이트
-            user.setUsFixdate(new Date()); // 수정 날짜를 현재 날짜로 업데이트
-            user.setUsFixIP(usFixIP); // 수정 IP 업데이트
             userRepository.update(user); // 변경 사항 저장
             return true;
         }
