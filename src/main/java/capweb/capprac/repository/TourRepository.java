@@ -91,6 +91,15 @@ public class TourRepository {
         query.setParameter("tourCpid", tourCpid);
         return query.getResultList();
     }
+    // Read - 회사아이디와 월을 입력받아 해당 견학 찾기 테스트필요
+    public List<Tour> findToursByCompanyIdAndMonth(String companyId, int month) {
+        String jpql = "select t from Tour t where function('MONTH', t.tourDay) = :month and " +
+                "t.tourCpid.cpId = :companyId";
+        TypedQuery<Tour> query = entityManager.createQuery(jpql, Tour.class);
+        query.setParameter("companyId", companyId);
+        query.setParameter("month", month);
+        return query.getResultList();
+    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

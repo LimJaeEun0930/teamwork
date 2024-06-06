@@ -109,6 +109,16 @@ public class AnnouncementService {
     public List<Announcement> getAnnouncementsByCompany(Company anmCpid) {
         return announcementRepository.findAnnouncementsByCompany(anmCpid);
     }
+    //월을 입력받아 해당하는 전체 공지 보기
+    public List<Announcement> getAnnouncementsByMonth(int month) {
+        List<Announcement>announcements=announcementRepository.findAnnouncementsByMonth(month);
+        if(announcements.isEmpty()){
+            throw new IllegalStateException("announcements not found");
+        }
+        else{
+            return announcements;
+        }
+    }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.
 }

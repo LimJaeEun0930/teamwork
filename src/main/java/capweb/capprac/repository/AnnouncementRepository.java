@@ -103,6 +103,14 @@ public class AnnouncementRepository {
         query.setParameter("anmCpid", anmCpid);
         return query.getResultList();
     }
+    //Read - 월을 입력받아 전체 공지를 찾기
+    public List<Announcement> findAnnouncementsByMonth(int month) {
+        String jpql = "select a from Announcement a where function('MONTH', a.anmStartDate) = :month " +
+                "or function('MONTH', a.anmEndDate) = :month";
+        TypedQuery<Announcement> query = entityManager.createQuery(jpql, Announcement.class);
+        query.setParameter("month", month);
+        return query.getResultList();
+    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

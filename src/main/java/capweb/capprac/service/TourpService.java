@@ -24,21 +24,33 @@ public class TourpService {
 
     // 만들기 - 새로운 Tourp 생성 및 저장
     //유저와 견학을 필수로 입력받게 하고 검색해서 없을때만 견학참여자를 만들어주기
+    //현재인원에따라 참가하게 하기   테스트필요
     @Transactional
     public Tourp createTourp(User tourpUsid, Tour tourpTourid) {
         if (tourpUsid == null || tourpTourid == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
-        List<Tourp>existtourps = tourpRepository.findTourpsByUserAndTour(tourpUsid,tourpTourid);
-        if(existtourps.isEmpty()) {
-            Tourp tourp = new Tourp();
-            tourp.setTourpUsid(tourpUsid);
-            tourp.setTourpTourid(tourpTourid);
-            tourpRepository.save(tourp);
-            return tourp;
-        }
-        else{
-            throw new IllegalStateException("사용자는 이미 해당 견학을 담았습니다.");
+
+        // 현재 견학의 참여 인원수를 체크
+        long currentParticipants = tourpRepository.findTourpsCurrentParticipants(tourpTourid);
+
+        // 견학의 제한 인원수를 가져옴
+        int maxParticipants = tourpTourid.getTourRecruitm();
+
+        // 현재 참여 인원수가 제한 인원수를 넘지 않는 경우에만 새로운 참여자를 추가
+        if (currentParticipants < maxParticipants) {
+            List<Tourp> existTourps = tourpRepository.findTourpsByUserAndTour(tourpUsid, tourpTourid);
+            if (existTourps.isEmpty()) {
+                Tourp tourp = new Tourp();
+                tourp.setTourpUsid(tourpUsid);
+                tourp.setTourpTourid(tourpTourid);
+                tourpRepository.save(tourp);
+                return tourp;
+            } else {
+                throw new IllegalStateException("사용자는 이미 해당 견학을 담았습니다.");
+            }
+        } else {
+            throw new IllegalStateException("견학의 참여 인원수가 이미 최대입니다.");
         }
     }
     // 삭제 - tourpIndex로 Tourp 삭제

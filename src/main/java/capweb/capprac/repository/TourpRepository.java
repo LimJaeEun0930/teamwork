@@ -95,5 +95,12 @@ public class TourpRepository {
     //        System.out.println(tourName);
     //    }
 
+    // 견학의 현재 참여 인원수를 체크하는 메소드 테스트필요
+    public long findTourpsCurrentParticipants(Tour tourpTourid) {
+        String jpql = "select count(tp) from Tourp tp where tp.tourpTourid = :tourpTourid";
+        TypedQuery<Long> countQuery = entityManager.createQuery(jpql, Long.class);
+        countQuery.setParameter("tourpTourid", tourpTourid);
+        return countQuery.getSingleResult();
+    }
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

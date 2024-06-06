@@ -85,6 +85,15 @@ public class AnmpRepository {
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
+    //Read - 사용자아이디와 월을 입력받아 해당하는 참여하는 공지 찾기
+    public List<Anmp> findAnnouncementsByUserIdAndMonth(String userId, int month) {
+        String jpql = "select a from Anmp a where function('MONTH', a.anmpAnmid.anmStartDate) = :month " +
+                "and a.anmpUsid.usId = :userId";
+        TypedQuery<Anmp> query = entityManager.createQuery(jpql, Anmp.class);
+        query.setParameter("userId", userId);
+        query.setParameter("month", month);
+        return query.getResultList();
+    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

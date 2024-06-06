@@ -92,6 +92,20 @@ public class AnmpService {
             return findanmps;
         }
     }
+    //유저아이디와 월을 입력받아 해당하는 담은 공지 찾기
+    public List<Anmp> getAnnouncementsByUserIdAndMonth(String userId, int month) {
+        List<User>findusers=userRepository.findUserById(userId);
+        if(findusers.isEmpty()){
+            throw new IllegalArgumentException("users not found");
+        }
+        List<Anmp>findanmps=anmpRepository.findAnnouncementsByUserIdAndMonth(userId, month);
+        if(findanmps.isEmpty()){
+            throw new IllegalStateException("anmps not found");
+        }
+        else{
+            return findanmps;
+        }
+    }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.
 }
