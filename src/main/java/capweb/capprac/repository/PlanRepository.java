@@ -61,7 +61,7 @@ public class PlanRepository {
         return query.getResultList();
     }
 
-    // Read - planUsid로 Plan 찾기
+    // Read - planUsid로 Plan 찾기----!!!조회할때 필요!!!
     public List<Plan> findPlansByUser(User planUsid) {
         TypedQuery<Plan> query = entityManager.createQuery(
                 "SELECT p FROM Plan p WHERE p.planUsid = :planUsid", Plan.class);
@@ -69,7 +69,7 @@ public class PlanRepository {
         return query.getResultList();
     }
 
-    // Read - planCpid로 Plan 찾기
+    // Read - planCpid로 Plan 찾기----!!!조회할때 필요!!!
     public List<Plan> findPlansByCompany(Company planCpid) {
         TypedQuery<Plan> query = entityManager.createQuery(
                 "SELECT p FROM Plan p WHERE p.planCpid = :planCpid", Plan.class);
@@ -110,7 +110,7 @@ public class PlanRepository {
         query.setParameter("planCpid", planCpid);
         return query.getResultList();
     }
-    //Read - 아이디와 월을 입력받아 해당하는 Plan 찾기
+    //Read - 아이디와 월을 입력받아 해당하는 Plan 찾기---!!!조회할때 필요!!!
     public List<Plan> findPlansByUserIdAndMonth(String userId, int month) {
         String jpql = "select p from Plan p where function('MONTH', p.planId) = :month and " +
                 "(p.planUsid.usId = :userId or p.planCpid.cpId = :userId)";

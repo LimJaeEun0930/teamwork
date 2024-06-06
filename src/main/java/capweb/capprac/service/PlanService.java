@@ -24,7 +24,7 @@ public class PlanService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    //일정아이디,일정명을 필수 유저와 회사를 선택받아 입력받게 하고 옵션값을 넣고 일정을 만들기
+    //일정아이디,일정명을 필수 유저와 회사를 선택받아 입력받게 하고 옵션값을 넣고 일정을 만들기-----!!!!!구현필요!!!!!
     @Transactional
     public Plan createPlan(Date planId, String planName, User user, Company company) {
         // 필수값 체크
@@ -54,7 +54,7 @@ public class PlanService {
 
 
 
-    // 수정 - Plan의 planId와 planName 수정
+    // 수정 - Plan의 planId와 planName 수정-----!!!!!구현 필요!!!!!
     public boolean updatePlan(int planIndex, Date newPlanId, String newPlanName) {
         Plan plan = planRepository.findPlanByIndex(planIndex);
         if (plan != null && newPlanId != null && (newPlanName != null&&!newPlanName.trim().isEmpty())) {
@@ -66,7 +66,7 @@ public class PlanService {
         return false; // 해당 인덱스의 Plan이 없으면 수정 실패
     }
 
-    // 삭제 - planIndex로 Plan 삭제
+    // 삭제 - planIndex로 Plan 삭제-------!!!!!구현 필요!!!!!(특정 일정레코드를 선택해서 인덱스번호를 추출할수있다는 가정)
     public boolean deletePlan(int planIndex) {
         Plan plan = planRepository.findPlanByIndex(planIndex);
         if (plan != null) {
@@ -90,12 +90,12 @@ public class PlanService {
         return planRepository.findPlansByName(planName);
     }
 
-    // 조회 - planUsid로 Plan 찾기
+    // 조회 - planUsid로 Plan 찾기-----!!!조회에 필요!!!!
     public List<Plan> getPlansByUser(User planUsid) {
         return planRepository.findPlansByUser(planUsid);
     }
 
-    // 조회 - planCpid로 Plan 찾기
+    // 조회 - planCpid로 Plan 찾기------!!!!조회에 필요!!!!!
     public List<Plan> getPlansByCompany(Company planCpid) {
         return planRepository.findPlansByCompany(planCpid);
     }
@@ -119,7 +119,7 @@ public class PlanService {
     public List<Plan> getPlansByDateAndCompany(Date planId, Company planCpid) {
         return planRepository.findPlansByDateAndCompany(planId, planCpid);
     }
-    //아이디와 월을 입력받아 아이디 체크하고  해당하는 일정 찾기
+    //아이디와 월을 입력받아 아이디 체크하고  해당하는 일정 찾기----!!!조회할때 필요!!!
     public List<Plan> getPlansByUserIdAndMonth(String userId, int month) {
         List<User>existusers=userRepository.findUserById(userId);
         List<Company>existcompanies=companyRepository.findCompanyById(userId);
