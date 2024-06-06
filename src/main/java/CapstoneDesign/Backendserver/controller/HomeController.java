@@ -1,8 +1,11 @@
 package CapstoneDesign.Backendserver.controller;
 
 import CapstoneDesign.Backendserver.SessionConst;
+import CapstoneDesign.Backendserver.domain.Board;
+import CapstoneDesign.Backendserver.domain.JobCategory;
 import CapstoneDesign.Backendserver.domain.User;
 import CapstoneDesign.Backendserver.domain.UserLogin;
+import CapstoneDesign.Backendserver.service.BoardService;
 import CapstoneDesign.Backendserver.service.MailService;
 import CapstoneDesign.Backendserver.service.UserService;
 import CapstoneDesign.Backendserver.validator.LoginValidator;
@@ -13,6 +16,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +35,7 @@ import java.net.http.HttpRequest;
 @RequiredArgsConstructor
 public class HomeController {
 
-
+    private final BoardService boardService;
     private final UserService userService;
     private final MailService mailService;
     private final LoginValidator loginValidator;
@@ -41,9 +47,13 @@ public class HomeController {
         dataBinder.addValidators(loginValidator);
     }
 
+    @ModelAttribute("jobCategory")
+    public JobCategory[] JobCategories() {
+        return JobCategory.values();
+    }
 
     @GetMapping
-    public String mainPage(Model model,HttpServletRequest request)
+    public String mainPage(Model model, HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable)
     {
 
         HttpSession session = request.getSession(false);
@@ -54,12 +64,24 @@ public class HomeController {
         //login
         //log.info("InitBinder에 userLogin안써주면 여기서 터짐.");
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        if (loginUser == null) {
-            log.info("user in session is null");
-            return "home";
-        }
+
+        Page<Board> boardList = boardService.paging(pageable);
+        int blockLimit = 3;
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("selectedCategory", null);
         model.addAttribute("user", loginUser);
-        return "loginHome";
+        return "home";
+//        if (loginUser == null) {
+//            log.info("user in session is null");
+//            return "home";
+//        }
+//        model.addAttribute("user", loginUser);
+//        return "loginHome";
     }
 
     @GetMapping("login")

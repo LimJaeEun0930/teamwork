@@ -5,7 +5,6 @@ import CapstoneDesign.Backendserver.service.MailService;
 import CapstoneDesign.Backendserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ public class RegisterController {
 
     @GetMapping("entrance/normal")
     public String register_normal_user_entrance(@ModelAttribute("user") User user, Model model){
-        return "register";
+        return "register_normalUser";
     }
 
     @GetMapping("entrance/mentor")
@@ -39,7 +38,7 @@ public class RegisterController {
         log.info("{}", user.getName());
         log.info("{}", user.getBirth());
         if (bindingResult.hasErrors()) {
-            return "/register";
+            return "register_normalUser";
         }
         userService.join(user);
 
