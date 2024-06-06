@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.thymeleaf.util.DateUtils.month;
 
 @SpringBootTest
 @Transactional
@@ -158,13 +159,13 @@ public class TourpServiceTest {
     public void testGetTourpsByUserIdAndMonth_UserFound() {
         // 테스트 데이터 준비
         String userId = "usid";
-        int month = 5; // 5월을 의미
+        int month = month(date); // 5월을 의미
 
         // 테스트 실행
         List<Tourp> tourps = tourpService.getTourpsByUserIdAndMonth(userId, month);
 
         // 검증
-        assertThat(tourps).isNotNull();
+        assertThat(tourps).isNotEmpty();
         //assertThat(tourps.size()).isGreaterThan(0); // 실제 데이터가 있다고 가정할 때
         // 추가적인 검증 로직...
     }

@@ -82,7 +82,13 @@ public class TourpService {
         if(existusers.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }
-        return tourpRepository.findTourpsByUserIdAndMonth(userId, month);
+        List<Tourp>findtourps=tourpRepository.findTourpsByUserIdAndMonth(userId, month);
+        if(findtourps.isEmpty()) {
+            throw new IllegalArgumentException("tourp not found");
+        }
+        else {
+            return findtourps;
+        }
     }
 }
 

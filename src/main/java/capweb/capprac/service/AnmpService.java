@@ -84,7 +84,13 @@ public class AnmpService {
         if(existuser.isEmpty()){
             throw new IllegalArgumentException("User ID not found");
         }
-        return anmpRepository.findAnmpsByUserAndDateRange(userId, startDate, endDate);
+        List<Anmp>findanmps=anmpRepository.findAnmpsByUserAndDateRange(userId, startDate, endDate);
+        if(findanmps.isEmpty()){
+            throw new IllegalArgumentException("anmp not found");
+        }
+        else{
+            return findanmps;
+        }
     }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.

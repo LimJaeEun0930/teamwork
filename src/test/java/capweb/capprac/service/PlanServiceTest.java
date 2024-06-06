@@ -252,7 +252,7 @@ public class PlanServiceTest {
         List<Plan> plans = planService.getPlansByUserIdAndMonth(userId, month);
 
         // 검증
-        assertThat(plans).isNotNull();
+        assertThat(plans).isNotEmpty();
         //assertThat(plans.size()).isGreaterThan(0); // 실제 데이터가 있다고 가정할 때
         // 추가적인 검증 로직...
     }

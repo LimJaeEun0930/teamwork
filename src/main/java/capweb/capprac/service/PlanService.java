@@ -126,7 +126,12 @@ public class PlanService {
         if(existusers.isEmpty()&&existcompanies.isEmpty()){
             throw new IllegalArgumentException("User not found");
         }
-        return planRepository.findPlansByUserIdAndMonth(userId, month);
+
+        List<Plan>findplans=planRepository.findPlansByUserIdAndMonth(userId, month);
+        if(findplans.isEmpty()){
+            throw new IllegalArgumentException("plans not found");
+        }
+        else return findplans;
     }
 
     // 추가적인 서비스 메소드들...
