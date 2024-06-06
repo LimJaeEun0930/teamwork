@@ -154,4 +154,18 @@ public class TourpRepositoryTest {
         //assertThat(tourps.get(0).getTourpUsid()).isEqualTo(user);
         //assertThat(tourps.get(0).getTourpTourid()).isEqualTo(tour);
     }
+    @Test
+    public void testFindTourpsByUserIdAndMonth() {
+        // 테스트 데이터 준비
+        String userId = "usid";
+        int month = 5; // 5월을 의미
+
+        // 테스트 실행
+        List<Tourp> tourps = tourpRepository.findTourpsByUserIdAndMonth(userId, month);
+
+        // 검증
+        assertThat(tourps).isNotNull();
+        //assertThat(tourps.size()).isGreaterThan(0); // 실제 데이터가 있다고 가정할 때
+        // 추가적인 검증 로직...
+    }
 }

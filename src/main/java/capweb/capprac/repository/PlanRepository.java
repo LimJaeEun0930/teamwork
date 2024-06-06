@@ -110,6 +110,15 @@ public class PlanRepository {
         query.setParameter("planCpid", planCpid);
         return query.getResultList();
     }
+    //Read - 아이디와 월을 입력받아 해당하는 Plan 찾기
+    public List<Plan> findPlansByUserIdAndMonth(String userId, int month) {
+        String jpql = "select p from Plan p where function('MONTH', p.planId) = :month and " +
+                "(p.planUsid.usId = :userId or p.planCpid.cpId = :userId)";
+        TypedQuery<Plan> query = entityManager.createQuery(jpql, Plan.class);
+        query.setParameter("userId", userId);
+        query.setParameter("month", month);
+        return query.getResultList();
+    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

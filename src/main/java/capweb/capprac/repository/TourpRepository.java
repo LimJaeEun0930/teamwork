@@ -77,6 +77,23 @@ public class TourpRepository {
         query.setParameter("tourpTourid", tourpTourid);
         return query.getResultList();
     }
+    // Read - 유저아이디와 월을 입력받아 해당하는 Tourp 찾기
+    public List<Tourp> findTourpsByUserIdAndMonth(String userId, int month) {
+        String jpql = "select tp from Tourp tp where function('MONTH', tp.tourpTourid.tourDay) = :month and " +
+                "tp.tourpUsid.usId = :userId";
+        TypedQuery<Tourp> query = entityManager.createQuery(jpql, Tourp.class);
+        query.setParameter("userId", userId);
+        query.setParameter("month", month);
+        return query.getResultList();
+    }
+    //해당하는 투어이름 출력
+    //    List<Tourp> tourpList = // ... 여기에는 findTourpsByUserIdAndMonth 메소드의 결과가 들어갑니다.
+    //
+    //for (Tourp tourp : tourpList) {
+    //        Tour tour = tourp.getTourpTourid();
+    //        String tourName = tour.getTourName();
+    //        System.out.println(tourName);
+    //    }
 
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }

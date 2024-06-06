@@ -192,4 +192,19 @@ public class PlanRepositoryTest {
         assertThat(plans.get(0).getPlanId()).isEqualTo(planDate);
         assertThat(plans.get(0).getPlanCpid()).isEqualTo(company);
     }
+    @Test
+    public void testFindPlansByUserIdAndMonth() {
+        // 테스트 데이터 준비
+        String userId = "usid";
+        int month = 5; // 5월을 의미
+
+        // 테스트 실행
+        List<Plan> plans = planRepository.findPlansByUserIdAndMonth(userId, month);
+
+        // 검증
+        assertThat(plans).isNotNull();
+        //assertThat(plans.size()).isGreaterThan(0); // 실제 데이터가 있다고 가정할 때
+        //assertThat(plans.get(0).getPlanUsid().getUsId()).isEqualTo(userId);
+        // 추가적인 검증 로직...
+    }
 }

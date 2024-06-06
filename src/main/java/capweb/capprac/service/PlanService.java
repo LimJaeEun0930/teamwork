@@ -1,9 +1,12 @@
 package capweb.capprac.service;
 
+//import CapstoneDesign.Backendserver.repository.UserRepository;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.Plan;
 import capweb.capprac.entity.User;
+import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.PlanRepository;
+import capweb.capprac.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,10 @@ public class PlanService {
 
     @Autowired
     private PlanRepository planRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     //일정아이디,일정명을 필수 유저와 회사를 선택받아 입력받게 하고 옵션값을 넣고 일정을 만들기
     @Transactional
@@ -111,6 +118,15 @@ public class PlanService {
     // planId와 산업체아이디로 Plan 찾기
     public List<Plan> getPlansByDateAndCompany(Date planId, Company planCpid) {
         return planRepository.findPlansByDateAndCompany(planId, planCpid);
+    }
+    //아이디와 월을 입력받아 아이디 체크하고  해당하는 일정 찾기
+    public List<Plan> getPlansByUserIdAndMonth(String userId, int month) {
+        List<User>existusers=userRepository.findUserById(userId);
+        List<Company>existcompanies=companyRepository.findCompanyById(userId);
+        if(existusers.isEmpty()&&existcompanies.isEmpty()){
+            throw new IllegalArgumentException("User not found");
+        }
+        return planRepository.findPlansByUserIdAndMonth(userId, month);
     }
 
     // 추가적인 서비스 메소드들...

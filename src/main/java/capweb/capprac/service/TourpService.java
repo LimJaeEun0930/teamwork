@@ -76,6 +76,14 @@ public class TourpService {
     public List<Tourp> getTourpsByUserAndTour(User tourpUsid, Tour tourpTourid) {
         return tourpRepository.findTourpsByUserAndTour(tourpUsid, tourpTourid);
     }
+    //아이디와 월을 입력받아 아이디를 체크하고 해당하는 견학 찾기
+    public List<Tourp> getTourpsByUserIdAndMonth(String userId, int month) {
+        List<User>existusers=userRepository.findUserById(userId);
+        if(existusers.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return tourpRepository.findTourpsByUserIdAndMonth(userId, month);
+    }
+}
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.
-}
