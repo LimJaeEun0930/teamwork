@@ -86,7 +86,7 @@ public class AnmpServiceTest {
 //        assertNotNull(createdAnmp);
 //        assertEquals(user, createdAnmp.getAnmpUsid());
 //        assertEquals(announcement, createdAnmp.getAnmpAnmid());
-        Anmp createdAnmp = anmpService.createAnmp(upuser, announcement);
+        Anmp createdAnmp = anmpService.createAnmp(anmp);
         assertNotNull(createdAnmp);
       assertEquals(upuser, createdAnmp.getAnmpUsid());
       assertEquals(announcement, createdAnmp.getAnmpAnmid());

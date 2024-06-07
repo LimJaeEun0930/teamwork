@@ -8,6 +8,7 @@ import capweb.capprac.repository.USerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Date;
 import java.util.List;
@@ -21,23 +22,31 @@ public class AnmpService {
     private AnmpRepository anmpRepository;
 
     // 만들기 - 새로운 Anmp 생성 및 저장
-    //사용자가 동일 공지 참여 못하게 막고, 사용자아이디와 공지아이디를 반드시 입력
     @Transactional
-    public Anmp createAnmp(USer anmpUsid, Announcement anmpAnmid) {
-        List<Anmp>existanmps = anmpRepository.findAnmpsByUserAndAnnouncement(anmpUsid,anmpAnmid);
-        if(!existanmps.isEmpty()){
-            throw new IllegalStateException("사용자는 이미 이 공지에 참여하고 있습니다.");
-        }
-        if (anmpUsid == null || anmpAnmid == null) {
+    public Anmp createAnmp(@ModelAttribute Anmp anmp) {
+        if (anmp.getAnmpUsid() == null || anmp.getAnmpAnmid() == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
-        Anmp anmp = new Anmp();
-        anmp.setAnmpUsid(anmpUsid);
-        anmp.setAnmpAnmid(anmpAnmid);
+
+        List<Anmp> existanmps = anmpRepository.findAnmpsByUserAndAnnouncement(anmp.getAnmpUsid(), anmp.getAnmpAnmid());
+        if (!existanmps.isEmpty()) {
+            throw new IllegalStateException("사용자는 이미 이 공지에 참여하고 있습니다.");
+        }
+
         anmpRepository.save(anmp);
         return anmp;
     }
 
+    // 삭제 - anmpIndex로 Anmp 삭제
+    @Transactional
+    public boolean deleteAnmp(int anmpIndex) {
+        Anmp anmp = anmpRepository.findAnmpByIndex(anmpIndex);
+        if (anmp != null) {
+            anmpRepository.deleteByIndex(anmpIndex);
+            return true;
+        }
+        return false;
+    }
 
     // 조회 - 모든 Anmp 찾기
     public List<Anmp> getAllAnmps() {
@@ -64,48 +73,30 @@ public class AnmpService {
         return anmpRepository.findAnmpsByUserAndAnnouncement(anmpUsid, anmpAnmid);
     }
 
-    // 삭제 - anmpIndex로 Anmp 삭제
-    @Transactional
-    public boolean deleteAnmp(int anmpIndex) {
-        Anmp danmp = anmpRepository.findAnmpByIndex(anmpIndex);
-        if(danmp!=null) {
-            anmpRepository.deleteByIndex(anmpIndex);
-            return true;
-        }
-        return false;
-    }
-
-    //조회- 유저아이디와 기간을 입력받아 참여한 공지 찾기(널이거나 아이디가 없을때 예외처리)
+    // 조회- 유저아이디와 기간을 입력받아 참여한 공지 찾기
     public List<Anmp> getUserAnnouncements(String userId, Date startDate, Date endDate) {
         if (userId == null || userId.trim().isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
-         List<USer>existuser =  userRepository.findUserById(userId);
-        if(existuser.isEmpty()){
+
+        List<USer> user = userRepository.findUserById(userId);
+        if (user.isEmpty()) {
             throw new IllegalArgumentException("User ID not found");
         }
-        List<Anmp>findanmps=anmpRepository.findAnmpsByUserAndDateRange(userId, startDate, endDate);
-        if(findanmps.isEmpty()){
-            throw new IllegalArgumentException("anmp not found");
-        }
-        else{
-            return findanmps;
-        }
+
+        return anmpRepository.findAnmpsByUserAndDateRange(user.get(0).getUsId(), startDate, endDate);
     }
-    //유저아이디와 월을 입력받아 해당하는 담은 공지 찾기
+
+    // 조회- 유저아이디와 월을 입력받아 해당하는 담은 공지 찾기
     public List<Anmp> getAnnouncementsByUserIdAndMonth(String userId, int month) {
-        List<USer>findusers=userRepository.findUserById(userId);
-        if(findusers.isEmpty()){
-            throw new IllegalArgumentException("users not found");
+        List<USer> user = userRepository.findUserById(userId);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("User ID not found");
         }
-        List<Anmp>findanmps=anmpRepository.findAnnouncementsByUserIdAndMonth(userId, month);
-        if(findanmps.isEmpty()){
-            throw new IllegalStateException("anmps not found");
-        }
-        else{
-            return findanmps;
-        }
+
+        return anmpRepository.findAnnouncementsByUserIdAndMonth(user.get(0).getUsId(), month);
     }
 
     // 추가적인 서비스 메소드들을 여기에 구현할 수 있습니다.
 }
+

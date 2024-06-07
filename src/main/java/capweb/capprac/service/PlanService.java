@@ -10,6 +10,7 @@ import capweb.capprac.repository.USerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Date;
 import java.util.List;
@@ -24,56 +25,46 @@ public class PlanService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    //일정아이디,일정명을 필수 유저와 회사를 선택받아 입력받게 하고 옵션값을 넣고 일정을 만들기-----!!!!!구현필요!!!!!
+    // 일정 생성 - 필수값인 일정아이디와 일정명을 받고, 유저와 회사는 선택적으로 받음
     @Transactional
-    public Plan createPlan(Date planId, String planName, USer user, Company company) {
+    public Plan createPlan(@ModelAttribute Plan plan) {
         // 필수값 체크
-        if (planId == null) {
-            throw new IllegalArgumentException("Plan date cannot be null.");
-        }
-        if (planName == null || planName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Plan name cannot be null or empty.");
-        }
-        if (user == null && company == null) {
-            throw new IllegalArgumentException("Either user or company must be provided.");
+        if (plan.getPlanId() == null || plan.getPlanName().trim().isEmpty()) {
+            throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
 
-        Plan plan = new Plan();
-        plan.setPlanId(planId);
-        plan.setPlanName(planName);
-        if (user != null) {
-            plan.setPlanUsid(user); // 유저 아이디가 비어있지 않을 경우
-            plan.setPlanOpt(1);
-        } else {
-            plan.setPlanCpid(company); // 산업체 아이디가 비어있지 않을 경우
-            plan.setPlanOpt(2);
+        // 유저 또는 회사 제공 여부 확인
+        if (plan.getPlanUsid() == null && plan.getPlanCpid() == null) {
+            throw new IllegalArgumentException("유저 또는 회사 중 하나는 제공되어야 합니다.");
         }
+
+        // 유저 또는 회사에 따라 옵션 설정
+        plan.setPlanOpt(plan.getPlanUsid() != null ? 1 : 2);
+
         planRepository.save(plan);
         return plan;
     }
 
-
-
-    // 수정 - Plan의 planId와 planName 수정-----!!!!!구현 필요!!!!!
-    public boolean updatePlan(int planIndex, Date newPlanId, String newPlanName) {
-        Plan plan = planRepository.findPlanByIndex(planIndex);
-        if (plan != null && newPlanId != null && (newPlanName != null&&!newPlanName.trim().isEmpty())) {
-            plan.setPlanId(newPlanId);
-            plan.setPlanName(newPlanName);
-            planRepository.update(plan);
-            return true; // 수정 성공
+    // 일정 수정 - planIndex를 사용하여 Plan의 planId와 planName 수정
+    public boolean updatePlan(@ModelAttribute Plan plan) {
+        Plan existingPlan = planRepository.findPlanByIndex(plan.getPlanIndex());
+        if (existingPlan != null) {
+            existingPlan.setPlanId(plan.getPlanId());
+            existingPlan.setPlanName(plan.getPlanName());
+            planRepository.save(existingPlan);
+            return true;
         }
-        return false; // 해당 인덱스의 Plan이 없으면 수정 실패
+        return false;
     }
 
-    // 삭제 - planIndex로 Plan 삭제-------!!!!!구현 필요!!!!!(특정 일정레코드를 선택해서 인덱스번호를 추출할수있다는 가정)
+    // 일정 삭제 - planIndex를 사용하여 Plan 삭제
     public boolean deletePlan(int planIndex) {
         Plan plan = planRepository.findPlanByIndex(planIndex);
         if (plan != null) {
-            planRepository.deleteByIndex(planIndex);
-            return true; // 삭제 성공
+            planRepository.deleteByIndex(plan.getPlanIndex());
+            return true;
         }
-        return false; // 해당 인덱스의 Plan이 없으면 삭제 실패
+        return false;
     }
     // 조회 - planIndex로 Plan 찾기
     public Plan getPlanByIndex(int planIndex) {
@@ -110,12 +101,12 @@ public class PlanService {
         return planRepository.findPlansByOption(planOpt);
     }
 
-    // planId와 유저아이디로 Plan 찾기
+    // planId와 유저아이디로 Plan 찾기----조회에 필요----
     public List<Plan> getPlansByDateAndUser(Date planId, USer planUsid) {
         return planRepository.findPlansByDateAndUser(planId, planUsid);
     }
 
-    // planId와 산업체아이디로 Plan 찾기
+    // planId와 산업체아이디로 Plan 찾기-----조회에 필요----
     public List<Plan> getPlansByDateAndCompany(Date planId, Company planCpid) {
         return planRepository.findPlansByDateAndCompany(planId, planCpid);
     }

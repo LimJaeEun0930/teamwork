@@ -70,7 +70,7 @@ public class AnnouncementServiceTest {
 
         // 저장 및 검증
         //Announcement createdAnnouncement = announcementService.createAnnouncement("New Announcement", startDate, endDate, "Full-time", 5, company);
-        Announcement createdAnnouncement = announcementService.createAnnouncement("New Announcement", startDate, endDate, "Full-time", 5, ucompany);
+        Announcement createdAnnouncement = announcementService.createAnnouncement(announcement);
         assertNotNull(createdAnnouncement);
         assertEquals("New Announcement", createdAnnouncement.getAnmName());
         assertEquals(startDate, createdAnnouncement.getAnmStartDate());
@@ -90,7 +90,7 @@ public class AnnouncementServiceTest {
     public void testUpdateAnnouncement() {
        Date startDate = new Date();
        Date endDate = new Date();
-        announcementService.updateAnnouncement(1, "Updated Announcement", startDate, endDate, "Part-time", 10,company);
+        announcementService.updateAnnouncement(announcement);
         assertNotNull(announcementRepository.findAnnouncementByIndex(1));
         //assertEquals("Updated Announcement",announcementRepository.findAnnouncementByIndex(1).getAnmName());
         //assertEquals("Part-time",announcementRepository.findAnnouncementByIndex(1).getAnmEmptype());
