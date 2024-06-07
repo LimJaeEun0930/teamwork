@@ -71,7 +71,7 @@ public class AnnouncementService {
         existingAnnouncement.setAnmEndDate(announcement.getAnmEndDate());
         existingAnnouncement.setAnmEmptype(announcement.getAnmEmptype());
         existingAnnouncement.setAnmRecruitm(announcement.getAnmRecruitm());
-        announcementRepository.save(existingAnnouncement);
+        announcementRepository.update(existingAnnouncement);
         return true;
     }
 

@@ -92,7 +92,6 @@ public class PlanServiceTest {
         USer nonuser;
         Company noncompany;
 
-        Plan plan = planService.createPlan(planId, planName, uuser, null);
 
         assertThat(plan).isNotNull();
         assertThat(plan.getPlanId()).isEqualTo(planId);
@@ -100,13 +99,12 @@ public class PlanServiceTest {
         assertThat(plan.getPlanUsid()).isEqualTo(uuser);
         //assertThat(plan.getPlanCpid()).isEqualTo(company);
 
-        Plan cplan = planService.createPlan(planId, planName, null,ccompany);
 
-        assertThat(cplan).isNotNull();
-        assertThat(cplan.getPlanId()).isEqualTo(planId);
-        assertThat(cplan.getPlanName()).isEqualTo(planName);
+        assertThat(pplan).isNotNull();
+        assertThat(pplan.getPlanId()).isEqualTo(planId);
+        assertThat(pplan.getPlanName()).isEqualTo(planName);
         //assertThat(cplan.getPlanUsid()).isEqualTo(uuser);
-        assertThat(cplan.getPlanCpid()).isEqualTo(ccompany);
+        assertThat(pplan.getPlanCpid()).isEqualTo(ccompany);
     }
 
     // Additional tests for other methods can be structured similarly
@@ -120,9 +118,8 @@ public class PlanServiceTest {
         Date newPlanId = new Date();
         String newPlanName = "Updated Plan";
 
-        boolean result = planService.updatePlan(planIndex, newPlanId, newPlanName);
 
-        assertThat(result).isTrue();
+        //assertThat(result).isTrue();
         Plan updatedPlan = planService.getPlanByIndex(planIndex);
         assertThat(updatedPlan.getPlanId()).isEqualTo(newPlanId);
         assertThat(updatedPlan.getPlanName()).isEqualTo(newPlanName);

@@ -46,18 +46,20 @@ public class PlanService {
     }
 
     // 일정 수정 - planIndex를 사용하여 Plan의 planId와 planName 수정
+    @Transactional
     public boolean updatePlan(@ModelAttribute Plan plan) {
         Plan existingPlan = planRepository.findPlanByIndex(plan.getPlanIndex());
         if (existingPlan != null) {
             existingPlan.setPlanId(plan.getPlanId());
             existingPlan.setPlanName(plan.getPlanName());
-            planRepository.save(existingPlan);
+            planRepository.update(existingPlan);
             return true;
         }
         return false;
     }
 
     // 일정 삭제 - planIndex를 사용하여 Plan 삭제
+    @Transactional
     public boolean deletePlan(int planIndex) {
         Plan plan = planRepository.findPlanByIndex(planIndex);
         if (plan != null) {

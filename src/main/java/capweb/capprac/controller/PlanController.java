@@ -1,111 +1,111 @@
 package capweb.capprac.controller;
 
-import CapstoneDesign.Backendserver.repository.UserRepository;
 import capweb.capprac.entity.Company;
-import capweb.capprac.entity.Plan;
 import capweb.capprac.entity.USer;
-import capweb.capprac.repository.CompanyRepository;
-import capweb.capprac.repository.PlanRepository;
-import capweb.capprac.repository.USerRepository;
-import capweb.capprac.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import capweb.capprac.entity.Plan;
+import capweb.capprac.service.PlanService;
 
 import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/plan")
+@RequestMapping("/plans")
 public class PlanController {
 
     @Autowired
     private PlanService planService;
-    @Autowired
-    private USerRepository userRepository;
-    @Autowired
-    private PlanRepository planRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
 
+    // 일정 생성
     @PostMapping("/create")
-    public String createPlan(@RequestParam Date planId, @RequestParam String planName, @RequestParam(required = false) USer user, @RequestParam(required = false) Company company) {
-        planService.createPlan(planId, planName, user, company);
-        return "redirect:/plan/all";
+    public String createPlan(@ModelAttribute Plan plan) {
+        planService.createPlan(plan);
+        return "redirect:/plans";
     }
 
-    @PostMapping("/update")
-    public String updatePlan(@RequestParam int planIndex, @RequestParam Date newPlanId, @RequestParam String newPlanName) {
-        boolean success = planService.updatePlan(planIndex, newPlanId, newPlanName);
-        if (success) {
-            return "redirect:/plan/all";
-        } else {
-            return "redirect:/plan/error";
-        }
+    // 일정 수정
+    @PostMapping("/update/{planIndex}")
+    public String updatePlan(@PathVariable int planIndex, @ModelAttribute Plan plan) {
+        planService.updatePlan(plan);
+        return "redirect:/plans";
     }
 
+    // 일정 삭제
     @GetMapping("/delete/{planIndex}")
     public String deletePlan(@PathVariable int planIndex) {
-        boolean success = planService.deletePlan(planIndex);
-        if (success) {
-            return "redirect:/plan/all";
-        } else {
-            return "redirect:/plan/error";
-        }
+        planService.deletePlan(planIndex);
+        return "redirect:/plans";
     }
+
     // planIndex로 Plan 찾기
     @GetMapping("/{planIndex}")
-    public String getPlanByIndex(@PathVariable int planIndex, Model model) {
-        Plan plan = planService.getPlanByIndex(planIndex);
-        model.addAttribute("plan", plan);
-        return "plan/detail";
+    @ResponseBody
+    public Plan getPlanByIndex(@PathVariable int planIndex) {
+        return planService.getPlanByIndex(planIndex);
+    }
+
+    // 모든 Plan 찾기
+    @GetMapping("/all")
+    @ResponseBody
+    public List<Plan> getAllPlans() {
+        return planService.getAllPlans();
+    }
+
+    // planName으로 Plan 찾기
+    @GetMapping("/name/{planName}")
+    @ResponseBody
+    public List<Plan> getPlansByName(@PathVariable String planName) {
+        return planService.getPlansByName(planName);
     }
 
     // planUsid로 Plan 찾기
-    @GetMapping("/user/{userId}")
-    public String getPlansByUser(@PathVariable String userId, Model model) {
-        USer existuser = userRepository.findUserById(userId).get(0);
-        List<Plan> plans = planService.getPlansByUser(existuser);
-        model.addAttribute("plans", plans);
-        return "plan/list";
+    @GetMapping("/user/{planUsid}")
+    @ResponseBody
+    public List<Plan> getPlansByUser(@PathVariable USer planUsid) {
+        return planService.getPlansByUser(planUsid);
     }
 
     // planCpid로 Plan 찾기
-    @GetMapping("/company/{companyId}")
-    public String getPlansByCompany(@PathVariable String companyId, Model model) {
-        Company company = companyRepository.findCompanyById(companyId).get(0);
-        List<Plan> plans = planService.getPlansByCompany(company);
-        model.addAttribute("plans", plans);
-        return "plan/list";
+    @GetMapping("/company/{planCpid}")
+    @ResponseBody
+    public List<Plan> getPlansByCompany(@PathVariable Company planCpid) {
+        return planService.getPlansByCompany(planCpid);
+    }
+
+    // planId(날짜)로 Plan 찾기
+    @GetMapping("/date/{planId}")
+    @ResponseBody
+    public List<Plan> getPlansByDate(@PathVariable Date planId) {
+        return planService.getPlansByDate(planId);
+    }
+
+    // planOpt로 Plan 찾기
+    @GetMapping("/option/{planOpt}")
+    @ResponseBody
+    public List<Plan> getPlansByOption(@PathVariable int planOpt) {
+        return planService.getPlansByOption(planOpt);
     }
 
     // planId와 유저아이디로 Plan 찾기
-    @GetMapping("/date-user")
-    public String getPlansByDateAndUser(@RequestParam Date planId, @RequestParam String userId, Model model) {
-        USer user = userRepository.findUserById(userId).get(0);
-        List<Plan> plans = planService.getPlansByDateAndUser(planId, user);
-        model.addAttribute("plans", plans);
-        return "plan/list";
+    @GetMapping("/date-user/{planId}/{planUsid}")
+    @ResponseBody
+    public List<Plan> getPlansByDateAndUser(@PathVariable Date planId, @PathVariable USer planUsid) {
+        return planService.getPlansByDateAndUser(planId, planUsid);
     }
 
     // planId와 산업체아이디로 Plan 찾기
-    @GetMapping("/date-company")
-    public String getPlansByDateAndCompany(@RequestParam Date planId, @RequestParam String companyId, Model model) {
-        Company company = companyRepository.findCompanyById(companyId).get(0);
-        List<Plan> plans = planService.getPlansByDateAndCompany(planId, company);
-        model.addAttribute("plans", plans);
-        return "plan/list";
+    @GetMapping("/date-company/{planId}/{planCpid}")
+    @ResponseBody
+    public List<Plan> getPlansByDateAndCompany(@PathVariable Date planId, @PathVariable Company planCpid) {
+        return planService.getPlansByDateAndCompany(planId, planCpid);
     }
 
     // 아이디와 월을 입력받아 해당하는 일정 찾기
-    @GetMapping("/user-month")
-    public String getPlansByUserIdAndMonth(@RequestParam String userId, @RequestParam int month, Model model) {
-        List<Plan> plans = planService.getPlansByUserIdAndMonth(userId, month);
-        model.addAttribute("plans", plans);
-        return "plan/list";
+    @GetMapping("/user-month/{userId}/{month}")
+    @ResponseBody
+    public List<Plan> getPlansByUserIdAndMonth(@PathVariable String userId, @PathVariable int month) {
+        return planService.getPlansByUserIdAndMonth(userId, month);
     }
-
-
-    // 여기에 필요한 나머지 메소드들을 추가하세요.
 }

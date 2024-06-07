@@ -1,64 +1,55 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>계획 관리</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#calendar').fullCalendar({
-                // 캘린더 옵션과 콜백 함수를 여기에 추가하세요.
-            });
-        });
-    </script>
+    <title>Plan Management</title>
 </head>
 <body>
-<h1>계획 목록</h1>
-<!-- 캘린더 -->
-<div id="calendar"></div>
 
-<!-- 계획 생성 폼 -->
-<form action="/plan/create" method="post">
-    <input type="text" name="planName" placeholder="계획 이름" required>
-    <input type="date" name="planDate" placeholder="날짜" required>
-    <!-- 추가 입력 필드들 -->
-    <button type="submit">계획 생성</button>
+<!-- 일정 생성 폼 -->
+<form action="/plans/create" method="post">
+    <label for="planId">Plan Date:</label>
+    <input type="date" id="planId" name="planId" required>
+
+    <label for="planName">Plan Name:</label>
+    <input type="text" id="planName" name="planName" required>
+
+    <!-- 유저와 회사 선택 입력 필드 (예시로 추가함) -->
+    <!-- 실제 구현에는 유저와 회사의 선택 리스트나 검색 기능이 필요할 수 있음 -->
+    <label for="planUsid">User ID:</label>
+    <input type="text" id="planUsid" name="planUsid">
+
+    <label for="planCpid">Company ID:</label>
+    <input type="text" id="planCpid" name="planCpid">
+
+    <button type="submit">Create Plan</button>
 </form>
 
-<!-- 계획 수정 폼 -->
-<form action="/plan/update" method="post">
-    <input type="hidden" name="planIndex" required>
-    <input type="text" name="newPlanName" placeholder="새 계획 이름" required>
-    <input type="date" name="newPlanDate" placeholder="새 날짜" required>
-    <!-- 추가 입력 필드들 -->
-    <button type="submit">계획 수정</button>
+<!-- 일정 수정 폼 -->
+<!-- planIndex는 URL 경로로 전달되므로 폼에는 포함하지 않음 -->
+<form action="/plans/update/1" method="post">
+    <label for="newPlanId">New Plan Date:</label>
+    <input type="date" id="newPlanId" name="planId" required>
+
+    <label for="newPlanName">New Plan Name:</label>
+    <input type="text" id="newPlanName" name="planName" required>
+
+    <button type="submit">Update Plan</button>
 </form>
 
-<!-- 계획 목록 및 조작 -->
-<ul>
-    <li th:each="plan : ${plans}">
-        <span th:text="${plan.planName}">계획 이름</span>
-        <button type="button" onclick="editPlan(${plan.planIndex})">수정</button>
-        <button type="button" onclick="deletePlan(${plan.planIndex})">삭제</button>
-        <button type="button" onclick="viewPlan(${plan.planIndex})">조회</button>
-    </li>
-</ul>
+<!-- 일정 삭제 링크 -->
+<!-- 실제 사용 시 JavaScript를 통해 사용자에게 삭제 확인을 요청하는 것이 좋음 -->
+<a href="/plans/delete/1">Delete Plan</a>
 
-<script>
-    function editPlan(planIndex) {
-        // 수정할 계획의 데이터를 폼에 채우는 로직
-    }
+<!-- 나머지 조회 기능은 서버 측에서 처리하고 결과를 보여주는 페이지나 컴포넌트가 필요함 -->
+<!-- 예를 들어, planName으로 Plan 찾기 기능을 위한 검색 바 -->
+<form action="/plans/name" method="get">
+    <label for="searchPlanName">Search by Plan Name:</label>
+    <input type="text" id="searchPlanName" name="planName" required>
+    <button type="submit">Search</button>
+</form>
 
-    function deletePlan(planIndex) {
-        // 서버에 삭제 요청을 보내는 로직
-    }
+<!-- 추가적인 조회 기능을 위한 폼과 링크는 필요에 따라 구현 -->
 
-    function viewPlan(planIndex) {
-        // 계획 상세 정보를 보여주는 로직
-    }
-</script>
 </body>
 </html>
