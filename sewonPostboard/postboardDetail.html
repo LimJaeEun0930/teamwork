@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그</title>
+
+    <link rel="stylesheet" href="../css/board_css.css">
+</head>
+<body>
+    <div class="container">
+        <div class="post">
+            <div class="post-title" th:text="${board.getBoardTitle()}">게시글 제목</div>
+            <div class="post-meta">
+                <span>작성자: </span><span th:text="${board.getBoardWriter()}">작성자</span>
+                <span> | </span>
+                <span>작성일: </span><span th:text="*{#temporals.format(board.getCreatedTime(),'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+                <span> | </span>
+                <span>조회수: </span><span th:text="${board.getBoardHits()}">조회수</span>
+                <span th:if="${user}">
+                    <span> | </span>
+                    <button th:onclick="|location.href='@{/board/edit/{boardId}(boardId=${board.getBoardId()},page=${page})}'|"  type="button">수정</button>
+                    <button th:onclick="|location.href='@{/board/delete/{boardId}(boardId=${board.getBoardId()})}'|" type="button">글 삭제</button>
+                </span>
+            </div>
+            <div class="post-content">
+                <div class="announcement-details">
+                    <div class="detail-item">
+                        <span>기업형태: </span><span th:text="${board.getCompanyType()}">기업형태</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>접수기간: </span><span th:text="${board.getApplicationPeriod()}">접수기간</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>모집직무: </span><span th:text="${board.getJobPosition()}">모집직무</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>근무지역: </span><span th:text="${board.getWorkLocation()}">근무지역</span>
+                    </div>
+                </div>
+                <div class="board-contents" th:text="${board.getBoardContents()}">게시글 내용</div>
+            </div>
+            <button th:onclick="|location.href='@{/}'|" type="button">home</button>
+            <button th:onclick="|location.href='@{/board/paging}'|" type="button">목록</button>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

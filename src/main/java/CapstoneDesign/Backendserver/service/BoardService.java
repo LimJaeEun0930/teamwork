@@ -1,8 +1,7 @@
 package CapstoneDesign.Backendserver.service;
 
-import CapstoneDesign.Backendserver.domain.Board;
-import CapstoneDesign.Backendserver.repository.BoardRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import CapstoneDesign.Backendserver.domain.Board;
+import CapstoneDesign.Backendserver.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class BoardService {
     public Board findById(Long id) {
         return boardRepository.findById(id);
     }
+
 
     public void update(Board board,Long board_id) {
         boardRepository.updateBoard(board, board_id);

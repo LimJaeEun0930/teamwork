@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+    }
+
+    .form-group input[readonly] {
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+
+<body>
+
+<form th:action="@{/board/edit/{boardId}(boardId=${board_id},page=${page})}" method="post" th:object="${boardUpdate}">
+  <input type="hidden" name="id" th:field="*{boardId}">
+  
+  <div class="form-group">
+    <label for="boardWriter">작성자:</label>
+    <input type="text" id="boardWriter" name="boardWriter" th:field="*{boardWriter}" readonly>
+  </div>
+  
+  <div class="form-group">
+    <label for="boardTitle">제목:</label>
+    <input type="text" id="boardTitle" name="boardTitle" th:field="*{boardTitle}">
+  </div>
+
+  <div class="form-group">
+    <label for="industry">업직종:</label>
+    <input type="text" id="industry" name="industry" th:field="*{industry}">
+  </div>
+  
+  <div class="form-group">
+    <label for="employmentType">고용형태:</label>
+    <select id="employmentType" name="employmentType" th:field="*{employmentType}">
+      <option value="정규직">정규직</option>
+      <option value="계약직">계약직</option>
+      <option value="인턴">인턴</option>
+      <option value="파트타임">파트타임</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="recruitmentCount">모집인원:</label>
+    <input type="number" id="recruitmentCount" name="recruitmentCount" th:field="*{recruitmentCount}">
+  </div>
+
+  <div class="form-group">
+    <label for="boardContents">내용:</label>
+    <textarea id="boardContents" name="boardContents" cols="30" rows="10" th:field="*{boardContents}"></textarea>
+  </div>
+
+  <input type="hidden" name="boardHits" th:field="*{boardHits}">
+  
+  <button type="submit">수정</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>registerPage</title>
+    <style>
+        .field-error{
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+  <form action="/register" onsubmit="return valid()" th:action th:object="${user}" method="post">
+
+    <div>
+      <label for="id">회원ID</label>
+      <input type="text" id="id" th:field="*{id}">
+      <button type="button" onclick="sameCheck()">아이디 중복체크</button>
+    </div>
+      <div>
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" th:field="*{password}" >
+          <div class="field-error" th:errors="*{password}">비밀번호를 입력해주세요</div>
+<!--          공백일 수 없습니다 라고 뜬다.-->
+      </div>
+      <div>
+          <label for="email">이메일</label>
+          <input type="email" id="email" th:field="*{email}">
+          <button type="button" onclick="sendingAuthenticationMail()">이메일 인증번호 발송</button>
+      </div>
+
+      <div id="verificationCodeContainer" style="display: none;">
+        <label for="verificationCode">인증번호</label>
+        <input type="text" id="verificationCode">
+          <button type="button" onclick="checkingAuthenticationMail()">인증번호 확인</button>
+    </div>
+
+      <div>
+          <label for="name">이름</label>
+          <input type="text" id="name" th:field="*{name}">
+      </div>
+      <div>
+          <label for="birth">생년월일</label>
+          <input type="date" id="birth" th:field="*{birth}">
+      </div>
+      <div>
+          <label for="sex">성별</label>
+          <input type="text" id="sex" th:field="*{sex}">
+      </div>
+      <div>
+          <label for="mbti">MBTI</label>
+          <input type="text" id="mbti" th:field="*{mbti}">
+      </div>
+
+      <button type="submit">회원가입</button>
+  </form>
+</body>
+<script>
+    let userIdCheck = false;
+    let userMailCheck = false;
+
+    let verificationNumber = 0;
+    function valid() {
+        if (userIdCheck && userMailCheck) {
+            return true; //true일때 회원가입 버튼 동작
+        } else {
+            return false;
+        }
+
+    }
+    function sameCheck(){
+        let userId = document.getElementById('id').value.trim(); // input에서 사용자가 입력한 ID가져오기
+        console.log("USERID: "+userId);
+        if (!userId) {
+            return;//입력값이 공백인 경우 아무 작업도 수행하지 않음.
+        }
+        $.ajax({
+            type: "get",
+            url: "/register/idDuplicateCheck?id=" + userId
+        }).done((res) => {
+            userIdCheck = true; //중복체크완료. 아이디가 중복되지 않음.
+
+            alert("사용가능한 아이디입니다.");
+        }).fail(()=>{
+            alert("아이디 중복입니다.");
+             userIdCheck = false;
+        });
+    }
+    function sendingAuthenticationMail() {
+    let email = document.getElementById('email').value;
+    $.ajax({
+        type: "get",
+        url: "/register/sendingAuthenticationMail?email=" + email
+    }).done((res)=>{
+        alert("이메일이 보내졌습니다. 확인해주세요");
+        verificationNumber = res;
+        document.getElementById('verificationCodeContainer').style.display = 'block'; // 'none' 대신 'block'으로 설정하여 보이게 함
+    }).fail();
+}
+    function checkingAuthenticationMail(){
+        let AuthenticationNumber = document.getElementById('verificationCode').value.trim();
+        if(AuthenticationNumber === verificationNumber){
+            alert("인증되었습니다.");
+            userMailCheck = true;
+        }else{
+            alert("인증번호를 다시 입력해주세요.");
+        }
+    }
+
+    //
+    // function emailAuthorization() {
+    //     let email = document.getElementById('email').value;
+    //     $.ajax({
+    //         type: "get",
+    //         url: "/register/emailAuthorization?email=" + email
+    //     }).done((res)=>{
+    //         alert("이메일이 보내졌습니다. 확인해주세요");
+    //     }).fail();
+    // }
+</script>
+</html>
