@@ -26,6 +26,7 @@ public class CreatePlan {
     private CompanyRepository companyRepository;
 
     public Plan createPlan(PlanCreateFormData planCreateFormData) {
+        int plansel=0;
         Plan plan = new Plan();
 
         plan.setPlanName(planCreateFormData.getPlanName());
@@ -39,17 +40,19 @@ public class CreatePlan {
         }
 
         List<USer> user = userRepository.findUserById(planCreateFormData.getPlanUsid());
-        if (user.size() == 0) {
-            throw new IllegalStateException("user not found");
+        if (!user.isEmpty()) {
+            plan.setPlanUsid(user.get(0));
+            plansel=1;
         }
-        plan.setPlanUsid(user.get(0));
 
         List<Company> company = companyRepository.findCompanyById(planCreateFormData.getPlanCpid());
-        if (company.size() == 0) {
-            throw new IllegalStateException("company not found");
+        if (!company.isEmpty()) {
+            plan.setPlanCpid(company.get(0));
+            plansel=1;
         }
-        plan.setPlanCpid(company.get(0));
-
+        if (plansel==0||(!user.isEmpty()&&!company.isEmpty())) {
+            throw new IllegalStateException("user and company are empty or not empty");
+        }
         return plan;
 
     }
