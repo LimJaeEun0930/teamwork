@@ -27,7 +27,7 @@ public class PlanService {
 
     // 일정 생성 - 필수값인 일정아이디와 일정명을 받고, 유저와 회사는 선택적으로 받음
     @Transactional
-    public Plan createPlan(@ModelAttribute Plan plan) {
+    public Plan createPlan(Plan plan) {
         // 필수값 체크
         if (plan.getPlanId() == null || plan.getPlanName().trim().isEmpty()) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
@@ -47,7 +47,7 @@ public class PlanService {
 
     // 일정 수정 - planIndex를 사용하여 Plan의 planId와 planName 수정
     @Transactional
-    public boolean updatePlan(@ModelAttribute Plan plan) {
+    public boolean updatePlan(Plan plan) {
         Plan existingPlan = planRepository.findPlanByIndex(plan.getPlanIndex());
         if (existingPlan != null) {
             existingPlan.setPlanId(plan.getPlanId());

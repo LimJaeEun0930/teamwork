@@ -1,7 +1,9 @@
 package capweb.capprac.controller;
 
+import capweb.capprac.dto.PlanCreateFormData;
 import capweb.capprac.entity.Company;
 import capweb.capprac.entity.USer;
+import capweb.capprac.util.CreatePlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,20 +18,30 @@ import java.util.List;
 public class PlanController {
 
     @Autowired
+    private CreatePlan createPlan;
+
+    @Autowired
     private PlanService planService;
 
-    // 일정 생성
+    // 일정 생성 0609
     @PostMapping("/create")
-    public String createPlan(@ModelAttribute Plan plan) {
+    public String createPlan(@ModelAttribute PlanCreateFormData planCreateFormData) {
+        Plan plan = createPlan.createPlan(planCreateFormData);
         planService.createPlan(plan);
         return "redirect:/plans";
     }
 
     // 일정 수정
     @PostMapping("/update/{planIndex}")
-    public String updatePlan(@PathVariable int planIndex, @ModelAttribute Plan plan) {
+    public String updatePlan(@PathVariable int planIndex, @ModelAttribute PlanCreateFormData planCreateFormData) {
+        Plan plan = createPlan.createPlan(planCreateFormData);
         planService.updatePlan(plan);
         return "redirect:/plans";
+    }
+
+    @GetMapping
+    public String listPlans() {
+        return "board/PlanHtml";
     }
 
     // 일정 삭제

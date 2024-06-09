@@ -1,6 +1,9 @@
 package capweb.capprac.entity;
 //일정테이블-옵션값으로 유저인지 회사인지 조회함
+import capweb.capprac.dto.PlanCreateFormData;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.Date;
 @Table(name = "PLAN")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +36,5 @@ public class Plan {
     private Company planCpid;//일정회사아이디
 
     // No need to define getter and setter methods separately due to the use of Lombok.
+
 }

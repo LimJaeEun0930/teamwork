@@ -18,7 +18,7 @@ public class AnnouncementService {
 
     // 만들기 - 새로운 Announcement 생성 및 저장
     @Transactional
-    public Announcement createAnnouncement(@ModelAttribute Announcement announcement) {
+    public Announcement createAnnouncement(Announcement announcement) {
         // 데이터 검증
         if (announcement.getAnmName() == null || announcement.getAnmName().trim().isEmpty() ||
                 announcement.getAnmStartDate() == null || announcement.getAnmEndDate() == null ||
@@ -52,7 +52,7 @@ public class AnnouncementService {
 
     // 수정 - Announcement 업데이트 (anmIndex와 anmCpid는 수정 불가)
     @Transactional
-    public boolean updateAnnouncement(@ModelAttribute Announcement announcement) {
+    public boolean updateAnnouncement(Announcement announcement) {
         if (announcement.getAnmName() == null || announcement.getAnmName().trim().isEmpty() ||
                 announcement.getAnmStartDate() == null || announcement.getAnmEndDate() == null ||
                 announcement.getAnmEmptype() == null || announcement.getAnmRecruitm() <= 0) {

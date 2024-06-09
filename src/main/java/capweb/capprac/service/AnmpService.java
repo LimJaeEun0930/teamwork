@@ -23,7 +23,7 @@ public class AnmpService {
 
     // 만들기 - 새로운 Anmp 생성 및 저장
     @Transactional
-    public Anmp createAnmp(@ModelAttribute Anmp anmp) {
+    public Anmp createAnmp(Anmp anmp) {
         if (anmp.getAnmpUsid() == null || anmp.getAnmpAnmid() == null) {
             throw new IllegalArgumentException("필수 필드가 비어있습니다.");
         }
