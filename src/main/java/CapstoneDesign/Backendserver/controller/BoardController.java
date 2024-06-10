@@ -54,7 +54,6 @@ public class BoardController {
     @PostMapping("/board/write") //board의 필드들이 들어오지 않는 문제 있었는데,Board에 setter설정해주니 됨
     public String writeBoard_POST(@ModelAttribute Board board,  HttpServletRequest request)
     {
-
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         log.info("user 들어옴?{}", user.toString());

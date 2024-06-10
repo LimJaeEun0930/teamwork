@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Board List</title>
+    <title>게시판 목록</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -127,16 +127,21 @@
 </head>
 <body>
 
-<div th:if="${user != null}" class="button-container">
+<div th:if="${user != null or company != null}" class="button-container">
+    <button th:onclick="|location.href='@{/announcement}'|">공지목록</button>
+    <button th:if="${company != null}" th:onclick="|location.href='@{/announcement/write}'|">공지작성</button>
     <button th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
     <button th:onclick="|location.href='@{/board/paging}'|">게시판목록</button>
     <button th:onclick="|location.href='@{/chat}'|">채팅</button>
+    <button th:onclick="|location.href='@{/announcement/myAnnouncement}'|">내가 추가한 공지</button>
+    <button th:onclick="|location.href='@{/calender/jobCalender}'|">잡 캘린더</button>
+    <button th:onclick="|location.href='@{/calender/myCalender}'|">나의 캘린더</button>
     <form action="/logout" method="post">
         <button type="submit">로그아웃</button>
     </form>
 </div>
-<div th:if="${user == null}" class="top-buttons">
-    <button th:onclick="|location.href='@{/login}'|">로그인</button>
+<div th:if="${user == null and company == null}" class="top-buttons">
+    <button th:onclick="|location.href='@{/login/entrance}'|">로그인</button>
     <button th:onclick="|location.href='@{/register}'|">회원가입</button>
     <button onclick="saveReq()">글쓰기</button>
 </div>
@@ -161,7 +166,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="board: ${boardList}">
+                <tr th:each="board : ${boardList}" th:if="${boardList != null}">
                     <td th:text="${board.boardId}"></td>
                     <td><a th:href="@{|/board/${board.getBoardId()}|(page=${boardList.number + 1})}" th:text="${board.getBoardTitle()}"></a></td>
                     <td th:text="${board.boardWriter}"></td>
@@ -172,10 +177,10 @@
         </table>
 
         <!--페이징 처리 시작-->
-        <div class="pagination">
+        <div class="pagination" th:if="${boardList != null}">
             <a th:href="@{/board/paging(page=1, category=${selectedCategory})}">First</a>
             <a th:href="@{/board/paging(page=${boardList.number}, category=${selectedCategory})}" th:if="${boardList.hasPrevious()}">prev</a>
-            <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+            <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                 <a th:href="@{/board/paging(page=${page}, category=${selectedCategory})}" th:unless="${page == boardList.number + 1}" th:text="${page}"></a>
             </span>
@@ -193,3 +198,4 @@
 </script>
 </body>
 </html>
+
