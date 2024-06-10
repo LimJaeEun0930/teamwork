@@ -25,12 +25,8 @@
 
 <!-- 일정 수정 폼 -->
 <form action="/plans/update/1" method="post">
-    <label for="newPlanId">New Plan Date:</label>
-    <input type="date" id="newPlanId" name="planId" required>
-
     <label for="newPlanName">New Plan Name:</label>
     <input type="text" id="newPlanName" name="planName" required>
-
     <button type="submit">Update Plan</button>
 </form>
 
@@ -41,6 +37,12 @@
 <form action="/plans/user" method="get">
     <label for="searchUserId">Search by User ID:</label>
     <input type="text" id="searchUserId" name="userId" required>
+    <button type="submit">Search</button>
+</form>
+<!-- 회사 ID로 일정 조회 폼 -->
+<form action="/plans/company" method="get">
+    <label for="searchCompanyId">Search by Company ID:</label>
+    <input type="text" id="searchCompanyId" name="companyId" required>
     <button type="submit">Search</button>
 </form>
 
