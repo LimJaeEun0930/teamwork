@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -23,6 +24,8 @@ public class Board extends BoardTimeBaseEntity {
     private String boardTitle;
     @NotBlank
     private String boardContents;
+    @NotNull
+    JobCategory jobCategory;
 
     private int boardHits;
 

@@ -31,4 +31,5 @@ public class User {
     private String sex;
     private String mbti;
 
+    private String company;
 }

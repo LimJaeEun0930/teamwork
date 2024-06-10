@@ -1,6 +1,7 @@
 package CapstoneDesign.Backendserver.repository;
 
 import CapstoneDesign.Backendserver.domain.Board;
+import CapstoneDesign.Backendserver.domain.JobCategory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -63,6 +64,33 @@ public class BoardRepository {
 //                .setMaxResults(pageLimit)
 //                .getResultList();
 //    }
+    public Page<Board> findByJobCategory(JobCategory jobCategory, Pageable pageable)
+    {
+        int page = pageable.getPageNumber();
+        int pageLimit = pageable.getPageSize();
+        Sort sort = pageable.getSort();
+
+        String sortBy = "boardId";
+        if (sort != null && sort.isSorted()) {
+            sortBy = sort.stream().findFirst().get().getProperty();
+        }
+
+        TypedQuery<Long> countQuery = em.createQuery(
+                "SELECT COUNT(b) FROM Board b WHERE b.jobCategory = :jobCategory", Long.class)
+                .setParameter("jobCategory", jobCategory);
+
+        long total = countQuery.getSingleResult();
+
+        TypedQuery<Board> query = em.createQuery(
+                "SELECT b FROM Board b WHERE b.jobCategory = :jobCategory ORDER BY b." + sortBy + " DESC", Board.class)
+                .setParameter("jobCategory", jobCategory);
+        query.setFirstResult(page * pageLimit);
+        query.setMaxResults(pageLimit);
+
+        List<Board> content = query.getResultList();
+
+        return new PageImpl<>(content, pageable, total);
+    }
 
     public void updateHits(Long setid)
     {
