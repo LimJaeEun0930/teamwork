@@ -26,16 +26,15 @@
 </form>
 
 <!-- 일정 수정 폼 -->
-<!-- planIndex는 URL 경로로 전달되므로 폼에는 포함하지 않음 -->
 <form action="/plans/update/1" method="post">
-    <label for="newPlanId">New Plan Date:</label>
-    <input type="date" id="newPlanId" name="planId" required>
-
+    <input type="hidden"id="hplanId"name="hplanId" value="">
     <label for="newPlanName">New Plan Name:</label>
     <input type="text" id="newPlanName" name="planName" required>
 
     <button type="submit">Update Plan</button>
 </form>
+
+
 
 <!-- 일정 삭제 링크 -->
 <!-- 실제 사용 시 JavaScript를 통해 사용자에게 삭제 확인을 요청하는 것이 좋음 -->

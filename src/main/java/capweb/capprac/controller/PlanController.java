@@ -28,6 +28,11 @@ public class PlanController {
     @Autowired
     private PlanService planService;
 
+    @GetMapping
+    public String planPage() {
+        return "/board/PlanHtml";
+    }
+
     // 일정 생성 0609
     @PostMapping("/create")
     public String createPlan(@ModelAttribute PlanCreateFormData planCreateFormData) {
@@ -37,16 +42,10 @@ public class PlanController {
     }
 
     // 일정 수정 0609-- html에서 수정필요!!!!!!!html에서 인덱스번호를 어떻게 줘야하는지는 모르겠음!!!!!
+    //06/10 수정내용 planId는 수정 불가하게 하기
     @PostMapping("/update/{planIndex}")
     public String updatePlan(@PathVariable int planIndex,@ModelAttribute PlanCreateFormData planCreateFormData) {
         Plan existingPlan = planService.getPlanByIndex(planIndex);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date planDate = sdf.parse(planCreateFormData.getPlanId());
-            existingPlan.setPlanId(planDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         existingPlan.setPlanName(planCreateFormData.getPlanName());
         planService.updatePlan(existingPlan);
         return "redirect:/plans";

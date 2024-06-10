@@ -46,11 +46,11 @@ public class PlanService {
     }
 
     // 일정 수정 - planIndex를 사용하여 Plan의 planId와 planName 수정
+    //06/10 수정 내용 - planId수정 불가하게 하기
     @Transactional
     public boolean updatePlan(Plan plan) {
         Plan existingPlan = planRepository.findPlanByIndex(plan.getPlanIndex());
         if (existingPlan != null) {
-            existingPlan.setPlanId(plan.getPlanId());
             existingPlan.setPlanName(plan.getPlanName());
             planRepository.update(existingPlan);
             return true;

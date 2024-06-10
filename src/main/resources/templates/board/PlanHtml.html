@@ -27,9 +27,6 @@
 
 <!-- 일정 수정 폼 -->
 <form action="/plans/update/1" method="post">
-    <!-- 여기서 "1"은 수정하고자 하는 일정의 인덱스입니다. 실제 구현에서는 동적으로 설정해야 합니다. -->
-    <label for="newPlanId">New Plan Date:</label>
-    <input type="date" id="newPlanId" name="planId" required>
 
     <label for="newPlanName">New Plan Name:</label>
     <input type="text" id="newPlanName" name="planName" required>
@@ -50,8 +47,6 @@
     <input type="text" id="searchPlanName" name="planName" required>
     <button type="submit">Search</button>
 </form>
-
-//조회필요!!!!!!!!!!!!!!!!!!!
 
 <!-- 추가적인 조회 기능을 위한 폼과 링크는 필요에 따라 구현 -->
 
