@@ -14,8 +14,6 @@
     <label for="planName">Plan Name:</label>
     <input type="text" id="planName" name="planName" required>
 
-    <!-- 유저와 회사 선택 입력 필드 (예시로 추가함) -->
-    <!-- 실제 구현에는 유저와 회사의 선택 리스트나 검색 기능이 필요할 수 있음 -->
     <label for="planUsid">User ID:</label>
     <input type="text" id="planUsid" name="planUsid">
 
@@ -27,6 +25,8 @@
 
 <!-- 일정 수정 폼 -->
 <form action="/plans/update/1" method="post">
+    <label for="newPlanId">New Plan Date:</label>
+    <input type="date" id="newPlanId" name="planId" required>
 
     <label for="newPlanName">New Plan Name:</label>
     <input type="text" id="newPlanName" name="planName" required>
@@ -34,21 +34,17 @@
     <button type="submit">Update Plan</button>
 </form>
 
-
-
 <!-- 일정 삭제 링크 -->
-<!-- 실제 사용 시 JavaScript를 통해 사용자에게 삭제 확인을 요청하는 것이 좋음 -->
 <a href="/plans/delete/1">Delete Plan</a>
 
-<!-- 나머지 조회 기능은 서버 측에서 처리하고 결과를 보여주는 페이지나 컴포넌트가 필요함 -->
-<!-- 예를 들어, planName으로 Plan 찾기 기능을 위한 검색 바 -->
-<form action="/plans/name" method="get">
-    <label for="searchPlanName">Search by Plan Name:</label>
-    <input type="text" id="searchPlanName" name="planName" required>
+<!-- 사용자 ID로 일정 조회 폼 -->
+<form action="/plans/user" method="get">
+    <label for="searchUserId">Search by User ID:</label>
+    <input type="text" id="searchUserId" name="userId" required>
     <button type="submit">Search</button>
 </form>
 
-<!-- 추가적인 조회 기능을 위한 폼과 링크는 필요에 따라 구현 -->
+<!-- 나머지 조회 기능을 위한 폼과 링크는 필요에 따라 구현 -->
 
 </body>
 </html>
