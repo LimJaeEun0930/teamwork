@@ -9,6 +9,7 @@ import capweb.capprac.repository.CompanyRepository;
 import capweb.capprac.repository.PlanRepository;
 import capweb.capprac.repository.USerRepository;
 import capweb.capprac.util.CreatePlan;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,26 +25,37 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/plans")
+@RequiredArgsConstructor
 public class PlanController {
 
-    @Autowired
-    private CreatePlan createPlan;
 
-    @Autowired
-    private PlanService planService;
-    @Autowired
-    private PlanRepository planRepository;
-    @Autowired
-    private USerRepository userRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
+    private final CreatePlan createPlan;
+
+
+    private final PlanService planService;
+
+    private final PlanRepository planRepository;
+
+    private final USerRepository userRepository;
+
+    private final CompanyRepository companyRepository;
 
     @GetMapping
     public String planPage(Model model) {
-        List<Plan> plans = planService.getAllPlans();
-        model.addAttribute("plans", plans);
         return "board/PlanHtml";
     }
+    @PostMapping("/selectPlan")
+    public String selectPlan(@RequestParam("selectedPlan") int planIndex, Model model) {
+        Plan selectedPlan = planRepository.findPlanByIndex(planIndex);
+        if (selectedPlan != null) {
+            model.addAttribute("selectedPlan", selectedPlan);
+            return "board/PlanHtml"; // 수정 및 삭제 폼이 포함된 뷰로 리턴합니다.
+        } else {
+            model.addAttribute("message", "선택한 일정을 찾을 수 없습니다.");
+            return "board/PlanHtml"; // 오류 메시지를 포함하여 동일한 뷰로 리턴합니다.
+        }
+    }
+
 
     @PostMapping("/create")
     public String createPlan(@ModelAttribute PlanCreateFormData planCreateFormData, Model model) {
@@ -74,10 +86,8 @@ public class PlanController {
         if (!users.isEmpty()) {
             List<Plan> plans = planRepository.findPlansByUser(users.get(0));
             model.addAttribute("plans", plans);
-        } else {
-            model.addAttribute("plans", Collections.emptyList());
         }
-        return "board/PlanList";
+        return "board/PlanHtml";
     }
 
     @GetMapping("/company")
@@ -89,7 +99,7 @@ public class PlanController {
         } else {
             model.addAttribute("plans", Collections.emptyList());
         }
-        return "board/PlanList";
+        return "board/PlanHtml";
     }
 
     // Other methods remain unchanged...

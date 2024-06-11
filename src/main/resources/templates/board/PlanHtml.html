@@ -5,7 +5,30 @@
     <title>Plan Management</title>
 </head>
 <body>
-
+<!-- 일정 선택 폼 -->
+<form action="/plans/selectPlan" method="post">
+    <h2>Select a Plan</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>Plan Index</th>
+            <th>Plan Date</th>
+            <th>Plan Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 서버 사이드에서 Thymeleaf를 사용하여 반복문을 통해 일정 목록을 동적으로 생성 -->
+        <tr th:each="plan : ${plans}">
+            <td><input type="radio" name="selectedPlan" th:value="${plan.planIndex}" /></td>
+            <td th:text="${plan.planIndex}">1</td>
+            <td th:text="${#dates.format(plan.planId, 'yyyy-MM-dd')}">2024-06-10</td>
+            <td th:text="${plan.planName}">Meeting with Client</td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Select Plan</button>
+</form>
 <!-- 일정 생성 폼 -->
 <form action="/plans/create" method="post">
     <label for="planId">Plan Date:</label>
@@ -23,16 +46,18 @@
     <button type="submit">Create Plan</button>
 </form>
 
-<!-- 일정 수정 폼 -->
-<form action="/plans/update/1" method="post">
-    <label for="newPlanName">New Plan Name:</label>
-    <input type="text" id="newPlanName" name="planName" required>
-    <button type="submit">Update Plan</button>
-</form>
+<!-- 선택된 일정을 위한 동적 폼 -->
+<div th:if="${selectedPlan != null}">
+    <!-- 일정 수정 폼 -->
+    <form th:action="@{/plans/update/{planIndex}(planIndex=${selectedPlan.planIndex})}" method="post">
+        <label for="planName">Plan Name:</label>
+        <input type="text" id="upplanName" name="planName" th:value="${selectedPlan.planName}" required>
+        <button type="submit">Update Plan</button>
+    </form>
 
-<!-- 일정 삭제 링크 -->
-<a href="/plans/delete/1">Delete Plan</a>
-
+    <!-- 일정 삭제 링크 -->
+    <a th:href="@{/plans/delete/{planIndex}(planIndex=${selectedPlan.planIndex})}">Delete Plan</a>
+</div>
 <!-- 사용자 ID로 일정 조회 폼 -->
 <form action="/plans/user" method="get">
     <label for="searchUserId">Search by User ID:</label>

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 @Entity
@@ -13,6 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@Component
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
