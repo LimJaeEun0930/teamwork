@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/board_css.css">
+</head>
+<body>
+    <div class="container">
+        <div class="post">
+            <div class="post-title" th:text="${board.getBoardTitle()}">게시글 제목</div>
+            <div class="post-meta">
+                <span>작성자: </span><span th:text="${board.getBoardWriter()}">작성자</span>
+                <span> | </span>
+                <span>작성일: </span><span th:text="*{#temporals.format(board.getCreatedTime(),'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+                <span> | </span>
+                <span>조회수: </span><span th:text="${board.getBoardHits()}">조회수</span>
+                <!-- Hidden input으로 게시글 ID 전달 -->
+                <!-- <input type="hidden" id="boardId" th:value="${board.getBoardId()}"> -->
+                <!-- user가 존재하는 경우에만 수정 버튼 렌더링 -->
+                <span th:if="${user}">
+                    <span> | </span>
+                    <button th:onclick="|location.href='@{/board/edit/{boardId}(boardId=${board.getBoardId()},page=${page})}'|"  type="button">수정</button>
+                    <button th:onclick="|location.href='@{/board/delete/{boardId}(boardId=${board.getBoardId()})}'|" type="button">글 삭제</button>
+                </span>
+            </div>
+            <div class="post-content" th:text="${board.getBoardContents()}">게시글 내용</div>
+            <button th:onclick="|location.href='@{/}'|" type="button">home</button>
+            <button th:onclick="|location.href='@{/board/paging}'|" type="button">목록</button>
+
+            <!-- 댓글 작성 부분 -->
+            <div id="comment-write">
+                <input type="text" id="commentWriter" placeholder="작성자">
+                <input type="text" id="commentContents" placeholder="내용">
+                <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+            </div>
+
+            <!-- 댓글 출력 부분 -->
+            <div id="comment-list">
+                <table>
+                    <tr>
+                        <th>댓글번호</th>
+                        <th>작성자</th>
+                        <th>내용</th>
+                        <th>작성시간</th>
+                    </tr>
+                    <tr th:each="comment: ${commentList}">
+                        <td th:text="${comment.id}"></td>
+                        <td th:text="${comment.commentWriter}"></td>
+                        <td th:text="${comment.commentContents}"></td>
+                        <td th:text="${comment.commentCreatedTime}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const commentWrite = () => {
+            const writer = document.getElementById("commentWriter").value;
+            const contents = document.getElementById("commentContents").value;
+            console.log("작성자: ", writer);
+            console.log("내용: ", contents);
+            const id = document.querySelector('.post').dataset.boardId;;
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/save, 요청데이터: 작성자, 작성내용, 게시글번호
+                type: "post",
+                url: "/comment/save",
+                data: {
+                    "commentWriter": writer,
+                    "commentContents": contents,
+                    "boardId": id
+                },
+                success: function (res) {
+                    console.log("요청성공", res);
+                    let output = "<table>";
+                    output += "<tr><th>댓글번호</th>";
+                    output += "<th>작성자</th>";
+                    output += "<th>내용</th>";
+                    output += "<th>작성시간</th></tr>";
+                    for (let i in res) {
+                        output += "<tr>";
+                        output += "<td>" + res[i].id + "</td>";
+                        output += "<td>" + res[i].commentWriter + "</td>";
+                        output += "<td>" + res[i].commentContents + "</td>";
+                        output += "<td>" + res[i].commentCreatedTime + "</td>";
+                        output += "</tr>";
+                    }
+                    output += "</table>";
+                    document.getElementById('comment-list').innerHTML = output;
+                    document.getElementById('commentWriter').value = '';
+                    document.getElementById('commentContents').value = '';
+                },
+                error: function (err) {
+                    console.log("요청실패", err);
+                }
+            });
+        }
+
+        const listReq = () => {
+            console.log("목록 요청");
+            const page = document.querySelector('.post').dataset.page;
+            location.href = "/board/paging?page=" + page;
+        }
+
+        const updateReq = () => {
+            console.log("수정 요청");
+            const id = document.querySelector('.post').dataset.boardId;
+            location.href = "/board/update/" + id;
+        }
+
+        const deleteReq = () => {
+            console.log("삭제 요청");
+            const id = document.querySelector('.post').dataset.boardId;
+            location.href = "/board/delete/" + id;
+        }
+    </script>
+</body>
+</html>
+
+            
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
