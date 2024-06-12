@@ -1,13 +1,16 @@
 
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>My Announcements</title>
+    <title>Announcements</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 <body>
-    <h1>My Announcements</h1>
-    <form action="/announcement/addMyAnnouncement" method="post">
+    <h1>Announcements</h1>
+    <form th:action="@{/processAnnouncements}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}"/>
+        <input type="hidden" name="userName" th:value="${user.name}"/>
         <table>
             <thead>
                 <tr>
@@ -19,11 +22,9 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Iterate over the announcementList -->
                 <tr th:each="announcement : ${announcementList}">
-                    <td><input type="checkbox" name="selectedAnnouncements" th:value="${announcement.anmIndex}"/></td>
-                    <td><a th:href="@{|/announcement/${announcement.anmIndex}|}" th:text="${announcement.anmName}"></a></td>
-                    <!-- Assuming that announcement.anmCpid.cpName is the company name -->
+                    <td><input type="checkbox" name="selectedAnnouncements" th:value="${announcement.getAnmIndex()}"/></td>
+                    <td><a th:href="@{|/announcement/${announcement.getAnmIndex()}|}" th:text="${announcement.anmName}"></a></td>
                     <td th:text="${announcement.anmCpid.cpName}"></td>
                     <td th:text="${#dates.format(announcement.anmStartDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${#dates.format(announcement.anmEndDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -35,7 +36,7 @@
         </div>
     </form>
     <div>
-        <button onclick="location.href='/'" type="button">메인</button>
+        <button th:onclick="|location.href='@{/}'|" type="button">메인</button>
     </div>
 </body>
 </html>

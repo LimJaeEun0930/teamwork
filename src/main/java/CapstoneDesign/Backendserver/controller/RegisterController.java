@@ -30,11 +30,12 @@ public class RegisterController {
         return "register/register_company";
     }
 
-    @PostMapping("cp")
+    @PostMapping("entrance/company")
     public String register_company_post(@ModelAttribute("company") Company company, Model model) {
         companyService.registerCompany(company);
         return "home";
     }
+
     @GetMapping("entrance/normal")
     public String register_normal_user_entrance(@ModelAttribute("user") User user, Model model) {
 
@@ -45,7 +46,7 @@ public class RegisterController {
     public String register_mentor_user_entrance(@ModelAttribute("user") User user, Model model) {
         return "register/register_mentor";
     }
-    @PostMapping
+    @PostMapping("entrance/normal")
     public String register_post(@Validated @ModelAttribute User user, BindingResult bindingResult)
     {
         log.info("{}", user.getName());
@@ -55,7 +56,7 @@ public class RegisterController {
         }
         userService.join(user);
 
-        return "login/login";
+        return "redirect:/login/entrance";
     }
 
     @GetMapping("idDuplicateCheck")
