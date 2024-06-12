@@ -1,6 +1,237 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>WebSocket Chat</title>-->
+<!--    <link rel="stylesheet" href="/css/styles.css">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f9;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+
+<!--        .top-bar {-->
+<!--            width: 100%;-->
+<!--            background-color: #333;-->
+<!--            color: white;-->
+<!--            padding: 10px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            display: flex;-->
+<!--            width: 80%;-->
+<!--            background-color: white;-->
+<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--            border-radius: 8px;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .sidebar {-->
+<!--            width: 25%;-->
+<!--            background-color: #f7f7f7;-->
+<!--            padding: 20px;-->
+<!--            border-right: 1px solid #ddd;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            justify-content: space-between;-->
+<!--        }-->
+
+<!--        .create-room {-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .create-room button {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            border: none;-->
+<!--            background-color: #007bff; /* 파란색으로 변경 */-->
+<!--            color: white;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .create-room button:hover {-->
+<!--            background-color: #0056b3; /* 호버 시 더 짙은 파란색으로 변경 */-->
+<!--        }-->
+
+<!--        .room-list button {-->
+<!--            width: 100%;-->
+<!--            margin-bottom: 10px;-->
+<!--            padding: 10px;-->
+<!--            border: none;-->
+<!--            background-color: #28a745;-->
+<!--            color: white;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .room-list button:hover {-->
+<!--            background-color: #218838;-->
+<!--        }-->
+
+<!--        .chat-container {-->
+<!--            width: 75%;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            justify-content: space-between;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .chat-window {-->
+<!--            flex: 1;-->
+<!--            border: 1px solid #ddd;-->
+<!--            border-radius: 4px;-->
+<!--            padding: 10px;-->
+<!--            overflow-y: auto;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        .message-input {-->
+<!--            display: flex;-->
+<!--        }-->
+
+<!--        .message-input input {-->
+<!--            flex: 1;-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            border-radius: 4px 0 0 4px;-->
+<!--        }-->
+
+<!--        .message-input button {-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            border-left: none;-->
+<!--            background-color: #4CAF50;-->
+<!--            color: white;-->
+<!--            border-radius: 0 4px 4px 0;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .message-input button:hover {-->
+<!--            background-color: #45a049;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="top-bar">-->
+<!--    <div>-->
+<!--        <button onclick="goHome()">Home</button>-->
+<!--        <button onclick="goToBoard()">Board</button>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--    <div class="sidebar">-->
+<!--        <div class="create-room">-->
+<!--            <button onclick="location.href='/chat/create';">채팅방 생성</button>-->
+<!--        </div>-->
+<!--        <div class="room-list" id="room-list">-->
+<!--            &lt;!&ndash; 채팅방 목록이 여기에 추가됩니다. &ndash;&gt;-->
+<!--            <div>-->
+<!--                <button onclick="connectToRoom('1')">취업 준비 Q&A (MANAGEMENT)</button>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button onclick="connectToRoom('2')">광고 (ADVERTISEMENT)</button>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button onclick="connectToRoom('3')">IT 정보 공유 (IT)</button>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button onclick="connectToRoom('4')">연구개발 이야기 (R&D)</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="chat-container">-->
+<!--        <div id="chat-window" class="chat-window"></div>-->
+<!--        <div class="message-input">-->
+<!--            <input type="text" id="message-input" placeholder="Type a message...">-->
+<!--            <button id="send-button">Send</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    let socket;-->
+<!--    let currentRoom = null;-->
+
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--        connectToServer();-->
+<!--    });-->
+
+<!--    function connectToServer() {-->
+<!--        socket = new WebSocket('ws://localhost:8080/ws');-->
+<!--        socket.onopen = function() {-->
+<!--            console.log('Connected to server');-->
+<!--        };-->
+<!--        socket.onmessage = function(event) {-->
+<!--            displayMessage(event.data);-->
+<!--        };-->
+<!--        socket.onclose = function() {-->
+<!--            console.log('Disconnected from server');-->
+<!--        };-->
+<!--    }-->
+
+<!--    function connectToRoom(roomId) {-->
+<!--        if (currentRoom) {-->
+<!--            socket.send(JSON.stringify({type: 'leave', room: currentRoom}));-->
+<!--        }-->
+<!--        currentRoom = roomId;-->
+<!--        socket.send(JSON.stringify({type: 'join', room: roomId}));-->
+<!--        document.getElementById('chat-window').innerHTML = '';-->
+<!--    }-->
+
+<!--    function displayMessage(message) {-->
+<!--        const chatWindow = document.getElementById('chat-window');-->
+<!--        const messageElement = document.createElement('div');-->
+<!--        const parsedMessage = JSON.parse(message);-->
+<!--        messageElement.textContent = parsedMessage.sender + ": " + parsedMessage.message;-->
+<!--        chatWindow.appendChild(messageElement);-->
+<!--        chatWindow.scrollTop = chatWindow.scrollHeight;-->
+<!--    }-->
+
+<!--    document.getElementById('send-button').addEventListener('click', function() {-->
+<!--        const messageInput = document.getElementById('message-input');-->
+<!--        const message = messageInput.value;-->
+<!--        if (message && socket && socket.readyState === WebSocket.OPEN) {-->
+<!--            socket.send(JSON.stringify({type: 'message', room: currentRoom, sender: 'User', message: message}));-->
+<!--            messageInput.value = '';-->
+<!--        }-->
+<!--    });-->
+
+<!--    document.getElementById('message-input').addEventListener('keypress', function(event) {-->
+<!--        if (event.key === 'Enter') {-->
+<!--            document.getElementById('send-button').click();-->
+<!--        }-->
+<!--    });-->
+
+<!--    function goHome() {-->
+<!--        window.location.href = '/'; // 홈 페이지로 이동-->
+<!--    }-->
+
+<!--    function goToBoard() {-->
+<!--        window.location.href = '/board/paging'; // 게시판 페이지로 이동-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+ <!DOCTYPE html>
+ <html lang="en" xmlns:th="http://www.thymeleaf.org">
+ <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket Chat</title>
@@ -194,339 +425,4 @@
 
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>WebSocket Chat</title>-->
-<!--    <link rel="stylesheet" href="/css/styles.css">-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f4f4f9;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            display: flex;-->
-<!--            justify-content: center;-->
-<!--            align-items: center;-->
-<!--            min-height: 100vh;-->
-<!--        }-->
-
-<!--        .top-bar {-->
-<!--            width: 100%;-->
-<!--            background-color: #333;-->
-<!--            color: white;-->
-<!--            padding: 10px;-->
-<!--            text-align: center;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            display: flex;-->
-<!--            width: 80%;-->
-<!--            background-color: white;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            border-radius: 8px;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-
-<!--        .sidebar {-->
-<!--            width: 25%;-->
-<!--            background-color: #f7f7f7;-->
-<!--            padding: 20px;-->
-<!--            border-right: 1px solid #ddd;-->
-<!--        }-->
-
-<!--        .sidebar button {-->
-<!--            width: 100%;-->
-<!--            margin-bottom: 10px;-->
-<!--            padding: 10px;-->
-<!--            border: none;-->
-<!--            background-color: #007bff;-->
-<!--            color: white;-->
-<!--            border-radius: 4px;-->
-<!--            cursor: pointer;-->
-<!--            transition: background-color 0.3s;-->
-<!--        }-->
-
-<!--        .sidebar button:hover {-->
-<!--            background-color: #0056b3;-->
-<!--        }-->
-
-<!--        .chat-container {-->
-<!--            width: 75%;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            justify-content: space-between;-->
-<!--            padding: 20px;-->
-<!--        }-->
-
-<!--        .chat-window {-->
-<!--            flex: 1;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-radius: 4px;-->
-<!--            padding: 10px;-->
-<!--            overflow-y: auto;-->
-<!--            margin-bottom: 10px;-->
-<!--        }-->
-
-<!--        .message-input {-->
-<!--            display: flex;-->
-<!--        }-->
-
-<!--        .message-input input {-->
-<!--            flex: 1;-->
-<!--            padding: 10px;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-radius: 4px 0 0 4px;-->
-<!--        }-->
-
-<!--        .message-input button {-->
-<!--            padding: 10px;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-left: none;-->
-<!--            background-color: #4CAF50;-->
-<!--            color: white;-->
-<!--            border-radius: 0 4px 4px 0;-->
-<!--            cursor: pointer;-->
-<!--            transition: background-color 0.3s;-->
-<!--        }-->
-
-<!--        .message-input button:hover {-->
-<!--            background-color: #45a049;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<div class="top-bar">-->
-<!--    <div>-->
-<!--        <button onclick="goHome()">Home</button>-->
-<!--        <button onclick="goToBoard()">Board</button>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="container">-->
-<!--    <div class="sidebar">-->
-<!--        <button th:onclick="|location.href='@{/chat/create}'|">채팅방 생성</button>-->
-<!--        <div id="room-list">-->
-<!--            &lt;!&ndash; 채팅방 목록이 여기에 추가됩니다. &ndash;&gt;-->
-<!--            <div th:each="room : ${list}">-->
-<!--                <button th:text="${room.roomName}" th:onclick="|connectToRoom('${room.roomId}')|"></button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="chat-container">-->
-<!--        <div id="chat-window" class="chat-window"></div>-->
-<!--        <div class="message-input">-->
-<!--            <input type="text" id="message-input" placeholder="Type a message...">-->
-<!--            <button id="send-button">Send</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--    let socket;-->
-<!--    let currentRoom = null;-->
-
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--        connectToServer();-->
-<!--    });-->
-
-<!--    function connectToServer() {-->
-<!--        socket = new WebSocket('ws://localhost:8080/ws');-->
-<!--        socket.onopen = function() {-->
-<!--            console.log('Connected to server');-->
-<!--        };-->
-<!--        socket.onmessage = function(event) {-->
-<!--            displayMessage(event.data);-->
-<!--        };-->
-<!--        socket.onclose = function() {-->
-<!--            console.log('Disconnected from server');-->
-<!--        };-->
-<!--    }-->
-
-<!--    function connectToRoom(roomId) {-->
-<!--        if (currentRoom) {-->
-<!--            socket.send(JSON.stringify({type: 'leave', room: currentRoom}));-->
-<!--        }-->
-<!--        currentRoom = roomId;-->
-<!--        socket.send(JSON.stringify({type: 'join', room: roomId}));-->
-<!--        document.getElementById('chat-window').innerHTML = '';-->
-<!--    }-->
-
-<!--    function displayMessage(message) {-->
-<!--        const chatWindow = document.getElementById('chat-window');-->
-<!--        const messageElement = document.createElement('div');-->
-<!--        const parsedMessage = JSON.parse(message);-->
-<!--        messageElement.textContent = parsedMessage.sender + ": " + parsedMessage.message;-->
-<!--        chatWindow.appendChild(messageElement);-->
-<!--        chatWindow.scrollTop = chatWindow.scrollHeight;-->
-<!--    }-->
-
-<!--    document.getElementById('send-button').addEventListener('click', function() {-->
-<!--        const messageInput = document.getElementById('message-input');-->
-<!--        const message = messageInput.value;-->
-<!--        if (message && socket && socket.readyState === WebSocket.OPEN) {-->
-<!--            socket.send(JSON.stringify({type: 'message', room: currentRoom, sender: 'User', message: message}));-->
-<!--            messageInput.value = '';-->
-<!--        }-->
-<!--    });-->
-
-<!--    document.getElementById('message-input').addEventListener('keypress', function(event) {-->
-<!--        if (event.key === 'Enter') {-->
-<!--            document.getElementById('send-button').click();-->
-<!--        }-->
-<!--    });-->
-
-<!--    function goHome() {-->
-<!--        window.location.href = '/'; // 홈 페이지로 이동-->
-<!--    }-->
-
-<!--    function goToBoard() {-->
-<!--        window.location.href = '/board/paging'; // 게시판 페이지로 이동-->
-<!--    }-->
-<!--</script>-->
-
-<!--</body>-->
-<!--</html>-->
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>WebSocket Chat</title>-->
-<!--    <link rel="stylesheet" href="/css/styles.css">-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<div class="top-bar">-->
-<!--    <div>-->
-<!--        <button onclick="goHome()">Home</button>-->
-<!--        <button onclick="goToBoard()">Board</button>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="container">-->
-<!--    <div class="sidebar">-->
-<!--        <button th:onclick="|location.href='@{/chat/create}'|">채팅방 생성</button>-->
-<!--&lt;!&ndash;        <button onclick="createRoom()">Create Room</button>&ndash;&gt;-->
-<!--        <div id="room-list">-->
-<!--            &lt;!&ndash; 채팅방 목록이 여기에 추가됩니다. &ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="chat-container">-->
-<!--        <div id="chat-window" class="chat-window"></div>-->
-<!--        <div class="message-input">-->
-<!--            <input type="text" id="message-input" placeholder="Type a message...">-->
-<!--            <button id="send-button">Send</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<script>-->
-
-<!--    let socket;-->
-<!--    let currentRoom = null;-->
-
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--        connectToServer();-->
-<!--        loadRooms();-->
-<!--    });-->
-
-<!--    function connectToServer() {-->
-<!--        socket = new WebSocket('ws://localhost:8080/ws');-->
-<!--        socket.onopen = function() {-->
-<!--            console.log('Connected to server');-->
-<!--        };-->
-<!--        socket.onmessage = function(event) {-->
-<!--            displayMessage(event.data);-->
-<!--        };-->
-<!--        socket.onclose = function() {-->
-<!--            console.log('Disconnected from server');-->
-<!--        };-->
-<!--    }-->
-
-<!--    function connectToRoom(room) {-->
-<!--        if (currentRoom) {-->
-<!--            socket.send(JSON.stringify({type: 'leave', room: currentRoom}));-->
-<!--        }-->
-<!--        currentRoom = room;-->
-<!--        socket.send(JSON.stringify({type: 'join', room: room}));-->
-<!--        document.getElementById('chat-window').innerHTML = '';-->
-<!--    }-->
-
-<!--    function displayMessage(message) {-->
-<!--        const chatWindow = document.getElementById('chat-window');-->
-<!--        const messageElement = document.createElement('div');-->
-<!--        const parsedMessage = JSON.parse(message);-->
-<!--        messageElement.textContent = parsedMessage.sender + ": " + parsedMessage.message;-->
-<!--        chatWindow.appendChild(messageElement);-->
-<!--        chatWindow.scrollTop = chatWindow.scrollHeight;-->
-<!--    }-->
-
-<!--    // function createRoom() {-->
-<!--    //     const roomName = prompt("Enter room name:");-->
-<!--    //     if (roomName) {-->
-<!--    //         const xhr = new XMLHttpRequest();-->
-<!--    //         xhr.open("POST", "/chat/create", true);-->
-<!--    //         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");-->
-<!--    //         xhr.onreadystatechange = function () {-->
-<!--    //             if (xhr.readyState === 4 && xhr.status === 200) {-->
-<!--    //                 loadRooms();-->
-<!--    //             }-->
-<!--    //         };-->
-<!--    //         xhr.send("roomName=" + roomName);-->
-<!--    //     }-->
-<!--    // }-->
-
-<!--    function loadRooms() {-->
-<!--        const xhr = new XMLHttpRequest();-->
-<!--        xhr.open("GET", "/chat/rooms", true);-->
-<!--        xhr.onreadystatechange = function () {-->
-<!--            if (xhr.readyState === 4 && xhr.status === 200) {-->
-<!--                const rooms = JSON.parse(xhr.responseText);-->
-<!--                const roomList = document.getElementById('room-list');-->
-<!--                roomList.innerHTML = '';-->
-<!--                rooms.forEach(room => {-->
-<!--                    const roomButton = document.createElement('button');-->
-<!--                    roomButton.textContent = room.name;-->
-<!--                    roomButton.onclick = function() {-->
-<!--                        connectToRoom(room.id);-->
-<!--                    };-->
-<!--                    roomList.appendChild(roomButton);-->
-<!--                });-->
-<!--            }-->
-<!--        };-->
-<!--        xhr.send();-->
-<!--    }-->
-
-<!--    document.getElementById('send-button').addEventListener('click', function() {-->
-<!--        const messageInput = document.getElementById('message-input');-->
-<!--        const message = messageInput.value;-->
-<!--        if (message && socket && socket.readyState === WebSocket.OPEN) {-->
-<!--            socket.send(JSON.stringify({type: 'message', room: currentRoom, sender: 'User', message: message}));-->
-<!--            messageInput.value = '';-->
-<!--        }-->
-<!--    });-->
-
-<!--    document.getElementById('message-input').addEventListener('keypress', function(event) {-->
-<!--        if (event.key === 'Enter') {-->
-<!--            document.getElementById('send-button').click();-->
-<!--        }-->
-<!--    });-->
-
-<!--    function goHome() {-->
-<!--        window.location.href = '/'; // 홈 페이지로 이동-->
-<!--    }-->
-
-<!--    function goToBoard() {-->
-<!--        window.location.href = '/board/paging'; // 게시판 페이지로 이동-->
-<!--    }-->
-<!--</script>-->
-
-<!--</body>-->
-<!--</html>-->
 

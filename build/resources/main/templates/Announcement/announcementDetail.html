@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+
+
 <body>
-$END$
+    <div class="content">
+        <div class="post">
+            <div class="post-title" th:text="${announcement.anmName}">게시글 제목</div>
+            <div class="post-meta">
+                <span>작성자: </span><span th:text="${announcement.anmCpid}">작성자</span>
+                <span> | </span>
+                <span>시작일: </span><span th:text="${#dates.format(announcement.anmStartDate, 'yyyy-MM-dd HH:mm:ss')}">시작일</span>
+                <span> | </span>
+                <span>종료일: </span><span th:text="${#dates.format(announcement.anmEndDate, 'yyyy-MM-dd HH:mm:ss')}">종료일</span>
+            </div>
+            <div class="post-content" th:text="${announcement.anmContents}">공지 내용</div>
+            <div class="button-container">
+                <div>
+                    <button th:onclick="|location.href='@{/}'|" type="button">Home</button>
+                </div>
+                <div class="edit-buttons" th:if="${user}">
+                    <span>안녕</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
