@@ -1,0 +1,6 @@
+package CapstoneDesign.Backendserver.domain;
+
+public enum JobCategory {
+    CONSULTING,MANAGEMENT,ADVERTISEMENT,PRODUCTION,R_D,
+    IT,SERVICE,CONSTRUCTION,LEARNING,DESIGN,MEDIA,ETC
+}
