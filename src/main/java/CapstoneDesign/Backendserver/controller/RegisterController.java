@@ -30,7 +30,7 @@ public class RegisterController {
         return "register/register_company";
     }
 
-    @PostMapping("cp")
+    @PostMapping("entrance/company")
     public String register_company_post(@ModelAttribute("company") Company company, Model model) {
         companyService.registerCompany(company);
         return "home";

@@ -79,7 +79,7 @@
 <body>
 <div class="container">
     <h1>Login</h1>
-    <form action="/login" th:object="${userLogin}" method="post">
+    <form action="/login/user" th:object="${userLogin}" method="post">
         <div class="form-group">
             <label for="id">아이디</label>
             <input type="text" id="id" th:field="*{id}">
