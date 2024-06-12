@@ -13,4 +13,8 @@ public class TestUserCreateFormData {
     private String usId;
     private String usPw;
     private String usName;
+    private String usEmail;
+    private String usBirth;
+    private String usSex;
+    private String usMbti;
 }
