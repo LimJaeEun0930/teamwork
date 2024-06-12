@@ -43,16 +43,16 @@ public class CompanyService {
             return false;
         }
     }
-// if(userRepository.findById(id).isPresent()){
+    // if(userRepository.findById(id).isPresent()){
 //        return userRepository.findById(id).get();
     @Transactional
     public boolean updateCompany(Company updatedCompany) {
         Company existingCompany;
-         if(companyRepository.findCompanyById(updatedCompany.getCpId()).isPresent()){
-             existingCompany = companyRepository.findCompanyById(updatedCompany.getCpId()).get();
-         } else {
-             existingCompany = null;
-         }
+        if(companyRepository.findCompanyById(updatedCompany.getCpId()).isPresent()){
+            existingCompany = companyRepository.findCompanyById(updatedCompany.getCpId()).get();
+        } else {
+            existingCompany = null;
+        }
         if (existingCompany != null) {
             this.updateCompanyDetails(existingCompany, updatedCompany);
             this.companyRepository.update(existingCompany);
@@ -129,17 +129,17 @@ public class CompanyService {
 
 
     }
-@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public boolean validateDuplicateCompany(String cpid) {
-         log.info("중복체크함수실행 id={}",cpid);
+        log.info("중복체크함수실행 id={}",cpid);
         return companyRepository.findCompanyById(cpid).isPresent();
 
     }
 
 
- public Object findCompany(String cpid){
+    public Object findCompany(String cpid){
         if(companyRepository.findCompanyById(cpid).isPresent()){
-        return companyRepository.findCompanyById(cpid).get();
-    } else return "ID_NOT_FOUND";
+            return companyRepository.findCompanyById(cpid).get();
+        } else return "ID_NOT_FOUND";
     }
 }

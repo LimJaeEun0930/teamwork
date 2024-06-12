@@ -142,5 +142,3 @@ public class CompanyRepository {
     // 추가적인 조합 검색 메소드들...
     // 추가적인 메소드들을 여기에 구현할 수 있습니다.
 }
-
-

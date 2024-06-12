@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor // 기본 생성자 자동 생성
 public class Company {
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private int cpIndex;//인덱스
     @Id
     @Column(nullable = false, unique = true, length = 20)
