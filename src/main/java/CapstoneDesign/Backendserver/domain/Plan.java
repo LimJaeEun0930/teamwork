@@ -1,4 +1,4 @@
-package capweb.capprac.entity;
+package CapstoneDesign.Backendserver.domain;
 //일정테이블-옵션값으로 유저인지 회사인지 조회함
 import CapstoneDesign.Backendserver.domain.User;
 import capweb.capprac.dto.PlanCreateFormData;
@@ -33,7 +33,7 @@ public class Plan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planUsid")
-    private USer planUsid;//일정사용자아이디
+    private User planUsid;//일정사용자아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planCpid")
