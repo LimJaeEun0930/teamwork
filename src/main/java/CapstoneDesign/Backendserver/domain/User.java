@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Component
+//@Table(name = "APP_USER")//중요!!!!!!!!!!!!!!!!!0612 21시 혹시 테이블 user 예약어라고 에러뜨면 풀기!!!!
 public class User {
 
     @NotBlank //implementation 'org.springframework.boot:spring-boot-starter-validation'임포트해야됨

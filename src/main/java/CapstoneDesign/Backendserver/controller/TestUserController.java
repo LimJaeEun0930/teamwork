@@ -1,40 +1,39 @@
-//package capweb.capprac.controller;
-//
-//import capweb.capprac.dto.USerCreateFormData;
-//import capweb.capprac.entity.USer;
-//import capweb.capprac.repository.USerRepository;
-//import capweb.capprac.service.USerService;
-//import capweb.capprac.util.CreateUSer;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@Controller
-//@RequestMapping("/user")
-//public class USerController {
-//
-//    @Autowired
-//    private CreateUSer createUSer;
-//    @Autowired
-//    private USerService userService;
-//    @Autowired
-//    private USerRepository userRepository;
-//
-//    @GetMapping
-//    public String userPage() {
-//        return "/board/userRegisterForm";
-//    }
-//
-//    //0609 회원가입
-//    @PostMapping("/register")
-//    public String showRegistrationForm(@ModelAttribute USerCreateFormData uSerCreateFormData) {
-//        USer uSer = createUSer.CreateUSer(uSerCreateFormData);
-//        userService.registerUser(uSer);
-//        return "redirect:/user";
-//    }
+package CapstoneDesign.Backendserver.controller;
+
+import CapstoneDesign.Backendserver.domain.User;
+import CapstoneDesign.Backendserver.domain.dto.TestUserCreateFormData;
+import CapstoneDesign.Backendserver.repository.UserRepository;
+import CapstoneDesign.Backendserver.service.UserService;
+import CapstoneDesign.Backendserver.util.TestCreateUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/user")
+public class TestUserController {
+    @Autowired
+    private TestCreateUser testcreateUSer;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping
+    public String userPage() {
+        return "/board/userRegisterForm";
+    }
+
+    //0609 회원가입
+    @PostMapping("/register")
+    public String showRegistrationForm(@ModelAttribute TestUserCreateFormData testuSerCreateFormData) {
+        User user = testcreateUSer.TestCreateUSer(testuSerCreateFormData);
+        userService.join(user);
+        return "redirect:/user";
+    }
 //
 //    @GetMapping("/profile")
 //    public String showUpdateForm(@RequestParam int usIndex, Model model) {
@@ -83,6 +82,6 @@
 //        model.addAttribute("users", users);
 //        return "userList";
 //    }
-//
-//    // 나머지 컨트롤러 메소드들...
-//}
+
+    // 나머지 컨트롤러 메소드들...
+}
