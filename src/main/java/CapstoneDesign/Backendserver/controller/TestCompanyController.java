@@ -1,11 +1,10 @@
 package CapstoneDesign.Backendserver.controller;
 
-import CapstoneDesign.Backendserver.domain.dto.TestCompanyCreateFormData;
 import CapstoneDesign.Backendserver.domain.Company;
-import  CapstoneDesign.Backendserver.repository.CompanyRepository;
-import  CapstoneDesign.Backendserver.service.CompanyService;
-import  CapstoneDesign.Backendserver.util.TestCreateCompany;
-import capweb.capprac.dto.CompanyCreateFormData;
+import CapstoneDesign.Backendserver.domain.dto.TestCompanyCreateFormData;
+import CapstoneDesign.Backendserver.repository.CompanyRepository;
+import CapstoneDesign.Backendserver.service.CompanyService;
+import CapstoneDesign.Backendserver.util.TestCreateCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

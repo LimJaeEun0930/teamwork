@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 <body>
-    <h1>Announcements</h1>
+    <h1>공고</h1>
     <form th:action="@{/processAnnouncements}" method="post">
         <input type="hidden" name="userId" th:value="${user.id}"/>
         <input type="hidden" name="userName" th:value="${user.name}"/>

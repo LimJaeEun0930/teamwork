@@ -1,10 +1,10 @@
 package CapstoneDesign.Backendserver.controller;
 //0610 남은 구현할 일: html에서 목록에서 특정 일정을 선택하면 해당 일정의 인덱스를 알아내서 컨트롤러로 넘겨주기
 
-import CapstoneDesign.Backendserver.domain.dto.PlanCreateFormData;
 import CapstoneDesign.Backendserver.domain.Company;
 import CapstoneDesign.Backendserver.domain.Plan;
 import CapstoneDesign.Backendserver.domain.User;
+import CapstoneDesign.Backendserver.domain.dto.PlanCreateFormData;
 import CapstoneDesign.Backendserver.repository.CompanyRepository;
 import CapstoneDesign.Backendserver.repository.PlanRepository;
 import CapstoneDesign.Backendserver.repository.UserRepository;
@@ -38,17 +38,17 @@ public class PlanController {
 
     @GetMapping
     public String planPage(Model model) {
-        return "board/PlanHtml";
+        return "PlanHtml";
     }
     @PostMapping("/selectPlan")
     public String selectPlan(@RequestParam("selectedPlan") int planIndex, Model model) {
         Plan selectedPlan = planRepository.findPlanByIndex(planIndex);
         if (selectedPlan != null) {
             model.addAttribute("selectedPlan", selectedPlan);
-            return "board/PlanHtml"; // 수정 및 삭제 폼이 포함된 뷰로 리턴합니다.
+            return "PlanHtml"; // 수정 및 삭제 폼이 포함된 뷰로 리턴합니다.
         } else {
             model.addAttribute("message", "선택한 일정을 찾을 수 없습니다.");
-            return "board/PlanHtml"; // 오류 메시지를 포함하여 동일한 뷰로 리턴합니다.
+            return "PlanHtml"; // 오류 메시지를 포함하여 동일한 뷰로 리턴합니다.
         }
     }
 
@@ -83,7 +83,7 @@ public class PlanController {
             List<Plan> plans = planRepository.findPlansByUser(users.get());
             model.addAttribute("plans", plans);
         }
-        return "board/PlanHtml";
+        return "PlanHtml";
     }
 
     @GetMapping("/company")
@@ -95,7 +95,7 @@ public class PlanController {
         } else {
             model.addAttribute("plans", Collections.emptyList());
         }
-        return "board/PlanHtml";
+        return "PlanHtml";
     }
 
     // Other methods remain unchanged...
