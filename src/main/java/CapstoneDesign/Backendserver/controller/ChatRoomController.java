@@ -1,7 +1,6 @@
 package CapstoneDesign.Backendserver.controller;
 
 import CapstoneDesign.Backendserver.domain.JobCategory;
-import CapstoneDesign.Backendserver.domain.dto.ChatRoom;
 import CapstoneDesign.Backendserver.domain.room.Room;
 import CapstoneDesign.Backendserver.repository.ChatRoomRepository;
 import CapstoneDesign.Backendserver.service.ChatService;
@@ -10,9 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/chat")

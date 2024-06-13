@@ -104,7 +104,7 @@ public class HomeController {
 
     @PostMapping("login/company")
     public String doLogin_cp(@Validated @ModelAttribute("companyLogin") CompanyLogin companyLogin,
-                          BindingResult bindingResult, HttpServletRequest request) {
+                             BindingResult bindingResult, HttpServletRequest request) {
 
         log.info("login시도");
 
@@ -115,7 +115,7 @@ public class HomeController {
         log.info("login완료");
         Company loginCompany;
         if(companyService.findCompany(companyLogin.getCpId()) instanceof Company) {
-             loginCompany = (Company) companyService.findCompany(companyLogin.getCpId());
+            loginCompany = (Company) companyService.findCompany(companyLogin.getCpId());
         } else{
             loginCompany  = null;
             return "login/login_cp";
@@ -195,5 +195,10 @@ public class HomeController {
     @GetMapping("calender/jobCalender")
     public String jobCalender() {
         return "HY/JobApplication_Calender";
+    }
+
+    @GetMapping("PlanHtml")
+    public String myPlan() {
+        return "PlanHtml";
     }
 }
