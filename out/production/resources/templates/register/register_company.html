@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Register Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container div {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            width: 100px;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+            margin-top: 5px;
+            font-size: 0.875em;
+        }
+
+        .btn-inline {
+            margin-left: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-inline:hover {
+            background-color: #0056b3;
+        }
+
+        .full-width {
+            display: block;
+            width: 100%;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <form action="/registerCompany" onsubmit="return valid()" th:action th:object="${company}" method="post">
+        <div>
+            <label for="cpId">회사ID</label>
+            <input type="text" id="cpId" th:field="*{cpId}">
+            <button type="button" class="btn-inline" onclick="sameCheck()">중복체크</button>
+        </div>
+        <div>
+            <label for="cpPw">비밀번호</label>
+            <input type="password" id="cpPw" th:field="*{cpPw}">
+            <div class="field-error" th:errors="*{cpPw}">비밀번호를 입력해주세요</div>
+        </div>
+        <div>
+            <label for="cpName">회사 이름</label>
+            <input type="text" id="cpName" th:field="*{cpName}">
+            <div class="field-error" th:errors="*{cpName}">회사 이름을 입력해주세요</div>
+        </div>
+        <div>
+            <label for="cpAddr">주소</label>
+            <input type="text" id="cpAddr" th:field="*{cpAddr}">
+            <div class="field-error" th:errors="*{cpAddr}">주소를 입력해주세요</div>
+        </div>
+        <div>
+            <label for="cpCategory">카테고리</label>
+            <input type="text" id="cpCategory" th:field="*{cpCategory}">
+        </div>
+        <button type="submit" class="full-width">회원가입</button>
+    </form>
+</div>
+
+<script>
+    let companyIdCheck = false;
+
+    function valid() {
+        if (companyIdCheck) {
+            return true; //true일때 회원가입 버튼 동작
+        } else {
+            alert("아이디 중복 체크를 완료해주세요.");
+            return false;
+        }
+    }
+
+    function sameCheck(){
+        let companyId = document.getElementById('cpId').value.trim(); // input에서 사용자가 입력한 ID가져오기
+        if (!companyId) {
+            return; //입력값이 공백인 경우 아무 작업도 수행하지 않음.
+        }
+        $.ajax({
+            type: "get",
+            url: "/register/cpIdDuplicateCheck?cpid=" + companyId
+        }).done((res) => {
+            companyIdCheck = true; //중복체크완료. 아이디가 중복되지 않음.
+            alert("사용가능한 아이디입니다.");
+        }).fail(()=>{
+            alert("아이디 중복입니다.");
+            companyIdCheck = false;
+        });
+    }
+</script>
+</body>
+</html>

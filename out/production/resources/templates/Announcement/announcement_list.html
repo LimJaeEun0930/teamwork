@@ -1,0 +1,42 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Announcements</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+</head>
+<body>
+    <h1>공고</h1>
+    <form th:action="@{/processAnnouncements}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}"/>
+        <input type="hidden" name="userName" th:value="${user.name}"/>
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="announcement : ${announcementList}">
+                    <td><input type="checkbox" name="selectedAnnouncements" th:value="${announcement.getAnmIndex()}"/></td>
+                    <td><a th:href="@{|/announcement/${announcement.getAnmIndex()}|}" th:text="${announcement.anmName}"></a></td>
+                    <td th:text="${announcement.anmCpid.cpName}"></td>
+                    <td th:text="${#dates.format(announcement.anmStartDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#dates.format(announcement.anmEndDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button type="submit">Process Selected Announcements</button>
+        </div>
+    </form>
+    <div>
+        <button th:onclick="|location.href='@{/}'|" type="button">메인</button>
+    </div>
+</body>
+</html>

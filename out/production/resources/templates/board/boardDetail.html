@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그</title>
+    <link rel="stylesheet" href="../css/board_css.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            margin-right: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1em;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .post-meta {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .post-meta span {
+            margin-right: 10px;
+        }
+
+        .post-content {
+            font-size: 1.2em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .edit-buttons {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <h2>카테고리</h2>
+        <ul>
+            <li th:each="category : ${jobCategory}">
+                <a th:href="@{/board/category(category=${category})}" th:text="${category}"></a>
+<!--            <button th:onclick="|location.href='@{/board/category(category=${category})}'|" th:text="${category}"></button>-->
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="post">
+            <div class="post-title" th:text="${board.getBoardTitle()}">게시글 제목</div>
+            <div class="post-meta">
+                <span>작성자: </span><span th:text="${board.getBoardWriter()}">작성자</span>
+                <span> | </span>
+                <span>작성일: </span><span th:text="*{#temporals.format(board.getCreatedTime(),'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+                <span> | </span>
+                <span>조회수: </span><span th:text="${board.getBoardHits()}">조회수</span>
+            </div>
+            <div class="post-content" th:text="${board.getBoardContents()}">게시글 내용</div>
+            <div class="button-container">
+                <div>
+                    <button th:onclick="|location.href='@{/board/paging}'|" type="button">목록</button>
+                    <button th:onclick="|location.href='@{/}'|" type="button">Home</button>
+                </div>
+                <div class="edit-buttons" th:if="${user}">
+                    <button th:onclick="|location.href='@{/board/edit/{boardId}(boardId=${board.getBoardId()},page=${page})}'|" type="button">수정</button>
+                    <button th:onclick="|location.href='@{/board/delete/{boardId}(boardId=${board.getBoardId()})}'|" type="button">글 삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+

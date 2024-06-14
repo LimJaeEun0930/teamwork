@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-buttons, .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .top-buttons button, .button-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .top-buttons button:hover, .button-container button:hover {
+            background-color: #45a049;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            padding-right: 20px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination span {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div th:if="${user != null or company != null}" class="button-container">
+    <button th:onclick="|location.href='@{/announcement}'|">공지목록</button>
+    <button th:if="${company != null}" th:onclick="|location.href='@{/announcement/write}'|">공지작성</button>
+    <button th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
+    <button th:onclick="|location.href='@{/board/paging}'|">게시판목록</button>
+    <button th:onclick="|location.href='@{/chat}'|">채팅</button>
+    <button th:onclick="|location.href='@{/announcement/myAnnouncement}'|">내가 추가한 공지</button>
+    <button th:onclick="|location.href='@{/calender/jobCalender}'|">잡 캘린더</button>
+    <button th:onclick="|location.href='@{/calender/myCalender}'|">나의 캘린더</button>
+    <button th:onclick="|location.href='@{/PlanHtml}'|">일정</button>
+    <form action="/logout" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+</div>
+<div th:if="${user == null and company == null}" class="top-buttons">
+    <button th:onclick="|location.href='@{/login/entrance}'|">로그인</button>
+    <button th:onclick="|location.href='@{/register}'|">회원가입</button>
+    <button onclick="saveReq()">글쓰기</button>
+</div>
+
+<div class="main-content">
+    <div class="sidebar">
+        <h2>Job Categories</h2>
+        <div th:each="category : ${jobCategory}">
+            <button th:onclick="|location.href='@{/board/category(category=${category})}'|" th:text="${category}"></button>
+        </div>
+    </div>
+    <div class="content">
+        <h1 th:text="${selectedCategory != null} ? ${selectedCategory} : '전체 글 목록'"></h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>writer</th>
+                    <th>date</th>
+                    <th>hits</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${boardList}" th:if="${boardList != null}">
+                    <td th:text="${board.boardId}"></td>
+                    <td><a th:href="@{|/board/${board.getBoardId()}|(page=${boardList.number + 1})}" th:text="${board.getBoardTitle()}"></a></td>
+                    <td th:text="${board.boardWriter}"></td>
+                    <td th:text="*{#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${board.boardHits}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--페이징 처리 시작-->
+        <div class="pagination" th:if="${boardList != null}">
+            <a th:href="@{/board/paging(page=1, category=${selectedCategory})}">First</a>
+            <a th:href="@{/board/paging(page=${boardList.number}, category=${selectedCategory})}" th:if="${boardList.hasPrevious()}">prev</a>
+            <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+                <a th:href="@{/board/paging(page=${page}, category=${selectedCategory})}" th:unless="${page == boardList.number + 1}" th:text="${page}"></a>
+            </span>
+            <a th:href="@{/board/paging(page=${boardList.number + 2}, category=${selectedCategory})}" th:if="${boardList.hasNext()}">next</a>
+            <a th:href="@{/board/paging(page=${boardList.totalPages}, category=${selectedCategory})}">Last</a>
+        </div>
+        <!--페이징 처리 끝-->
+    </div>
+</div>
+
+<script>
+    const saveReq = () => {
+        location.href = "/board/write";
+    }
+</script>
+</body>
+</html>
+

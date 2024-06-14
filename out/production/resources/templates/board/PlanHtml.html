@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan Management</title>
+    <style type="text/css">
+
+
+        /* Reset some default styles */
+        body, h2, table, th, td, input, button, form, div, label, a {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        /* Apply a background color to the body */
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Style the form elements */
+        form {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e9ffe9;
+            color: #333;
+        }
+
+        /* Style the buttons */
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Style the radio buttons */
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        /* Style the input fields */
+        input[type="text"], input[type="date"] {
+            width: 95%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Style the labels */
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        /* Style the header links */
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            padding: 8px 16px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add some padding to the main content */
+        main {
+            padding: 20px;
+        }
+
+        /* Style the header */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        /* Style the navigation menu */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<!-- 일정 선택 폼 -->
+<form action="/plans/selectPlan" method="post">
+    <h2>Select a Plan</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>Plan Index</th>
+            <th>Plan Date</th>
+            <th>Plan Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 서버 사이드에서 Thymeleaf를 사용하여 반복문을 통해 일정 목록을 동적으로 생성 -->
+        <tr th:each="plan : ${plans}">
+            <td><input type="radio" name="selectedPlan" th:value="${plan.planIndex}" /></td>
+            <td th:text="${plan.planIndex}">1</td>
+            <td th:text="${#dates.format(plan.planId, 'yyyy-MM-dd')}">2024-06-10</td>
+            <td th:text="${plan.planName}">Meeting with Client</td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Select Plan</button>
+</form>
+<!-- 일정 생성 폼 -->
+<form action="/plans/create" method="post">
+    <label for="planId">Plan Date:</label>
+    <input type="date" id="planId" name="planId" required>
+
+    <label for="planName">Plan Name:</label>
+    <input type="text" id="planName" name="planName" required>
+
+    <label for="planUsid">User ID:</label>
+    <input type="text" id="planUsid" name="planUsid">
+
+    <label for="planCpid">Company ID:</label>
+    <input type="text" id="planCpid" name="planCpid">
+
+    <button type="submit">Create Plan</button>
+</form>
+
+<!-- 선택된 일정을 위한 동적 폼 -->
+<div th:if="${selectedPlan != null}">
+    <!-- 일정 수정 폼 -->
+    <form th:action="@{/plans/update/{planIndex}(planIndex=${selectedPlan.planIndex})}" method="post">
+        <label for="planName">Plan Name:</label>
+        <input type="text" id="upplanName" name="planName" th:value="${selectedPlan.planName}" required>
+        <button type="submit">Update Plan</button>
+    </form>
+
+    <!-- 일정 삭제 링크 -->
+    <a th:href="@{/plans/delete/{planIndex}(planIndex=${selectedPlan.planIndex})}">Delete Plan</a>
+</div>
+<!-- 사용자 ID로 일정 조회 폼 -->
+<form action="/plans/user" method="get">
+    <label for="searchUserId">Search by User ID:</label>
+    <input type="text" id="searchUserId" name="userId" required>
+    <button type="submit">Search</button>
+</form>
+<!-- 회사 ID로 일정 조회 폼 -->
+<form action="/plans/company" method="get">
+    <label for="searchCompanyId">Search by Company ID:</label>
+    <input type="text" id="searchCompanyId" name="companyId" required>
+    <button type="submit">Search</button>
+</form>
+
+<!-- 나머지 조회 기능을 위한 폼과 링크는 필요에 따라 구현 -->
+
+</body>
+</html>
